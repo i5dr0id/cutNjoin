@@ -33,12 +33,19 @@ export function ProjectsCarousel({ titles, rail, children }: ProjectsCarouselPro
     <>
       <div className="border-y-2 border-well bg-strip-2">
         {rail}
-        <div ref={scroller} onScroll={onScroll} className="no-scrollbar snap-x scroll-px-8 overflow-x-auto">
+        <div
+          ref={scroller}
+          onScroll={onScroll}
+          tabIndex={0}
+          role="region"
+          aria-label="Featured projects"
+          className="no-scrollbar snap-x scroll-px-8 overflow-x-auto focus-visible:outline-offset-[-2px]"
+        >
           {children}
         </div>
         {rail}
       </div>
-      <div className="flex items-center justify-center gap-2 pt-8">
+      <div className="flex items-center justify-center pt-6">
         {titles.map((title, index) => (
           <button
             key={title}
@@ -46,8 +53,12 @@ export function ProjectsCarousel({ titles, rail, children }: ProjectsCarouselPro
             aria-label={`Show ${title}`}
             aria-current={index === active}
             onClick={() => goTo(index)}
-            className={`h-2 transition-all duration-300 ${index === active ? "w-6 bg-accent" : "w-2 bg-fg/20 hover:bg-fg/40"}`}
-          />
+            className="group grid h-6 min-w-6 place-items-center"
+          >
+            <span
+              className={`block h-2 transition-all duration-300 ${index === active ? "w-6 bg-accent" : "w-2 bg-fg/20 group-hover:bg-fg/40"}`}
+            />
+          </button>
         ))}
       </div>
     </>

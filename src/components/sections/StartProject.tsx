@@ -8,7 +8,7 @@ import {
 } from "@/components/primitives";
 import { sections } from "@/lib/site";
 import type { SiteQueryResult } from "@/sanity/types";
-import { QuoteForm } from "./QuoteForm";
+import { LazyQuoteForm } from "./LazyQuoteForm";
 import type { HomePage } from "./types";
 
 type Settings = SiteQueryResult["settings"];
@@ -20,7 +20,7 @@ function Detail({ icon: Icon, children, href }: { icon: LucideIcon; children: st
       {children}
     </>
   );
-  const className = "flex items-center gap-3 text-sm leading-5 text-fg/44";
+  const className = "flex items-center gap-3 text-sm leading-5 text-fg/59";
   return (
     <li>
       {href ? (
@@ -49,7 +49,7 @@ export function StartProject({ page, settings }: { page: HomePage; settings: Set
             <SectionEyebrow label={page.contact.eyebrow} />
             <SectionHeading id={headingId}>{page.contact.heading}</SectionHeading>
             {page.contactIntro && (
-              <p className="pt-6 text-[15px] leading-[24.4px] text-fg/40">{page.contactIntro}</p>
+              <p className="pt-6 text-[15px] leading-[24.4px] text-fg/58">{page.contactIntro}</p>
             )}
           </div>
           <div className="relative h-[280px] overflow-hidden bg-card lg:h-[480px]">
@@ -75,7 +75,7 @@ export function StartProject({ page, settings }: { page: HomePage; settings: Set
             {settings?.hoursSummary && <Detail icon={Clock}>{settings.hoursSummary}</Detail>}
           </ul>
         </div>
-        <QuoteForm
+        <LazyQuoteForm
           heading={page.contactFormHeading ?? "Request a Quote"}
           submitLabel={page.contactSubmit ?? "Submit brief"}
         />

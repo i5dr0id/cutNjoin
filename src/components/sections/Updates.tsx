@@ -18,19 +18,19 @@ function PostCard({ post, readMore }: { post: Post; readMore: string }) {
       </div>
       <div className="flex flex-1 flex-col gap-3 p-4">
         <div className="flex items-center justify-between font-mono text-[10px] leading-[15px]">
-          <span className="tracking-[2.5px] text-fg/31 uppercase">{post.category}</span>
-          <time dateTime={post.publishedAt} className="text-fg/19">
+          <span className="tracking-[2.5px] text-fg/55 uppercase">{post.category}</span>
+          <time dateTime={post.publishedAt} className="text-fg/50">
             {formatDate(post.publishedAt)}
           </time>
         </div>
         <h3 className="text-base leading-[22px] font-semibold">{post.title}</h3>
-        <p className="flex-1 text-[13px] leading-[21.1px] text-fg/33">{post.excerpt}</p>
+        <p className="flex-1 text-[13px] leading-[21.1px] text-fg/55">{post.excerpt}</p>
         <Link
           href={routes.updates}
-          aria-label={`${readMore}: ${post.title}`}
-          className="inline-flex items-center gap-2 self-start text-xs leading-4 font-semibold tracking-[1.2px] text-fg/27 uppercase transition-colors hover:text-fg"
+          className="inline-flex items-center gap-2 self-start text-xs leading-4 font-semibold tracking-[1.2px] text-fg/53 uppercase transition-colors hover:text-fg"
         >
           {readMore}
+          <span className="sr-only">: {post.title}</span>
           <ArrowRight aria-hidden className="size-3" />
         </Link>
       </div>

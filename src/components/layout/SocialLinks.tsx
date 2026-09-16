@@ -17,12 +17,12 @@ export function SocialLinks({ socials, className = "" }: { socials: Socials; cla
                 target="_blank"
                 rel="noreferrer"
                 aria-label={platform}
-                className="text-fg/27 transition-colors hover:text-accent"
+                className="text-fg/53 transition-colors hover:text-accent"
               >
                 <SocialIcon platform={platform} />
               </a>
             ) : (
-              <SocialIcon platform={platform} className="text-fg/27" />
+              <SocialIcon platform={platform} className="text-fg/53" />
             )}
           </li>
         );

@@ -18,7 +18,7 @@ function MerchTile({ product, side }: { product: Product; side: "front" | "back"
       </div>
       <div className="flex items-start justify-between pt-4">
         <span className="text-sm leading-[19.6px] font-semibold">{product.garment ?? product.name}</span>
-        <span className="font-mono text-sm leading-5 text-fg/38">{formatNaira(product.price)}</span>
+        <span className="font-mono text-sm leading-5 text-fg/57">{formatNaira(product.price)}</span>
       </div>
     </Link>
   );
@@ -35,7 +35,7 @@ export function Merch({ page, products }: { page: HomePage; products: Product[] 
         page.merch.linkLabel && (
           <Link
             href={routes.store}
-            className="inline-flex items-center gap-2 text-sm leading-5 font-semibold tracking-button text-accent/55 uppercase transition-colors hover:text-accent"
+            className="inline-flex items-center gap-2 text-sm leading-5 font-semibold tracking-button text-accent/70 uppercase transition-colors hover:text-accent"
           >
             <ShoppingBag aria-hidden className="size-[15px]" />
             {page.merch.linkLabel}

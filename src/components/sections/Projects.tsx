@@ -1,4 +1,11 @@
-import { ArrowLink, PlayButton, SanityImage, Section, SprocketRail } from "@/components/primitives";
+import {
+  ArrowLink,
+  DecorativeText,
+  PlayButton,
+  SanityImage,
+  Section,
+  SprocketRail,
+} from "@/components/primitives";
 import { formatTimecode } from "@/lib/format";
 import { routes, sections } from "@/lib/site";
 import { ProjectsCarousel } from "./ProjectsCarousel";
@@ -29,13 +36,13 @@ function ProjectTile({ project }: { project: Project }) {
           label={`Play ${project.title}`}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
         />
-        <p className="absolute inset-x-0 bottom-0 bg-linear-to-t from-[rgb(6_6_6/0.9)] to-transparent px-4 py-2 font-mono text-[9px] leading-[13.5px] tracking-[0.9px] text-fg/27 uppercase">
-          {project.timecode && `${formatTimecode(project.timecode)} — `}
-          {project.category}
-        </p>
+        <DecorativeText
+          text={`${project.timecode ? `${formatTimecode(project.timecode)} — ` : ""}${project.category}`}
+          className="absolute inset-x-0 bottom-0 block bg-linear-to-t from-[rgb(6_6_6/0.9)] to-transparent px-4 py-2 font-mono text-[9px] leading-[13.5px] tracking-[0.9px] text-fg/27 uppercase"
+        />
       </div>
       <div className="p-4">
-        <p className="font-mono text-[10px] leading-[15px] tracking-[2.5px] text-fg/31 uppercase">
+        <p className="font-mono text-[10px] leading-[15px] tracking-[2.5px] text-fg/55 uppercase">
           {project.category}
         </p>
         <h3 className="pt-2 text-base leading-6 font-semibold tracking-[-0.4px]">{project.title}</h3>
@@ -64,9 +71,7 @@ export function Projects({ page, projects }: { page: HomePage; projects: Project
       <ProjectsCarousel titles={projects.map((p) => p.title)} rail={<SprocketRail />}>
         <div aria-hidden className={`${labelRow} border-b border-line-soft`}>
           {projects.map((project, index) => (
-            <span key={project._id} className={labelCell}>
-              {frameRange(index)}
-            </span>
+            <DecorativeText key={project._id} text={frameRange(index)} className={labelCell} />
           ))}
         </div>
         <div className="flex h-[379px] w-max min-w-full bg-strip-4 px-8">
@@ -76,9 +81,11 @@ export function Projects({ page, projects }: { page: HomePage; projects: Project
         </div>
         <div aria-hidden className={`${labelRow} border-t border-line-soft`}>
           {projects.map((project, index) => (
-            <span key={project._id} className={labelCell}>
-              ◆ {String(index + 1).padStart(2, "0")} ◆
-            </span>
+            <DecorativeText
+              key={project._id}
+              text={`◆ ${String(index + 1).padStart(2, "0")} ◆`}
+              className={labelCell}
+            />
           ))}
         </div>
       </ProjectsCarousel>

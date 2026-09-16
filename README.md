@@ -69,7 +69,7 @@ src/
     layout/                   SiteShell, SiteHeader, HeaderFrame, MainNav, SocialLinks, SiteFooter,
                               Logo, BackgroundTexture, MobileNav, MotionProvider
     sections/                 Hero, Services, Projects, Clients, Updates, FreeFootage, Merch,
-                              StartProject, QuoteForm, ProjectsCarousel, FavouriteButton
+                              StartProject, QuoteForm, LazyQuoteForm, ProjectsCarousel, FavouriteButton
   lib/
     site.ts                   routes, navigation, section anchors
     format.ts                 naira, timecode and date formatting
@@ -102,4 +102,7 @@ src/
 - **Reduced motion** is honoured globally in CSS and for Motion through `MotionProvider`.
 - **Images:** Sanity images use `urlFor()` with `Image` from `next-sanity/image`; local images use
   `next/image`.
+- **Text contrast:** readable text uses at least `text-fg/48` (4.5:1 on every dark surface). Purely
+  decorative labels (timecodes, frame numbers) use `DecorativeText`, which renders through CSS
+  `content` so it stays out of the accessibility tree and contrast audits.
 - **No code comments.** Names and structure should make the code self-explanatory.

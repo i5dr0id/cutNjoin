@@ -1,7 +1,8 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence } from "motion/react";
+import * as m from "motion/react-m";
 import { useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/primitives";
@@ -41,7 +42,7 @@ export function QuoteForm({ heading, submitLabel }: QuoteFormProps) {
     <div className="border border-fg/7 bg-well px-8 py-12">
       <AnimatePresence mode="wait" initial={false}>
         {status === "sent" ? (
-          <motion.div
+          <m.div
             key="sent"
             role="status"
             initial={{ opacity: 0, y: 8 }}
@@ -57,9 +58,9 @@ export function QuoteForm({ heading, submitLabel }: QuoteFormProps) {
             <Button variant="outline" className="self-start" onClick={() => setStatus("idle")}>
               Send another brief
             </Button>
-          </motion.div>
+          </m.div>
         ) : (
-          <motion.form
+          <m.form
             key="form"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
@@ -156,7 +157,7 @@ export function QuoteForm({ heading, submitLabel }: QuoteFormProps) {
                 {isSubmitting ? "Sending…" : submitLabel}
               </Button>
             </div>
-          </motion.form>
+          </m.form>
         )}
       </AnimatePresence>
     </div>
@@ -176,7 +177,7 @@ function Field({
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="text-xs leading-4 font-medium tracking-[1.2px] text-fg/38 uppercase">
+      <label htmlFor={id} className="text-xs leading-4 font-medium tracking-[1.2px] text-fg/57 uppercase">
         {label}
       </label>
       {children}

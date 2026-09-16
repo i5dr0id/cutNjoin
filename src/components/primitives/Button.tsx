@@ -11,7 +11,7 @@ const variants: Record<Variant, string> = {
   primary: "bg-accent px-8 py-4 text-bg hover:brightness-110 active:scale-[0.98]",
   ghost: "border border-fg/22 px-8 py-4 text-fg hover:border-fg/60 hover:bg-fg/5 active:scale-[0.98]",
   outline: "border border-fg/14 px-6 py-3 text-fg/50 hover:border-fg/40 hover:text-fg",
-  link: "text-fg/31 hover:text-fg",
+  link: "text-fg/55 hover:text-fg",
 };
 
 export function buttonClasses(variant: Variant = "primary", className = "") {
