@@ -39,6 +39,43 @@
   --color-line-soft: rgb(242 242 242 / 0.06);
   --color-well: #111111;
   --color-scrim: rgb(13 13 13 / 0.52);
+
+  --animate-reel-timecode: reel-scroll 16s linear infinite;
+  --animate-reel-sprocket: reel-scroll 14s linear infinite;
+  --animate-pulse-dot: pulse-dot 1.8s ease-in-out infinite;
+  --animate-play-ring: play-ring 2.4s ease-out infinite;
+
+  @keyframes reel-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.3;
+      transform: scale(0.6);
+    }
+  }
+
+  @keyframes play-ring {
+    from {
+      opacity: 0.55;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(1.85);
+    }
+  }
 }
 
 @layer base {

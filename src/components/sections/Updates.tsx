@@ -7,13 +7,13 @@ import type { HomePage, Post } from "./types";
 
 function PostCard({ post, readMore }: { post: Post; readMore: string }) {
   return (
-    <article className="flex flex-col overflow-hidden border border-fg/5 bg-well">
+    <article className="group flex flex-col overflow-hidden border border-fg/5 bg-well transition-colors duration-200 hover:border-fg/12">
       <div className="relative h-[260px] overflow-hidden lg:h-[382px]">
         <SanityImage
           image={post.cover}
           fill
           sizes="(min-width: 1024px) 33vw, 100vw"
-          className="object-cover"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>
       <div className="flex flex-1 flex-col gap-3 p-4">

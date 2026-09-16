@@ -5,7 +5,7 @@ export function SectionEyebrow({ label, pulse = false }: { label: string; pulse?
       {pulse && (
         <span
           aria-hidden
-          className="size-[7px] shrink-0 rounded-full bg-accent shadow-[0_0_6px_rgb(61_220_79/0.5)]"
+          className="size-[7px] shrink-0 animate-pulse-dot rounded-full bg-accent shadow-[0_0_6px_rgb(61_220_79/0.5)]"
         />
       )}
       <span className="eyebrow leading-[15px] text-fg/33">{label}</span>
