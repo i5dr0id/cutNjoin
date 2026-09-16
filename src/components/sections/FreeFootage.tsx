@@ -46,8 +46,8 @@ function FeaturedFootage({ item, downloadLabel }: { item: Footage; downloadLabel
         <div className="flex flex-col gap-1">
           <h3 className="text-lg leading-[27px] font-semibold">{item.title}</h3>
           <p className="flex gap-3 font-mono text-[11px] leading-[16.5px] tracking-[1.1px]">
-            <span className="text-fg/33">{item.duration}</span>
-            <span className="text-fg/22">{specs(item)}</span>
+            <span className="text-fg/55">{item.duration}</span>
+            <span className="text-fg/51">{specs(item)}</span>
           </p>
         </div>
         <DownloadLink item={item} label={downloadLabel} />
@@ -69,7 +69,7 @@ function FootageTile({ item }: { item: Footage }) {
       <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-4">
         <div>
           <h3 className="text-xs leading-[16.5px] font-medium text-fg/80">{item.title}</h3>
-          <p className="pt-2 font-mono text-[10px] leading-[15px] tracking-[1px] text-fg/25">
+          <p className="pt-2 font-mono text-[10px] leading-[15px] tracking-[1px] text-fg/52">
             {[item.duration, specs(item)].filter(Boolean).join(" · ")}
           </p>
         </div>

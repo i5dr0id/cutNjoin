@@ -1,7 +1,8 @@
 "use client";
 
 import { Menu, X } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence } from "motion/react";
+import * as m from "motion/react-m";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
@@ -32,7 +33,7 @@ export function MobileNav({ socials }: { socials: ReactNode }) {
       </button>
       <AnimatePresence>
         {open && (
-          <motion.nav
+          <m.nav
             id="mobile-nav"
             aria-label="Mobile"
             initial={{ opacity: 0, y: -8 }}
@@ -56,7 +57,7 @@ export function MobileNav({ socials }: { socials: ReactNode }) {
               ))}
             </ul>
             <div className="mt-6 border-t border-line pt-4">{socials}</div>
-          </motion.nav>
+          </m.nav>
         )}
       </AnimatePresence>
     </div>

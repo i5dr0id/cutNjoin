@@ -32,7 +32,7 @@ export function Clients({ page, clients }: { page: HomePage; clients: Client[] }
   return (
     <section id={sections.clients} aria-labelledby="clients-heading" className="border-y border-line-soft">
       <Container className="py-12">
-        <h2 id="clients-heading" className="text-center eyebrow leading-[15px] tracking-[3.5px] text-fg/16">
+        <h2 id="clients-heading" className="text-center eyebrow leading-[15px] tracking-[3.5px] text-fg/49">
           {page.clientsHeading}
         </h2>
         <ul className="flex min-h-[min(152px,7.8vw)] items-center justify-between gap-4">

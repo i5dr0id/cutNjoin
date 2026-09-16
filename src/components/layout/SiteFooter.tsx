@@ -6,9 +6,9 @@ import { getSite } from "@/sanity/fetch";
 import { Logo } from "./Logo";
 import { SocialLinks } from "./SocialLinks";
 
-const columnHeading = "text-xs leading-4 font-semibold tracking-[2.4px] uppercase text-fg/25";
-const columnLink = "text-sm leading-5 text-fg/38 transition-colors hover:text-fg";
-const barItem = "flex items-center gap-2 font-mono text-[11px] leading-[16.5px] text-fg/19";
+const columnHeading = "text-xs leading-4 font-semibold tracking-[2.4px] uppercase text-fg/52";
+const columnLink = "text-sm leading-5 text-fg/57 transition-colors hover:text-fg";
+const barItem = "flex items-center gap-2 font-mono text-[11px] leading-[16.5px] text-fg/50";
 
 export async function SiteFooter() {
   const { settings, services } = await getSite();
@@ -23,7 +23,7 @@ export async function SiteFooter() {
 
         <div className="mt-6 grid gap-8 pb-12 lg:grid-cols-4">
           <div className="flex flex-col gap-4">
-            <p className="max-w-[260px] text-[13px] leading-[21.1px] text-fg/33">{settings?.footerBlurb}</p>
+            <p className="max-w-[260px] text-[13px] leading-[21.1px] text-fg/55">{settings?.footerBlurb}</p>
             <SocialLinks socials={settings?.socials ?? null} className="pt-2" />
           </div>
 
@@ -62,8 +62,8 @@ export async function SiteFooter() {
             <dl className="flex flex-col gap-2">
               {settings?.hours?.map((row) => (
                 <div key={row._key} className="flex flex-col gap-0.5">
-                  <dt className="text-xs leading-4 font-medium text-fg/46">{row.days}</dt>
-                  <dd className="font-mono text-xs leading-4 text-fg/25">{row.time}</dd>
+                  <dt className="text-xs leading-4 font-medium text-fg/60">{row.days}</dt>
+                  <dd className="font-mono text-xs leading-4 text-fg/52">{row.time}</dd>
                 </div>
               ))}
             </dl>
@@ -86,7 +86,7 @@ export async function SiteFooter() {
             )}
             {settings?.email && (
               <li>
-                <a href={`mailto:${settings.email}`} className={`${barItem} hover:text-fg/60`}>
+                <a href={`mailto:${settings.email}`} className={`${barItem} hover:text-fg/80`}>
                   <Mail aria-hidden className="size-[11px]" />
                   {settings.email}
                 </a>
@@ -96,7 +96,7 @@ export async function SiteFooter() {
               <li>
                 <a
                   href={`tel:${settings.phone.replace(/\s/g, "")}`}
-                  className={`${barItem} hover:text-fg/60`}
+                  className={`${barItem} hover:text-fg/80`}
                 >
                   <Phone aria-hidden className="size-[11px]" />
                   {settings.phone}
@@ -104,7 +104,7 @@ export async function SiteFooter() {
               </li>
             )}
           </ul>
-          <p className="font-mono text-[11px] leading-[16.5px] text-fg/13">
+          <p className="font-mono text-[11px] leading-[16.5px] text-fg/48">
             © {year} {settings?.copyrightName ?? "CUT&JOIN Studios"}. All rights reserved.
           </p>
         </div>
