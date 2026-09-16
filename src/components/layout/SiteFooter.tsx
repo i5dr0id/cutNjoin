@@ -8,7 +8,7 @@ export function SiteFooter() {
     <footer className="border-t border-line">
       <Container className="grid gap-8 py-16 lg:grid-cols-4">
         <div className="flex flex-col gap-4">
-          <Logo />
+          <Logo className="h-[50px]" />
           <p className="text-sm text-fg/60">A digital post-production company in Lagos, Nigeria.</p>
         </div>
         <nav aria-labelledby="footer-quick-links">
