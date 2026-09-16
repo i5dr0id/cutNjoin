@@ -1,17 +1,55 @@
-import { Section, ButtonLink } from "@/components/primitives";
+import { ShoppingBag } from "lucide-react";
+import Link from "next/link";
+import { SanityImage, Section } from "@/components/primitives";
+import { formatNaira } from "@/lib/format";
 import { routes, sections } from "@/lib/site";
+import type { HomePage, Product } from "./types";
 
-export function Merch() {
+function MerchTile({ product, side }: { product: Product; side: "front" | "back" }) {
+  return (
+    <Link href={routes.store} className="group flex flex-col">
+      <div className="relative aspect-[453/567] overflow-hidden bg-card">
+        <SanityImage
+          image={product[side]}
+          fill
+          sizes="(min-width: 1024px) 25vw, 50vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+        />
+      </div>
+      <div className="flex items-start justify-between pt-4">
+        <span className="text-sm leading-[19.6px] font-semibold">{product.garment ?? product.name}</span>
+        <span className="font-mono text-sm leading-5 text-fg/38">{formatNaira(product.price)}</span>
+      </div>
+    </Link>
+  );
+}
+
+export function Merch({ page, products }: { page: HomePage; products: Product[] }) {
   return (
     <Section
       id={sections.merch}
-      eyebrow="Merch (coming soon)"
-      heading="Wear the Cut"
+      eyebrow={page.merch.eyebrow}
+      heading={page.merch.heading}
+      divider
       action={
-        <ButtonLink href={routes.store} variant="text">
-          View full store
-        </ButtonLink>
+        page.merch.linkLabel && (
+          <Link
+            href={routes.store}
+            className="inline-flex items-center gap-2 text-sm leading-5 font-semibold tracking-button text-accent/55 uppercase transition-colors hover:text-accent"
+          >
+            <ShoppingBag aria-hidden className="size-[15px]" />
+            {page.merch.linkLabel}
+          </Link>
+        )
       }
-    />
+    >
+      <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
+        {products.flatMap((product) =>
+          (["front", "back"] as const).map((side) => (
+            <MerchTile key={`${product._id}-${side}`} product={product} side={side} />
+          )),
+        )}
+      </div>
+    </Section>
   );
 }

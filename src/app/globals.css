@@ -26,11 +26,19 @@
   --text-heading: 52px;
   --text-heading--line-height: 1;
   --text-heading--letter-spacing: -0.025em;
+  --text-display: 96px;
+  --text-display--line-height: 87.17px;
+  --text-display--letter-spacing: -0.025em;
 
   --breakpoint-3xl: 1950px;
   --container-site: 1950px;
 
   --radius-*: initial;
+  --radius-hole: 2px;
+
+  --color-line-soft: rgb(242 242 242 / 0.06);
+  --color-well: #111111;
+  --color-scrim: rgb(13 13 13 / 0.52);
 }
 
 @layer base {
@@ -54,6 +62,58 @@
   ::selection {
     background-color: var(--color-accent);
     color: var(--color-bg);
+  }
+}
+
+@utility tracking-button {
+  letter-spacing: 0.08em;
+}
+
+@utility timecode-ticks {
+  background-image:
+    linear-gradient(to right, var(--color-tick-beat) 0 2px, transparent 2px),
+    linear-gradient(
+      to right,
+      transparent 0 12px,
+      var(--color-tick) 12px 14px,
+      transparent 14px 24px,
+      var(--color-tick) 24px 26px,
+      transparent 26px
+    ),
+    linear-gradient(
+      to right,
+      transparent 0 3px,
+      var(--color-tick) 3px 5px,
+      transparent 5px 6px,
+      var(--color-tick) 6px 8px,
+      transparent 8px 9px,
+      var(--color-tick) 9px 11px,
+      transparent 11px 15px,
+      var(--color-tick) 15px 17px,
+      transparent 17px 18px,
+      var(--color-tick) 18px 20px,
+      transparent 20px 21px,
+      var(--color-tick) 21px 23px,
+      transparent 23px 27px,
+      var(--color-tick) 27px 29px,
+      transparent 29px 30px,
+      var(--color-tick) 30px 32px,
+      transparent 32px 33px,
+      var(--color-tick) 33px 35px,
+      transparent 35px
+    );
+  background-size:
+    36px 16px,
+    36px 10px,
+    36px 5px;
+  background-repeat: repeat-x;
+  background-position: left bottom;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 

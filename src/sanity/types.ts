@@ -175,6 +175,7 @@ export type Client = {
     alt: string;
     _type: "image";
   };
+  logoHeight?: number;
   url?: string;
   order?: number;
 };
@@ -420,597 +421,64 @@ export type AllSanitySchemaTypes =
 
 // Source: src/sanity/queries.ts
 // Variable: homepageQuery
-// Query: {  "page": *[_id == "homePage"][0],  "settings": *[_id == "siteSettings"][0],  "services": *[_type == "service"] | order(order asc),  "projects": *[_type == "project" && featured] | order(order asc)[0...4],  "clients": *[_type == "client"] | order(order asc),  "posts": *[_type == "post"] | order(publishedAt desc)[0...3],  "footage": *[_type == "footageAsset"] | order(featured desc, order asc)[0...4],  "products": *[_type == "product"] | order(order asc)}
+// Query: {  "page": *[_type == "homePage" && _id == "homePage"][0]{    heroEyebrow, heroHeadline, heroHighlight, heroIntro, heroPrimaryCta, heroSecondaryCta,    heroImage, heroVideoUrl, stats,    services, servicesCta,    projects,    clientsHeading,    updates, updatesReadMore,    footage, footageDownload,    merch,    contact, contactIntro, contactFormHeading, contactSubmit, contactImage  },  "services": *[_type == "service"] | order(order asc){ _id, title, tag, timecode, description },  "projects": *[_type == "project" && featured == true] | order(order asc)[0...4]{    _id, title, category, timecode, still, videoUrl  },  "clients": *[_type == "client"] | order(order asc){    _id, name, url, logoHeight,    logo{ ..., "dimensions": asset->metadata.dimensions{ width, height } }  },  "posts": *[_type == "post"] | order(publishedAt desc)[0...3]{    _id, title, "slug": slug.current, category, publishedAt, cover, excerpt  },  "footage": *[_type == "footageAsset"] | order(featured desc, order asc)[0...4]{    _id, title, location, duration, fps, resolution, poster, downloadUrl, featured  },  "products": *[_type == "product"] | order(order asc)[0...2]{    _id, name, garment, price, "slug": slug.current, front, back, available  }}
 export type HomepageQueryResult = {
-  page:
-    | {
-        _id: "homePage";
-        _type: "client";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        name: string;
-        logo: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt: string;
-          _type: "image";
-        };
-        url?: string;
-        order?: number;
-      }
-    | {
-        _id: "homePage";
-        _type: "footageAsset";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title: string;
-        location?: string;
-        duration?: string;
-        fps?: number;
-        resolution?: "4K" | "HD";
-        poster: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt: string;
-          _type: "image";
-        };
-        previewUrl?: string;
-        downloadUrl?: string;
-        licence?: string;
-        featured?: boolean;
-        order?: number;
-      }
-    | {
-        _id: "homePage";
-        _type: "homePage";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        heroEyebrow?: string;
-        heroHeadline: Array<string>;
-        heroHighlight?: string;
-        heroIntro?: string;
-        heroPrimaryCta?: string;
-        heroSecondaryCta?: string;
-        heroImage: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt: string;
-          _type: "image";
-        };
-        heroVideoUrl?: string;
-        stats?: Array<{
-          value?: string;
-          label?: string;
-          _type: "stat";
-          _key: string;
-        }>;
-        services: SectionIntro;
-        servicesCta?: string;
-        projects: SectionIntro;
-        clientsHeading?: string;
-        updates: SectionIntro;
-        updatesReadMore?: string;
-        footage: SectionIntro;
-        footageDownload?: string;
-        merch: SectionIntro;
-        contact: SectionIntro;
-        contactIntro?: string;
-        contactFormHeading?: string;
-        contactSubmit?: string;
-        contactImage: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt: string;
-          _type: "image";
-        };
-      }
-    | {
-        _id: "homePage";
-        _type: "post";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title: string;
-        slug: Slug;
-        category: string;
-        publishedAt: string;
-        cover: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt: string;
-          _type: "image";
-        };
-        excerpt: string;
-        body?: Array<
-          | {
-              children?: Array<{
-                marks?: Array<string>;
-                text?: string;
-                _type: "span";
-                _key: string;
-              }>;
-              style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-              listItem?: "bullet" | "number";
-              markDefs?: Array<{
-                href?: string;
-                _type: "link";
-                _key: string;
-              }>;
-              level?: number;
-              _type: "block";
-              _key: string;
-            }
-          | {
-              asset?: SanityImageAssetReference;
-              media?: unknown;
-              hotspot?: SanityImageHotspot;
-              crop?: SanityImageCrop;
-              _type: "image";
-              _key: string;
-            }
-        >;
-        author?: string;
-      }
-    | {
-        _id: "homePage";
-        _type: "product";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        name: string;
-        slug: Slug;
-        collection?: string;
-        subtitle?: string;
-        garment?: string;
-        tagline?: string;
-        price: number;
-        front: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt: string;
-          _type: "image";
-        };
-        back: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt: string;
-          _type: "image";
-        };
-        variants?: Array<{
-          size?: "L" | "M" | "S" | "XL" | "XS" | "XXL";
-          stock?: number;
-          _type: "variant";
-          _key: string;
-        }>;
-        description?: string;
-        available?: boolean;
-        order?: number;
-      }
-    | {
-        _id: "homePage";
-        _type: "project";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title: string;
-        category: string;
-        timecode?: string;
-        still: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt: string;
-          _type: "image";
-        };
-        videoUrl?: string;
-        featured?: boolean;
-        order?: number;
-      }
-    | {
-        _id: "homePage";
-        _type: "sanity.fileAsset";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        originalFilename?: string;
-        label?: string;
-        title?: string;
-        description?: string;
-        altText?: string;
-        sha1hash: string;
-        extension: string;
-        mimeType: string;
-        size: number;
-        assetId: string;
-        uploadId?: string;
-        path: string;
-        url: string;
-        source?: SanityAssetSourceData;
-      }
-    | {
-        _id: "homePage";
-        _type: "sanity.imageAsset";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        originalFilename?: string;
-        label?: string;
-        title?: string;
-        description?: string;
-        altText?: string;
-        sha1hash: string;
-        extension: string;
-        mimeType: string;
-        size: number;
-        assetId: string;
-        uploadId?: string;
-        path: string;
-        url: string;
-        metadata?: SanityImageMetadata;
-        source?: SanityAssetSourceData;
-      }
-    | {
-        _id: "homePage";
-        _type: "service";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title: string;
-        tag: string;
-        timecode?: string;
-        description: string;
-        order?: number;
-      }
-    | {
-        _id: "homePage";
-        _type: "siteSettings";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        email?: string;
-        phone?: string;
-        address?: string;
-        addressShort?: string;
-        hoursSummary?: string;
-        hours?: Array<{
-          days?: string;
-          time?: string;
-          _type: "hoursRow";
-          _key: string;
-        }>;
-        socials?: Array<{
-          platform?: "Facebook" | "Instagram" | "LinkedIn" | "TikTok" | "X" | "YouTube";
-          url?: string;
-          _type: "social";
-          _key: string;
-        }>;
-        footerBlurb?: string;
-        copyrightName?: string;
-      }
-    | null;
-  settings:
-    | {
-        _id: "siteSettings";
-        _type: "client";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        name: string;
-        logo: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt: string;
-          _type: "image";
-        };
-        url?: string;
-        order?: number;
-      }
-    | {
-        _id: "siteSettings";
-        _type: "footageAsset";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title: string;
-        location?: string;
-        duration?: string;
-        fps?: number;
-        resolution?: "4K" | "HD";
-        poster: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt: string;
-          _type: "image";
-        };
-        previewUrl?: string;
-        downloadUrl?: string;
-        licence?: string;
-        featured?: boolean;
-        order?: number;
-      }
-    | {
-        _id: "siteSettings";
-        _type: "homePage";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        heroEyebrow?: string;
-        heroHeadline: Array<string>;
-        heroHighlight?: string;
-        heroIntro?: string;
-        heroPrimaryCta?: string;
-        heroSecondaryCta?: string;
-        heroImage: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt: string;
-          _type: "image";
-        };
-        heroVideoUrl?: string;
-        stats?: Array<{
-          value?: string;
-          label?: string;
-          _type: "stat";
-          _key: string;
-        }>;
-        services: SectionIntro;
-        servicesCta?: string;
-        projects: SectionIntro;
-        clientsHeading?: string;
-        updates: SectionIntro;
-        updatesReadMore?: string;
-        footage: SectionIntro;
-        footageDownload?: string;
-        merch: SectionIntro;
-        contact: SectionIntro;
-        contactIntro?: string;
-        contactFormHeading?: string;
-        contactSubmit?: string;
-        contactImage: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt: string;
-          _type: "image";
-        };
-      }
-    | {
-        _id: "siteSettings";
-        _type: "post";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title: string;
-        slug: Slug;
-        category: string;
-        publishedAt: string;
-        cover: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt: string;
-          _type: "image";
-        };
-        excerpt: string;
-        body?: Array<
-          | {
-              children?: Array<{
-                marks?: Array<string>;
-                text?: string;
-                _type: "span";
-                _key: string;
-              }>;
-              style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-              listItem?: "bullet" | "number";
-              markDefs?: Array<{
-                href?: string;
-                _type: "link";
-                _key: string;
-              }>;
-              level?: number;
-              _type: "block";
-              _key: string;
-            }
-          | {
-              asset?: SanityImageAssetReference;
-              media?: unknown;
-              hotspot?: SanityImageHotspot;
-              crop?: SanityImageCrop;
-              _type: "image";
-              _key: string;
-            }
-        >;
-        author?: string;
-      }
-    | {
-        _id: "siteSettings";
-        _type: "product";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        name: string;
-        slug: Slug;
-        collection?: string;
-        subtitle?: string;
-        garment?: string;
-        tagline?: string;
-        price: number;
-        front: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt: string;
-          _type: "image";
-        };
-        back: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt: string;
-          _type: "image";
-        };
-        variants?: Array<{
-          size?: "L" | "M" | "S" | "XL" | "XS" | "XXL";
-          stock?: number;
-          _type: "variant";
-          _key: string;
-        }>;
-        description?: string;
-        available?: boolean;
-        order?: number;
-      }
-    | {
-        _id: "siteSettings";
-        _type: "project";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title: string;
-        category: string;
-        timecode?: string;
-        still: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt: string;
-          _type: "image";
-        };
-        videoUrl?: string;
-        featured?: boolean;
-        order?: number;
-      }
-    | {
-        _id: "siteSettings";
-        _type: "sanity.fileAsset";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        originalFilename?: string;
-        label?: string;
-        title?: string;
-        description?: string;
-        altText?: string;
-        sha1hash: string;
-        extension: string;
-        mimeType: string;
-        size: number;
-        assetId: string;
-        uploadId?: string;
-        path: string;
-        url: string;
-        source?: SanityAssetSourceData;
-      }
-    | {
-        _id: "siteSettings";
-        _type: "sanity.imageAsset";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        originalFilename?: string;
-        label?: string;
-        title?: string;
-        description?: string;
-        altText?: string;
-        sha1hash: string;
-        extension: string;
-        mimeType: string;
-        size: number;
-        assetId: string;
-        uploadId?: string;
-        path: string;
-        url: string;
-        metadata?: SanityImageMetadata;
-        source?: SanityAssetSourceData;
-      }
-    | {
-        _id: "siteSettings";
-        _type: "service";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        title: string;
-        tag: string;
-        timecode?: string;
-        description: string;
-        order?: number;
-      }
-    | {
-        _id: "siteSettings";
-        _type: "siteSettings";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        email?: string;
-        phone?: string;
-        address?: string;
-        addressShort?: string;
-        hoursSummary?: string;
-        hours?: Array<{
-          days?: string;
-          time?: string;
-          _type: "hoursRow";
-          _key: string;
-        }>;
-        socials?: Array<{
-          platform?: "Facebook" | "Instagram" | "LinkedIn" | "TikTok" | "X" | "YouTube";
-          url?: string;
-          _type: "social";
-          _key: string;
-        }>;
-        footerBlurb?: string;
-        copyrightName?: string;
-      }
-    | null;
+  page: {
+    heroEyebrow: string | null;
+    heroHeadline: Array<string>;
+    heroHighlight: string | null;
+    heroIntro: string | null;
+    heroPrimaryCta: string | null;
+    heroSecondaryCta: string | null;
+    heroImage: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "image";
+    };
+    heroVideoUrl: string | null;
+    stats: Array<{
+      value?: string;
+      label?: string;
+      _type: "stat";
+      _key: string;
+    }> | null;
+    services: SectionIntro;
+    servicesCta: string | null;
+    projects: SectionIntro;
+    clientsHeading: string | null;
+    updates: SectionIntro;
+    updatesReadMore: string | null;
+    footage: SectionIntro;
+    footageDownload: string | null;
+    merch: SectionIntro;
+    contact: SectionIntro;
+    contactIntro: string | null;
+    contactFormHeading: string | null;
+    contactSubmit: string | null;
+    contactImage: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "image";
+    };
+  } | null;
   services: Array<{
     _id: string;
-    _type: "service";
-    _createdAt: string;
-    _updatedAt: string;
-    _rev: string;
     title: string;
     tag: string;
-    timecode?: string;
+    timecode: string | null;
     description: string;
-    order?: number;
   }>;
   projects: Array<{
     _id: string;
-    _type: "project";
-    _createdAt: string;
-    _updatedAt: string;
-    _rev: string;
     title: string;
     category: string;
-    timecode?: string;
+    timecode: string | null;
     still: {
       asset?: SanityImageAssetReference;
       media?: unknown;
@@ -1019,17 +487,13 @@ export type HomepageQueryResult = {
       alt: string;
       _type: "image";
     };
-    videoUrl?: string;
-    featured?: boolean;
-    order?: number;
+    videoUrl: string | null;
   }>;
   clients: Array<{
     _id: string;
-    _type: "client";
-    _createdAt: string;
-    _updatedAt: string;
-    _rev: string;
     name: string;
+    url: string | null;
+    logoHeight: number | null;
     logo: {
       asset?: SanityImageAssetReference;
       media?: unknown;
@@ -1037,18 +501,16 @@ export type HomepageQueryResult = {
       crop?: SanityImageCrop;
       alt: string;
       _type: "image";
+      dimensions: {
+        width: number;
+        height: number;
+      } | null;
     };
-    url?: string;
-    order?: number;
   }>;
   posts: Array<{
     _id: string;
-    _type: "post";
-    _createdAt: string;
-    _updatedAt: string;
-    _rev: string;
     title: string;
-    slug: Slug;
+    slug: string;
     category: string;
     publishedAt: string;
     cover: {
@@ -1060,47 +522,14 @@ export type HomepageQueryResult = {
       _type: "image";
     };
     excerpt: string;
-    body?: Array<
-      | {
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-          listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }
-      | {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-          _key: string;
-        }
-    >;
-    author?: string;
   }>;
   footage: Array<{
     _id: string;
-    _type: "footageAsset";
-    _createdAt: string;
-    _updatedAt: string;
-    _rev: string;
     title: string;
-    location?: string;
-    duration?: string;
-    fps?: number;
-    resolution?: "4K" | "HD";
+    location: string | null;
+    duration: string | null;
+    fps: number | null;
+    resolution: "4K" | "HD" | null;
     poster: {
       asset?: SanityImageAssetReference;
       media?: unknown;
@@ -1109,25 +538,15 @@ export type HomepageQueryResult = {
       alt: string;
       _type: "image";
     };
-    previewUrl?: string;
-    downloadUrl?: string;
-    licence?: string;
-    featured?: boolean;
-    order?: number;
+    downloadUrl: string | null;
+    featured: boolean | null;
   }>;
   products: Array<{
     _id: string;
-    _type: "product";
-    _createdAt: string;
-    _updatedAt: string;
-    _rev: string;
     name: string;
-    slug: Slug;
-    collection?: string;
-    subtitle?: string;
-    garment?: string;
-    tagline?: string;
+    garment: string | null;
     price: number;
+    slug: string;
     front: {
       asset?: SanityImageAssetReference;
       media?: unknown;
@@ -1144,14 +563,37 @@ export type HomepageQueryResult = {
       alt: string;
       _type: "image";
     };
-    variants?: Array<{
-      size?: "L" | "M" | "S" | "XL" | "XS" | "XXL";
-      stock?: number;
-      _type: "variant";
+    available: boolean | null;
+  }>;
+};
+
+// Source: src/sanity/queries.ts
+// Variable: siteQuery
+// Query: {  "settings": *[_type == "siteSettings" && _id == "siteSettings"][0]{    email, phone, address, addressShort, hoursSummary, hours, socials, footerBlurb, copyrightName  },  "services": *[_type == "service"] | order(order asc){ _id, title }}
+export type SiteQueryResult = {
+  settings: {
+    email: string | null;
+    phone: string | null;
+    address: string | null;
+    addressShort: string | null;
+    hoursSummary: string | null;
+    hours: Array<{
+      days?: string;
+      time?: string;
+      _type: "hoursRow";
       _key: string;
-    }>;
-    description?: string;
-    available?: boolean;
-    order?: number;
+    }> | null;
+    socials: Array<{
+      platform?: "Facebook" | "Instagram" | "LinkedIn" | "TikTok" | "X" | "YouTube";
+      url?: string;
+      _type: "social";
+      _key: string;
+    }> | null;
+    footerBlurb: string | null;
+    copyrightName: string | null;
+  } | null;
+  services: Array<{
+    _id: string;
+    title: string;
   }>;
 };

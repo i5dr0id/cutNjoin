@@ -1,8 +1,12 @@
+const vercelProductionUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+
 export const siteConfig = {
   name: "CUT&JOIN Studios",
   description:
     "Post-production house in Lagos, Nigeria — editing, colour grading, sound design and video production.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (vercelProductionUrl ? `https://${vercelProductionUrl}` : "http://localhost:3000"),
 } as const;
 
 export const sections = {
