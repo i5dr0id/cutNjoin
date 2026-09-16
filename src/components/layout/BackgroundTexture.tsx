@@ -1,13 +1,18 @@
-const TEXTURE_OPACITY = 0.07;
-const TEXTURE_SRC: string | null = null;
+import iconGrid from "@/assets/textures/icon-grid.webp";
+
+const DESIGN_SCALE = 2.632;
+const DESIGN_OPACITY = 0.029;
 
 export function BackgroundTexture() {
-  if (!TEXTURE_SRC) return null;
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 z-0 bg-repeat"
-      style={{ opacity: TEXTURE_OPACITY, backgroundImage: `url(${TEXTURE_SRC})` }}
+      className="pointer-events-none absolute inset-0 -z-10 bg-repeat"
+      style={{
+        backgroundImage: `url(${iconGrid.src})`,
+        backgroundSize: `${Math.round(iconGrid.width * DESIGN_SCALE)}px auto`,
+        opacity: DESIGN_OPACITY,
+      }}
     />
   );
 }

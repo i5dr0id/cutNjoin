@@ -23,27 +23,27 @@ Add `http://localhost:3000` as a CORS origin (with credentials) in the Sanity pr
 
 ## Environment variables
 
-| Variable | Purpose |
-|---|---|
-| `NEXT_PUBLIC_SITE_URL` | Canonical site URL, used for metadata, robots and sitemap |
-| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sanity project ID |
-| `NEXT_PUBLIC_SANITY_DATASET` | Sanity dataset, `production` by default |
-| `NEXT_PUBLIC_SANITY_API_VERSION` | Sanity API version date |
-| `RESEND_API_KEY` | Resend API key for the quote form |
-| `CONTACT_TO_EMAIL` | Inbox that receives quote requests |
-| `CONTACT_FROM_EMAIL` | Sender address for quote request emails |
+| Variable                         | Purpose                                                   |
+| -------------------------------- | --------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`           | Canonical site URL, used for metadata, robots and sitemap |
+| `NEXT_PUBLIC_SANITY_PROJECT_ID`  | Sanity project ID                                         |
+| `NEXT_PUBLIC_SANITY_DATASET`     | Sanity dataset, `production` by default                   |
+| `NEXT_PUBLIC_SANITY_API_VERSION` | Sanity API version date                                   |
+| `RESEND_API_KEY`                 | Resend API key for the quote form                         |
+| `CONTACT_TO_EMAIL`               | Inbox that receives quote requests                        |
+| `CONTACT_FROM_EMAIL`             | Sender address for quote request emails                   |
 
 ## Scripts
 
-| Command | Description |
-|---|---|
-| `pnpm dev` | Start the development server |
-| `pnpm build` | Production build |
-| `pnpm start` | Serve the production build |
-| `pnpm lint` | ESLint |
+| Command          | Description                             |
+| ---------------- | --------------------------------------- |
+| `pnpm dev`       | Start the development server            |
+| `pnpm build`     | Production build                        |
+| `pnpm start`     | Serve the production build              |
+| `pnpm lint`      | ESLint                                  |
 | `pnpm typecheck` | Generate route types and run TypeScript |
-| `pnpm format` | Format with Prettier |
-| `pnpm check` | Typecheck, lint and build |
+| `pnpm format`    | Format with Prettier                    |
+| `pnpm check`     | Typecheck, lint and build               |
 
 ## Project structure
 
@@ -59,10 +59,11 @@ src/
     studio/[[...tool]]/       embedded Sanity Studio
     api/contact/route.ts      quote form endpoint
     robots.ts sitemap.ts not-found.tsx
+    icon.png apple-icon.png favicon.ico
   components/
     primitives/               Container, Section, SectionEyebrow, SectionHeading, Button,
                               TimecodeBar, SectionDivider, SprocketRail
-    layout/                   SiteHeader, MainNav, SiteFooter, Logo, BackgroundTexture
+    layout/                   SiteShell, SiteHeader, MainNav, SiteFooter, Logo, BackgroundTexture
     sections/                 homepage sections and QuoteForm
   lib/
     site.ts                   routes, navigation, section anchors
@@ -72,7 +73,9 @@ src/
   sanity/
     env.ts client.ts image.ts queries.ts structure.ts
     schemaTypes/              siteSettings, service, project, client, post, footageAsset, product
-  assets/brand/               logo
+  assets/
+    brand/                    white logo
+    textures/                 background icon-grid tile
 ```
 
 ## Conventions
