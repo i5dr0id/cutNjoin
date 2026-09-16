@@ -3,7 +3,7 @@
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { apiVersion, dataset, projectId } from "./src/sanity/env";
-import { schemaTypes } from "./src/sanity/schemaTypes";
+import { schemaTypes, singletonTypes } from "./src/sanity/schemaTypes";
 import { structure } from "./src/sanity/structure";
 
 export default defineConfig({
@@ -13,11 +13,11 @@ export default defineConfig({
   dataset,
   schema: {
     types: schemaTypes,
-    templates: (templates) => templates.filter((t) => t.schemaType !== "siteSettings"),
+    templates: (templates) => templates.filter((t) => !singletonTypes.has(t.schemaType)),
   },
   document: {
     actions: (actions, { schemaType }) =>
-      schemaType === "siteSettings"
+      singletonTypes.has(schemaType)
         ? actions.filter((a) => a.action && ["publish", "discardChanges", "restore"].includes(a.action))
         : actions,
   },

@@ -15,6 +15,7 @@ export const product = defineType({
     defineField({ name: "slug", type: "slug", options: { source: "name" }, validation: (r) => r.required() }),
     defineField({ name: "collection", type: "string", initialValue: "The Timeline Collection" }),
     defineField({ name: "subtitle", type: "string", description: "e.g. Digital Editing" }),
+    defineField({ name: "garment", type: "string", initialValue: "T-shirt" }),
     defineField({ name: "tagline", type: "string", description: "e.g. EVERY CUT TELLS A STORY." }),
     defineField({
       name: "price",

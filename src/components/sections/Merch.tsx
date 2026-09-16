@@ -12,6 +12,6 @@ export function Merch() {
           View full store
         </ButtonLink>
       }
-    ></Section>
+    />
   );
 }
