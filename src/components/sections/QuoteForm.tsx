@@ -3,39 +3,57 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence } from "motion/react";
 import * as m from "motion/react-m";
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/primitives";
-import { contactSchema, projectTypes, type ContactInput } from "@/lib/validation/contact";
+import { contactSchema, projectTypes, type ContactField, type ContactInput } from "@/lib/validation/contact";
 
-type Status = "idle" | "sent" | "error";
+type Status = "idle" | "sent" | "rate_limited" | "failed";
+
+type ContactResponse = { ok: boolean; error?: string; fields?: Partial<Record<ContactField, string[]>> };
 
 const control =
   "w-full border border-fg/12 bg-card px-6 text-sm leading-5 text-fg outline-none transition-colors placeholder:text-fg/50 focus:border-fg/40 aria-invalid:border-red-400";
 
-type QuoteFormProps = { heading: string; submitLabel: string };
+type QuoteFormProps = { heading: string; submitLabel: string; fallbackEmail?: string | null };
 
-export function QuoteForm({ heading, submitLabel }: QuoteFormProps) {
+export function QuoteForm({ heading, submitLabel, fallbackEmail }: QuoteFormProps) {
   const [status, setStatus] = useState<Status>("idle");
+  const startedAt = useRef(0);
   const {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<ContactInput>({ resolver: zodResolver(contactSchema) });
 
+  useEffect(() => {
+    startedAt.current = Date.now();
+  }, []);
+
   const onSubmit = async (data: ContactInput) => {
+    setStatus("idle");
     const res = await fetch("/api/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    if (res.ok) {
+      body: JSON.stringify({ ...data, startedAt: startedAt.current }),
+    }).catch(() => null);
+    const result: ContactResponse | null = res ? await res.json().catch(() => null) : null;
+
+    if (res?.ok && result?.ok) {
       reset();
+      startedAt.current = Date.now();
       setStatus("sent");
-    } else {
-      setStatus("error");
+      return;
     }
+    if (result?.fields) {
+      for (const [field, messages] of Object.entries(result.fields)) {
+        if (messages?.[0]) setError(field as ContactField, { message: messages[0] }, { shouldFocus: true });
+      }
+      return;
+    }
+    setStatus(res?.status === 429 ? "rate_limited" : "failed");
   };
 
   return (
@@ -66,7 +84,7 @@ export function QuoteForm({ heading, submitLabel }: QuoteFormProps) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={(event) => handleSubmit(onSubmit)(event)}
             noValidate
             className="flex flex-col gap-4"
           >
@@ -146,9 +164,27 @@ export function QuoteForm({ heading, submitLabel }: QuoteFormProps) {
               {...register("company")}
             />
 
-            {status === "error" && (
+            {status === "rate_limited" && (
               <p role="alert" className="text-sm text-red-400">
-                Something went wrong. Please try again, or email us directly.
+                You&apos;ve sent several briefs in a short time. Please wait a few minutes and try again.
+              </p>
+            )}
+            {status === "failed" && (
+              <p role="alert" className="text-sm text-red-400">
+                We couldn&apos;t send your brief. Please try again
+                {fallbackEmail ? (
+                  <>
+                    {" "}
+                    or email us at{" "}
+                    <a
+                      href={`mailto:${fallbackEmail}`}
+                      className="underline underline-offset-2 hover:text-fg"
+                    >
+                      {fallbackEmail}
+                    </a>
+                  </>
+                ) : null}
+                .
               </p>
             )}
 

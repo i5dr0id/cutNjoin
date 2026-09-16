@@ -78,6 +78,7 @@ export function StartProject({ page, settings }: { page: HomePage; settings: Set
         <LazyQuoteForm
           heading={page.contactFormHeading ?? "Request a Quote"}
           submitLabel={page.contactSubmit ?? "Submit brief"}
+          fallbackEmail={settings?.email}
         />
       </Container>
     </section>
