@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+z.config({ jitless: true });
+
 export const projectTypes = [
   "Digital Editing",
   "Color Grading",

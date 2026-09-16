@@ -31,9 +31,13 @@ export const homepageQuery = defineQuery(`{
   }
 }`);
 
+export const seoQuery = defineQuery(`*[_type == "homePage" && _id == "homePage"][0]{
+  seoTitle, seoDescription, shareImage, heroImage, heroIntro, heroHeadline, heroHighlight
+}`);
+
 export const siteQuery = defineQuery(`{
   "settings": *[_type == "siteSettings" && _id == "siteSettings"][0]{
-    email, phone, address, addressShort, hoursSummary, hours, socials, footerBlurb, copyrightName
+    email, phone, address, addressShort, location, hoursSummary, hours, socials, footerBlurb, copyrightName
   },
   "services": *[_type == "service"] | order(order asc){ _id, title }
 }`);

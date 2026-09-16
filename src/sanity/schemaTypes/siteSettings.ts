@@ -15,6 +15,17 @@ export const siteSettings = defineType({
     defineField({ name: "address", title: "Full address", type: "string", group: "contact" }),
     defineField({ name: "addressShort", title: "Short address", type: "string", group: "contact" }),
     defineField({
+      name: "location",
+      title: "Map location",
+      type: "object",
+      group: "contact",
+      description: "Coordinates for search engines. Copy them from Google Maps.",
+      fields: [
+        defineField({ name: "latitude", type: "number", validation: (r) => r.min(-90).max(90) }),
+        defineField({ name: "longitude", type: "number", validation: (r) => r.min(-180).max(180) }),
+      ],
+    }),
+    defineField({
       name: "hoursSummary",
       title: "Hours summary",
       type: "string",

@@ -10,6 +10,7 @@ const groups = [
   { name: "footage", title: "Free Footage" },
   { name: "merch", title: "Merch" },
   { name: "contact", title: "Contact" },
+  { name: "seo", title: "SEO & sharing" },
 ];
 
 const section = (name: string, group: string) =>
@@ -80,6 +81,29 @@ export const homePage = defineType({
     defineField({ name: "contactFormHeading", title: "Form heading", type: "string", group: "contact" }),
     defineField({ name: "contactSubmit", title: "Submit button", type: "string", group: "contact" }),
     { ...imageWithAlt("contactImage", "Image"), group: "contact" },
+
+    defineField({
+      name: "seoTitle",
+      title: "Search title",
+      type: "string",
+      group: "seo",
+      description: "Shown in search results and browser tabs. Aim for under 60 characters.",
+      validation: (r) => r.max(70),
+    }),
+    defineField({
+      name: "seoDescription",
+      title: "Search description",
+      type: "text",
+      rows: 3,
+      group: "seo",
+      description: "Shown under the title in search results. Aim for 120–160 characters.",
+      validation: (r) => r.max(200),
+    }),
+    {
+      ...imageWithAlt("shareImage", "Share image", false),
+      group: "seo",
+      description: "Background photo for the social share card. Leave empty to use the hero image.",
+    },
   ],
   preview: { prepare: () => ({ title: "Homepage" }) },
 });
