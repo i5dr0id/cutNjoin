@@ -12,6 +12,6 @@ export function Updates() {
           View more
         </ButtonLink>
       }
-    ></Section>
+    />
   );
 }
