@@ -1,40 +1,26 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { imageWithAlt } from "./shared";
 
 export const siteSettings = defineType({
   name: "siteSettings",
   title: "Site settings",
   type: "document",
   groups: [
-    { name: "hero", title: "Hero", default: true },
-    { name: "contact", title: "Contact" },
+    { name: "contact", title: "Contact", default: true },
     { name: "social", title: "Social" },
+    { name: "footer", title: "Footer" },
   ],
   fields: [
-    defineField({ name: "heroEyebrow", type: "string", group: "hero" }),
-    defineField({ name: "heroIntro", type: "text", rows: 3, group: "hero" }),
-    { ...imageWithAlt("heroImage", "Hero image"), group: "hero" },
-    defineField({ name: "heroVideoUrl", title: "Showreel URL", type: "url", group: "hero" }),
-    defineField({
-      name: "stats",
-      type: "array",
-      group: "hero",
-      validation: (r) => r.max(4),
-      of: [
-        defineArrayMember({
-          type: "object",
-          name: "stat",
-          fields: [
-            defineField({ name: "value", type: "string", description: "e.g. 200+" }),
-            defineField({ name: "label", type: "string", description: "e.g. Projects Delivered" }),
-          ],
-          preview: { select: { title: "value", subtitle: "label" } },
-        }),
-      ],
-    }),
-    defineField({ name: "email", type: "string", group: "contact" }),
+    defineField({ name: "email", type: "string", group: "contact", validation: (r) => r.email() }),
     defineField({ name: "phone", type: "string", group: "contact" }),
-    defineField({ name: "address", type: "string", group: "contact" }),
+    defineField({ name: "address", title: "Full address", type: "string", group: "contact" }),
+    defineField({ name: "addressShort", title: "Short address", type: "string", group: "contact" }),
+    defineField({
+      name: "hoursSummary",
+      title: "Hours summary",
+      type: "string",
+      description: "e.g. Mon – Fri: 9am – 7pm WAT",
+      group: "contact",
+    }),
     defineField({
       name: "hours",
       title: "Work hours",
@@ -72,6 +58,8 @@ export const siteSettings = defineType({
         }),
       ],
     }),
+    defineField({ name: "footerBlurb", title: "About text", type: "text", rows: 3, group: "footer" }),
+    defineField({ name: "copyrightName", title: "Copyright name", type: "string", group: "footer" }),
   ],
   preview: { prepare: () => ({ title: "Site settings" }) },
 });

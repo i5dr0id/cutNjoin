@@ -12,6 +12,6 @@ export function Projects() {
           See all projects
         </ButtonLink>
       }
-    ></Section>
+    />
   );
 }

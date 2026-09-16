@@ -1,5 +1,5 @@
 import { defineField, defineType } from "sanity";
-import { imageWithAlt } from "./shared";
+import { imageWithAlt, orderField } from "./shared";
 
 export const footageAsset = defineType({
   name: "footageAsset",
@@ -21,6 +21,7 @@ export const footageAsset = defineType({
     defineField({ name: "downloadUrl", title: "Download URL", type: "url" }),
     defineField({ name: "licence", type: "text", rows: 3 }),
     defineField({ name: "featured", type: "boolean", initialValue: false }),
+    orderField,
   ],
   preview: { select: { title: "title", subtitle: "location", media: "poster" } },
 });
