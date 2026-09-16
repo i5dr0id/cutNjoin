@@ -232,6 +232,10 @@ export type SiteSettings = {
   phone?: string;
   address?: string;
   addressShort?: string;
+  location?: {
+    latitude?: number;
+    longitude?: number;
+  };
   hoursSummary?: string;
   hours?: Array<{
     days?: string;
@@ -290,6 +294,16 @@ export type HomePage = {
   contactFormHeading?: string;
   contactSubmit?: string;
   contactImage: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: "image";
+  };
+  seoTitle?: string;
+  seoDescription?: string;
+  shareImage?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
@@ -568,14 +582,45 @@ export type HomepageQueryResult = {
 };
 
 // Source: src/sanity/queries.ts
+// Variable: seoQuery
+// Query: *[_type == "homePage" && _id == "homePage"][0]{  seoTitle, seoDescription, shareImage, heroImage, heroIntro, heroHeadline, heroHighlight}
+export type SeoQueryResult = {
+  seoTitle: string | null;
+  seoDescription: string | null;
+  shareImage: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: "image";
+  } | null;
+  heroImage: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: "image";
+  };
+  heroIntro: string | null;
+  heroHeadline: Array<string>;
+  heroHighlight: string | null;
+} | null;
+
+// Source: src/sanity/queries.ts
 // Variable: siteQuery
-// Query: {  "settings": *[_type == "siteSettings" && _id == "siteSettings"][0]{    email, phone, address, addressShort, hoursSummary, hours, socials, footerBlurb, copyrightName  },  "services": *[_type == "service"] | order(order asc){ _id, title }}
+// Query: {  "settings": *[_type == "siteSettings" && _id == "siteSettings"][0]{    email, phone, address, addressShort, location, hoursSummary, hours, socials, footerBlurb, copyrightName  },  "services": *[_type == "service"] | order(order asc){ _id, title }}
 export type SiteQueryResult = {
   settings: {
     email: string | null;
     phone: string | null;
     address: string | null;
     addressShort: string | null;
+    location: {
+      latitude?: number;
+      longitude?: number;
+    } | null;
     hoursSummary: string | null;
     hours: Array<{
       days?: string;

@@ -60,6 +60,7 @@ src/
       projects/ footage/ updates/ store/ profile/
     studio/[[...tool]]/       embedded Sanity Studio
     api/contact/route.ts      quote form endpoint
+    (site)/opengraph-image.tsx  generated social share card
     robots.ts sitemap.ts not-found.tsx
     icon.png apple-icon.png favicon.ico
   components/
@@ -75,6 +76,7 @@ src/
     format.ts                 naira, timecode and date formatting
     validation/contact.ts     quote form schema shared by client and server
     contact/                  brief email builder and rate limiter
+    seo/                      LocalBusiness structured data
     env.ts                    server environment variables
   sanity/
     env.ts client.ts image.ts queries.ts fetch.ts structure.ts
@@ -109,4 +111,8 @@ src/
 - **Contact endpoint** (`/api/contact`) rejects cross-origin posts, bodies over 16KB and more than
   5 requests per 10 minutes per IP (in-memory, per server instance). Bots are silently accepted
   when the hidden `company` field is filled or the form is submitted within 3 seconds.
+- **SEO:** homepage title, description and share photo are edited in Sanity (Homepage → SEO & sharing).
+  Placeholder pages are `noindex` and left out of the sitemap until they are built.
+- **Security headers:** `next.config.ts` sets a strict CSP for the site and a relaxed one for `/studio`.
+  Add any new third-party origin there before using it.
 - **No code comments.** Names and structure should make the code self-explanatory.
