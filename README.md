@@ -32,7 +32,7 @@ Add `http://localhost:3000` as a CORS origin (with credentials) in the Sanity pr
 | `NEXT_SANITY_API_WRITE_TOKEN`    | Sanity token with write access, server-only               |
 | `RESEND_API_KEY`                 | Resend API key for the quote form                         |
 | `CONTACT_TO_EMAIL`               | Inbox that receives quote requests                        |
-| `CONTACT_FROM_EMAIL`             | Sender address for quote request emails                   |
+| `CONTACT_FROM_EMAIL`             | Sender address; its domain must be verified in Resend     |
 
 ## Scripts
 
@@ -74,6 +74,7 @@ src/
     site.ts                   routes, navigation, section anchors
     format.ts                 naira, timecode and date formatting
     validation/contact.ts     quote form schema shared by client and server
+    contact/                  brief email builder and rate limiter
     env.ts                    server environment variables
   sanity/
     env.ts client.ts image.ts queries.ts fetch.ts structure.ts
@@ -105,4 +106,7 @@ src/
 - **Text contrast:** readable text uses at least `text-fg/48` (4.5:1 on every dark surface). Purely
   decorative labels (timecodes, frame numbers) use `DecorativeText`, which renders through CSS
   `content` so it stays out of the accessibility tree and contrast audits.
+- **Contact endpoint** (`/api/contact`) rejects cross-origin posts, bodies over 16KB and more than
+  5 requests per 10 minutes per IP (in-memory, per server instance). Bots are silently accepted
+  when the hidden `company` field is filled or the form is submitted within 3 seconds.
 - **No code comments.** Names and structure should make the code self-explanatory.

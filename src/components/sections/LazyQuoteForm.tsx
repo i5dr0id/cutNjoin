@@ -12,7 +12,7 @@ function FormShell() {
   return <div aria-hidden className="h-[768px] border border-fg/7 bg-well" />;
 }
 
-type LazyQuoteFormProps = { heading: string; submitLabel: string };
+type LazyQuoteFormProps = { heading: string; submitLabel: string; fallbackEmail?: string | null };
 
 export function LazyQuoteForm(props: LazyQuoteFormProps) {
   const placeholder = useRef<HTMLDivElement>(null);

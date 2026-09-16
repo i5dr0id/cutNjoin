@@ -1,45 +1,69 @@
 import { Resend } from "resend";
 import { z } from "zod";
+import { briefEmail } from "@/lib/contact/email";
+import { clientIdFrom, isRateLimited } from "@/lib/contact/rateLimit";
 import { serverEnv } from "@/lib/env";
 import { contactSchema } from "@/lib/validation/contact";
 
+const MAX_BODY_BYTES = 16 * 1024;
+const MIN_FILL_TIME_MS = 3000;
+
+const json = (body: object, status = 200) => Response.json(body, { status });
+
+function isSameOrigin(request: Request) {
+  const origin = request.headers.get("origin");
+  if (!origin) return true;
+  const host = request.headers.get("x-forwarded-host") ?? request.headers.get("host");
+  return new URL(origin).host === host;
+}
+
 export async function POST(request: Request) {
-  const body: unknown = await request.json().catch(() => null);
-  const parsed = contactSchema.safeParse(body);
-  if (!parsed.success) {
-    return Response.json({ ok: false, errors: z.flattenError(parsed.error).fieldErrors }, { status: 400 });
+  if (!isSameOrigin(request)) return json({ ok: false, error: "forbidden" }, 403);
+
+  const declaredLength = Number(request.headers.get("content-length") ?? 0);
+  if (declaredLength > MAX_BODY_BYTES) return json({ ok: false, error: "too_large" }, 413);
+
+  if (isRateLimited(clientIdFrom(request))) return json({ ok: false, error: "rate_limited" }, 429);
+
+  const raw = await request.text();
+  if (raw.length > MAX_BODY_BYTES) return json({ ok: false, error: "too_large" }, 413);
+
+  let body: unknown;
+  try {
+    body = JSON.parse(raw);
+  } catch {
+    return json({ ok: false, error: "invalid" }, 400);
   }
 
-  const { company: honeypot, ...data } = parsed.data;
-  const isSpamBot = Boolean(honeypot);
-  if (isSpamBot) return Response.json({ ok: true });
+  const parsed = contactSchema.safeParse(body);
+  if (!parsed.success) {
+    return json({ ok: false, error: "invalid", fields: z.flattenError(parsed.error).fieldErrors }, 400);
+  }
+
+  const { company: honeypot, startedAt, ...brief } = parsed.data;
+  const filledTooFast = startedAt !== undefined && Date.now() - startedAt < MIN_FILL_TIME_MS;
+  if (honeypot || filledTooFast) return json({ ok: true });
 
   const apiKey = serverEnv.resendApiKey();
   const to = serverEnv.contactTo();
   if (!apiKey || !to) {
     console.error("[contact] RESEND_API_KEY or CONTACT_TO_EMAIL is not set");
-    return Response.json({ ok: false }, { status: 503 });
+    return json({ ok: false, error: "unavailable" }, 503);
   }
 
-  const resend = new Resend(apiKey);
-  const { error } = await resend.emails.send({
+  const { subject, text, html } = briefEmail(brief);
+  const { error } = await new Resend(apiKey).emails.send({
     from: serverEnv.contactFrom(),
     to,
-    replyTo: data.email,
-    subject: `New brief: ${data.projectType} — ${data.fullName}`,
-    text: [
-      `Name: ${data.fullName}`,
-      `Phone: ${data.phone}`,
-      `Email: ${data.email}`,
-      `Project type: ${data.projectType}`,
-      "",
-      data.description,
-    ].join("\n"),
+    replyTo: brief.email,
+    subject,
+    text,
+    html,
   });
 
   if (error) {
-    console.error("[contact] Resend error", error);
-    return Response.json({ ok: false }, { status: 502 });
+    console.error("[contact] Resend error", error.name, error.message);
+    return json({ ok: false, error: "delivery_failed" }, 502);
   }
-  return Response.json({ ok: true });
+  return json({ ok: true });
 }
