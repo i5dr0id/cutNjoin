@@ -1,14 +1,20 @@
-import { Container } from "@/components/primitives";
+import { getSite } from "@/sanity/fetch";
+import { HeaderFrame } from "./HeaderFrame";
 import { Logo } from "./Logo";
 import { MainNav } from "./MainNav";
+import { SocialLinks } from "./SocialLinks";
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const { settings } = await getSite();
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-bg/80 backdrop-blur-md">
-      <Container className="flex h-20 items-center justify-between gap-8">
-        <Logo preload />
-        <MainNav />
-      </Container>
-    </header>
+    <HeaderFrame>
+      <div className="mx-auto flex h-[100px] max-w-site items-start justify-between px-6 lg:px-12">
+        <div className="pt-[26px]">
+          <Logo preload />
+        </div>
+        <MainNav className="hidden pt-[21px] lg:block" />
+        <SocialLinks socials={settings?.socials ?? null} className="hidden pt-[23px] lg:flex" />
+      </div>
+    </HeaderFrame>
   );
 }

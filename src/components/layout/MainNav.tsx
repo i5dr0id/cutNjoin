@@ -7,12 +7,12 @@ import { useScrollSpy } from "./useScrollSpy";
 
 const sectionIds = mainNav.flatMap((item) => (item.section ? [item.section] : []));
 
-export function MainNav() {
+export function MainNav({ className = "" }: { className?: string }) {
   const pathname = usePathname();
   const activeSection = useScrollSpy(sectionIds);
 
   return (
-    <nav aria-label="Primary" className="hidden lg:block">
+    <nav aria-label="Primary" className={className}>
       <ul className="flex items-center gap-8">
         {mainNav.map((item) => {
           const active = item.section
@@ -23,8 +23,8 @@ export function MainNav() {
               <Link
                 href={item.href}
                 aria-current={active ? "location" : undefined}
-                className={`text-sm font-medium tracking-widest uppercase transition-colors duration-150 ${
-                  active ? "text-accent" : "text-fg/60 hover:text-fg"
+                className={`relative block text-sm leading-5 font-medium tracking-[0.35px] transition-colors duration-150 after:absolute after:inset-x-0 after:top-[23px] after:h-px after:bg-accent after:transition-opacity ${
+                  active ? "text-accent after:opacity-100" : "text-fg/60 after:opacity-0 hover:text-fg"
                 }`}
               >
                 {item.label}

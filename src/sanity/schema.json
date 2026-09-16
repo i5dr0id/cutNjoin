@@ -1072,6 +1072,13 @@
         },
         "optional": false
       },
+      "logoHeight": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
+      },
       "url": {
         "type": "objectAttribute",
         "value": {

@@ -1,9 +1,14 @@
 export function SectionEyebrow({ label, pulse = false }: { label: string; pulse?: boolean }) {
   return (
-    <div className="mb-4 flex items-center gap-3">
-      <span aria-hidden className="h-px w-6 bg-fg/15" />
-      {pulse && <span aria-hidden className="size-[7px] shrink-0 rounded-full bg-accent" />}
-      <span className="eyebrow text-fg/35">{label}</span>
+    <div className="flex items-center gap-3">
+      <span aria-hidden className="h-px w-6 bg-fg/16" />
+      {pulse && (
+        <span
+          aria-hidden
+          className="size-[7px] shrink-0 rounded-full bg-accent shadow-[0_0_6px_rgb(61_220_79/0.5)]"
+        />
+      )}
+      <span className="eyebrow leading-[15px] text-fg/33">{label}</span>
     </div>
   );
 }
