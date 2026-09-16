@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0d0d0d;
+  --color-fg: #f2f2f2;
+  --color-accent: #3ddc4f;
+  --color-card: #161616;
+  --color-card-2: #111111;
+  --color-strip: #050505;
+  --color-strip-2: #060606;
+  --color-strip-3: #080808;
+  --color-strip-4: #090909;
+
+  --color-fg-muted: rgb(242 242 242 / 0.6);
+  --color-fg-subtle: rgb(242 242 242 / 0.4);
+  --color-fg-faint: rgb(242 242 242 / 0.1);
+  --color-line: rgb(242 242 242 / 0.1);
+
+  --color-tick: rgb(242 242 242 / 0.1);
+  --color-tick-beat: rgb(61 220 79 / 0.16);
+
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+  --text-eyebrow: 10px;
+  --text-eyebrow--letter-spacing: 0.3em;
+  --text-heading: 52px;
+  --text-heading--line-height: 1;
+  --text-heading--letter-spacing: -0.025em;
+
+  --breakpoint-3xl: 1950px;
+  --container-site: 1950px;
+
+  --radius-*: initial;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+  }
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-eyebrow);
+  letter-spacing: var(--text-eyebrow--letter-spacing);
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
