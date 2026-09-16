@@ -28,8 +28,13 @@ function DownloadLink({ item, label }: { item: Footage; label: string }) {
 
 function FeaturedFootage({ item, downloadLabel }: { item: Footage; downloadLabel: string }) {
   return (
-    <article className="relative h-[420px] overflow-hidden bg-well lg:h-[808px]">
-      <SanityImage image={item.poster} fill sizes="100vw" className="object-cover" />
+    <article className="group relative h-[420px] overflow-hidden bg-well lg:h-[808px]">
+      <SanityImage
+        image={item.poster}
+        fill
+        sizes="100vw"
+        className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+      />
       {item.location && (
         <p className="absolute top-6 left-6 flex items-center gap-1.5 border border-fg/10 bg-bg/75 px-3 py-1.5 font-mono text-xs leading-4 tracking-[1.2px] text-fg/80 backdrop-blur-[8px]">
           <MapPin aria-hidden className="size-[11px]" />
@@ -53,12 +58,12 @@ function FeaturedFootage({ item, downloadLabel }: { item: Footage; downloadLabel
 
 function FootageTile({ item }: { item: Footage }) {
   return (
-    <article className="relative h-[260px] overflow-hidden bg-well lg:h-[348px]">
+    <article className="group relative h-[260px] overflow-hidden bg-well lg:h-[348px]">
       <SanityImage
         image={item.poster}
         fill
         sizes="(min-width: 1024px) 33vw, 100vw"
-        className="object-cover"
+        className="object-cover transition-transform duration-500 group-hover:scale-105"
       />
       <FavouriteButton id={item._id} title={item.title} size="small" className="absolute top-3 right-3" />
       <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-4">

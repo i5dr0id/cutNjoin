@@ -1,7 +1,6 @@
 const TICK_PATTERN_WIDTH = 36;
 const PATTERN_REPEATS_PER_COPY = 80;
 const REEL_COPIES = 2;
-const REEL_DURATION = "16s";
 const reelWidth = TICK_PATTERN_WIDTH * PATTERN_REPEATS_PER_COPY * REEL_COPIES;
 
 export function TimecodeBar({ className = "" }: { className?: string }) {
@@ -12,8 +11,7 @@ export function TimecodeBar({ className = "" }: { className?: string }) {
       </span>
       <div className="relative h-4 flex-1 overflow-hidden">
         <div
-          data-reel={REEL_DURATION}
-          className="absolute inset-y-0 left-0 timecode-ticks will-change-transform"
+          className="absolute inset-y-0 left-0 animate-reel-timecode timecode-ticks will-change-transform"
           style={{ width: reelWidth }}
         />
       </div>

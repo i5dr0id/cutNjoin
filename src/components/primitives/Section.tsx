@@ -37,7 +37,7 @@ export function Section({
     >
       {divider && <SectionDivider className="absolute inset-x-0 top-10" />}
       <Container>
-        <header className="flex items-end justify-between gap-8">
+        <header className="flex flex-wrap items-end justify-between gap-x-8 gap-y-6">
           <div>
             <SectionEyebrow label={eyebrow} />
             <SectionHeading id={headingId}>{heading}</SectionHeading>

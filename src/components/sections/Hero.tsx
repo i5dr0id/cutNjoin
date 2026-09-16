@@ -1,4 +1,11 @@
-import { ButtonLink, SanityImage, SectionEyebrow, TimecodeBar, PlayButton } from "@/components/primitives";
+import {
+  ButtonLink,
+  PlayButton,
+  PlayRing,
+  SanityImage,
+  SectionEyebrow,
+  TimecodeBar,
+} from "@/components/primitives";
 import { sections } from "@/lib/site";
 import type { HomePage } from "./types";
 
@@ -73,7 +80,8 @@ export function Hero({ page }: { page: HomePage }) {
           )}
         </div>
 
-        <div className="absolute top-[506px] left-[46.3%] hidden size-[97px] rounded-full border-[1.87px] border-fg/35 opacity-31 lg:grid lg:place-items-center">
+        <div className="absolute top-[518px] left-[46.9%] hidden lg:block">
+          <PlayRing />
           <PlayButton href={page.heroVideoUrl} label="Play showreel" />
         </div>
 

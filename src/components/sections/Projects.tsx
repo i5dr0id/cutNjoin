@@ -16,9 +16,14 @@ const frameRange = (index: number) => {
 
 function ProjectTile({ project }: { project: Project }) {
   return (
-    <article className="flex w-[480px] shrink-0 snap-start flex-col border-r-2 border-fg/12 bg-bg last:border-r-0">
+    <article className="group flex w-[480px] shrink-0 snap-start flex-col border-r-2 border-fg/12 bg-bg last:border-r-0">
       <div className="relative h-[299px] overflow-hidden">
-        <SanityImage image={project.still} fill sizes="480px" className="object-cover" />
+        <SanityImage
+          image={project.still}
+          fill
+          sizes="480px"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+        />
         <PlayButton
           href={project.videoUrl}
           label={`Play ${project.title}`}

@@ -67,7 +67,7 @@ src/
     primitives/               Container, Section, SectionEyebrow, SectionHeading, Button,
                               TimecodeBar, SectionDivider, SprocketRail
     layout/                   SiteShell, SiteHeader, HeaderFrame, MainNav, SocialLinks, SiteFooter,
-                              Logo, BackgroundTexture
+                              Logo, BackgroundTexture, MobileNav, MotionProvider
     sections/                 Hero, Services, Projects, Clients, Updates, FreeFootage, Merch,
                               StartProject, QuoteForm, ProjectsCarousel, FavouriteButton
   lib/
@@ -96,8 +96,10 @@ src/
 - **No rounded corners.**
 - **Timecodes** (`HH:MM:SS:FF`) are prefixed `TC`. Never on stats, prices, dates or durations.
 - **Server components by default**; `"use client"` only where there is interaction.
-- **Looping animations** (timecode ticks, sprocket rail, hero pulse and play ring) are pure CSS
-  keyframes. The tick bar runs at 16s and the sprocket rail at 14s so they never sync up.
+- **Looping animations** are pure CSS keyframes defined in `globals.css` (`animate-reel-timecode` 16s,
+  `animate-reel-sprocket` 14s, `animate-pulse-dot`, `animate-play-ring`). The two reel speeds differ on
+  purpose so they never sync up. Motion is only for interaction: the mobile menu and the quote form.
+- **Reduced motion** is honoured globally in CSS and for Motion through `MotionProvider`.
 - **Images:** Sanity images use `urlFor()` with `Image` from `next-sanity/image`; local images use
   `next/image`.
 - **No code comments.** Names and structure should make the code self-explanatory.

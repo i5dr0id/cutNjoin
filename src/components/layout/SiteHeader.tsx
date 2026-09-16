@@ -2,6 +2,7 @@ import { getSite } from "@/sanity/fetch";
 import { HeaderFrame } from "./HeaderFrame";
 import { Logo } from "./Logo";
 import { MainNav } from "./MainNav";
+import { MobileNav } from "./MobileNav";
 import { SocialLinks } from "./SocialLinks";
 
 export async function SiteHeader() {
@@ -14,6 +15,7 @@ export async function SiteHeader() {
         </div>
         <MainNav className="hidden pt-[21px] lg:block" />
         <SocialLinks socials={settings?.socials ?? null} className="hidden pt-[23px] lg:flex" />
+        <MobileNav socials={<SocialLinks socials={settings?.socials ?? null} />} />
       </div>
     </HeaderFrame>
   );
