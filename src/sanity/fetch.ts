@@ -2,7 +2,13 @@ import "server-only";
 import { cache } from "react";
 import { client } from "./client";
 import {
+  checkoutQuery,
   footageLibraryQuery,
+  productQuery,
+  productSlugsQuery,
+  returnsQuery,
+  storeQuery,
+  storeStatusQuery,
   footageTitleQuery,
   homepageQuery,
   licenceQuery,
@@ -10,7 +16,13 @@ import {
   siteQuery,
 } from "./queries";
 import type {
+  CheckoutQueryResult,
   FootageLibraryQueryResult,
+  ProductQueryResult,
+  ProductSlugsQueryResult,
+  ReturnsQueryResult,
+  StoreQueryResult,
+  StoreStatusQueryResult,
   FootageTitleQueryResult,
   HomepageQueryResult,
   LicenceQueryResult,
@@ -65,3 +77,22 @@ export const getFootageLibrary = cache((type: FootageFilter, query: string, star
     { next: { revalidate: REVALIDATE_SECONDS, tags: ["footage"] } },
   ),
 );
+
+const storeCache = { next: { revalidate: REVALIDATE_SECONDS, tags: ["store"] } };
+
+export const getStoreStatus = cache(() =>
+  client.fetch<StoreStatusQueryResult>(storeStatusQuery, {}, storeCache),
+);
+
+export const getStore = cache(() => client.fetch<StoreQueryResult>(storeQuery, {}, storeCache));
+
+export const getProduct = cache((slug: string) =>
+  client.fetch<ProductQueryResult>(productQuery, { slug }, storeCache),
+);
+
+export const getProductSlugs = () => client.fetch<ProductSlugsQueryResult>(productSlugsQuery, {}, storeCache);
+
+export const getCheckoutSettings = () =>
+  client.fetch<CheckoutQueryResult>(checkoutQuery, {}, { cache: "no-store" });
+
+export const getReturns = cache(() => client.fetch<ReturnsQueryResult>(returnsQuery, {}, storeCache));

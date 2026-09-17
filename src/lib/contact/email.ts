@@ -1,15 +1,8 @@
 import "server-only";
+import { escapeHtml } from "@/lib/html";
 import type { ContactInput } from "@/lib/validation/contact";
 
 type Brief = Omit<ContactInput, "company" | "startedAt">;
-
-const escapeHtml = (value: string) =>
-  value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
 
 const stripLineBreaks = (value: string) => value.replace(/[\r\n]+/g, " ");
 

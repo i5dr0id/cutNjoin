@@ -2,12 +2,12 @@ import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { SanityImage, Section } from "@/components/primitives";
 import { formatNaira } from "@/lib/format";
-import { routes, sections } from "@/lib/site";
+import { productPath, routes, sections } from "@/lib/site";
 import type { HomePage, Product } from "./types";
 
 function MerchTile({ product, side }: { product: Product; side: "front" | "back" }) {
   return (
-    <Link href={routes.store} className="group flex flex-col">
+    <Link href={product.slug ? productPath(product.slug) : routes.store} className="group flex flex-col">
       <div className="relative aspect-[453/567] overflow-hidden bg-card">
         <SanityImage
           image={product[side]}

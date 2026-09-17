@@ -31,7 +31,12 @@ export const routes = {
   profile: "/profile",
   studio: "/studio",
   footageLicence: "/footage/licence",
+  checkout: "/store/checkout",
+  checkoutComplete: "/store/checkout/complete",
+  returns: "/store/returns",
 } as const;
+
+export const productPath = (slug: string) => `${routes.store}/${slug}`;
 
 export type NavItem = { label: string; href: string; section?: SectionId; activeOn?: string };
 
@@ -40,7 +45,7 @@ export const mainNav: NavItem[] = [
   { label: "Projects", href: `/#${sections.projects}`, section: sections.projects },
   { label: "Aerials", href: `/#${sections.footage}`, section: sections.footage, activeOn: "/footage" },
   { label: "Updates", href: `/#${sections.updates}`, section: sections.updates },
-  { label: "Store", href: `/#${sections.merch}`, section: sections.merch },
+  { label: "Store", href: `/#${sections.merch}`, section: sections.merch, activeOn: "/store" },
   { label: "Profile", href: routes.profile },
 ];
 
