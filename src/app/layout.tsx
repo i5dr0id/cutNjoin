@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import { MotionProvider } from "@/components/layout/MotionProvider";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
@@ -29,9 +28,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={poppins.variable}>
-      <body className="min-h-dvh">
-        <MotionProvider>{children}</MotionProvider>
-      </body>
+      <body className="min-h-dvh">{children}</body>
     </html>
   );
 }
