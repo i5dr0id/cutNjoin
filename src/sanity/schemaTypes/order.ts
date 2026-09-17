@@ -17,7 +17,7 @@ export const order = defineType({
   title: "Order",
   type: "document",
   groups: [
-    { name: "status", title: "Status", default: true },
+    { name: "status", title: "Status" },
     { name: "details", title: "Details" },
   ],
   fields: [
