@@ -44,21 +44,28 @@
   --animate-reel-sprocket: reel-scroll 14s linear infinite;
   --animate-pulse-dot: pulse-dot 1.8s ease-in-out infinite;
   --animate-play-ring: play-ring 2.4s ease-out infinite;
-  --animate-phrase-pass: phrase-pass 1.2s cubic-bezier(0.65, 0, 0.35, 1) both;
   --animate-phrase-land: phrase-land 0.3s cubic-bezier(0.65, 0, 0.35, 1) both;
   --animate-headline-settle: headline-settle 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-vanish: vanish 1ms step-end both;
+  --animate-soft-rise: soft-rise 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
 
-  @keyframes phrase-pass {
-    0% {
-      transform: translateY(110%);
+  @keyframes soft-rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+      filter: blur(4px);
     }
-    25%,
-    75% {
+    to {
+      opacity: 1;
       transform: translateY(0);
+      filter: blur(0);
     }
-    100% {
-      transform: translateY(-110%);
+  }
+  --animate-caret-blink: caret-blink 1s steps(1) infinite;
+
+  @keyframes caret-blink {
+    50% {
+      opacity: 0;
     }
   }
 
@@ -84,7 +91,7 @@
 
   @keyframes vanish {
     to {
-      visibility: hidden;
+      opacity: 0;
     }
   }
 
@@ -118,6 +125,13 @@
       opacity: 0;
       transform: scale(1.85);
     }
+  }
+}
+
+@keyframes frame-on {
+  from,
+  to {
+    visibility: visible;
   }
 }
 

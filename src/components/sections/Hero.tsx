@@ -8,93 +8,11 @@ import {
   TimecodeBar,
 } from "@/components/primitives";
 import { sections } from "@/lib/site";
+import { HeroHeadline, headlineRevealEndMs } from "./HeroHeadline";
 import type { HomePage } from "./types";
 
-const INTRO_START_MS = 250;
-const PHRASE_STRIDE_MS = 900;
-const FINAL_HOLD_MS = 700;
-const SETTLE_STAGGER_MS = 90;
-
-function Highlighted({ line, highlight }: { line: string; highlight: string | null }) {
-  if (!highlight || !line.includes(highlight)) return line;
-  const [before, after] = line.split(highlight);
-  return (
-    <>
-      {before}
-      <span className="text-accent">{highlight}</span>
-      {after}
-    </>
-  );
-}
-
-function DecorativePhrase({ phrase, highlight }: { phrase: string; highlight: string | null }) {
-  if (!highlight || !phrase.includes(highlight))
-    return <DecorativeText text={phrase} className="whitespace-pre" />;
-  const [before, after] = phrase.split(highlight);
-  return (
-    <>
-      {before && <DecorativeText text={before} className="whitespace-pre" />}
-      <DecorativeText text={highlight} className="whitespace-pre text-accent" />
-      {after && <DecorativeText text={after} className="whitespace-pre" />}
-    </>
-  );
-}
-
-function Headline({ lines, highlight }: { lines: string[]; highlight: string | null }) {
-  const phrases = lines.slice(0, -1);
-  const slotRow = phrases.length;
-  const settleAt = INTRO_START_MS + (phrases.length - 1) * PHRASE_STRIDE_MS + FINAL_HOLD_MS;
-  const delay = (ms: number) => ({ animationDelay: `${ms}ms` });
-
-  return (
-    <h1
-      id="hero-heading"
-      className="grid pt-4 text-[52px] leading-none font-bold tracking-[-0.025em] uppercase md:text-display"
-    >
-      {lines.map((line, index) => {
-        const isLast = index === lines.length - 1;
-        const isSlotLine = index === slotRow - 1;
-        return (
-          <span
-            key={line}
-            className={`block ${isLast ? "" : "animate-headline-settle"}`}
-            style={{
-              gridRow: index + 1,
-              gridColumn: 1,
-              ...(isLast
-                ? {}
-                : isSlotLine
-                  ? { ...delay(settleAt), animationDuration: "1ms" }
-                  : delay(settleAt + index * SETTLE_STAGGER_MS)),
-            }}
-          >
-            <Highlighted line={line} highlight={highlight} />
-          </span>
-        );
-      })}
-      {phrases.length > 0 && (
-        <span
-          aria-hidden
-          className="-mt-[0.12em] grid animate-vanish overflow-hidden pt-[0.12em]"
-          style={{ gridRow: slotRow, gridColumn: 1, ...delay(settleAt) }}
-        >
-          {phrases.map((phrase, index) => {
-            const isFinal = index === phrases.length - 1;
-            return (
-              <span
-                key={phrase}
-                className={`col-start-1 row-start-1 block ${isFinal ? "animate-phrase-land" : "animate-phrase-pass"}`}
-                style={delay(INTRO_START_MS + index * PHRASE_STRIDE_MS)}
-              >
-                <DecorativePhrase phrase={phrase} highlight={highlight} />
-              </span>
-            );
-          })}
-        </span>
-      )}
-    </h1>
-  );
-}
+const INTRO_TEXT_GAP_MS = 150;
+const INTRO_BUTTONS_GAP_MS = 350;
 
 function FrameCounter() {
   return (
@@ -110,6 +28,7 @@ function FrameCounter() {
 }
 
 export function Hero({ page }: { page: HomePage }) {
+  const revealEnd = headlineRevealEndMs(page.heroHeadline);
   return (
     <section id={sections.hero} aria-labelledby="hero-heading" className="relative pb-[165px]">
       <div className="absolute inset-x-0 top-0 -z-10 h-[1121px] overflow-hidden bg-card">
@@ -123,11 +42,19 @@ export function Hero({ page }: { page: HomePage }) {
 
         <div className="relative mt-[88px]">
           <SectionEyebrow label={page.heroEyebrow ?? ""} pulse />
-          <Headline lines={page.heroHeadline} highlight={page.heroHighlight} />
+          <HeroHeadline lines={page.heroHeadline} highlight={page.heroHighlight} />
           {page.heroIntro && (
-            <p className="max-w-[576px] pt-8 text-lg leading-[28.67px] text-fg/66">{page.heroIntro}</p>
+            <p
+              className="max-w-[576px] animate-soft-rise pt-8 text-lg leading-[28.67px] text-fg/66"
+              style={{ animationDelay: `${revealEnd + INTRO_TEXT_GAP_MS}ms` }}
+            >
+              {page.heroIntro}
+            </p>
           )}
-          <div className="flex flex-wrap gap-4 pt-8">
+          <div
+            className="flex animate-soft-rise flex-wrap gap-4 pt-8"
+            style={{ animationDelay: `${revealEnd + INTRO_BUTTONS_GAP_MS}ms` }}
+          >
             <ButtonLink href={`#${sections.contact}`}>{page.heroPrimaryCta}</ButtonLink>
             <ButtonLink href={`#${sections.projects}`} variant="ghost">
               {page.heroSecondaryCta}
