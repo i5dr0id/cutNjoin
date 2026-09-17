@@ -79,9 +79,16 @@ export async function SiteFooter() {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <ul className="flex flex-wrap gap-8">
             {settings?.address && (
-              <li className={barItem}>
-                <MapPin aria-hidden className="size-[11px]" />
-                {settings.address}
+              <li>
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings.address)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`${barItem} hover:text-fg/80`}
+                >
+                  <MapPin aria-hidden className="size-[11px]" />
+                  {settings.address}
+                </a>
               </li>
             )}
             {settings?.email && (
