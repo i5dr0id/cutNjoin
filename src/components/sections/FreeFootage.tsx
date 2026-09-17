@@ -12,7 +12,7 @@ type DownloadProps = { licenceSummary: string | null; downloadLabel: string };
 
 function FeaturedFootage({ item, licenceSummary, downloadLabel }: { item: Footage } & DownloadProps) {
   return (
-    <article className="group relative h-[420px] overflow-hidden bg-well lg:h-[808px]">
+    <article className="group relative h-[480px] overflow-hidden bg-well sm:h-[520px] lg:h-[808px]">
       <FootagePreview src={item.previewUrl}>
         <SanityImage
           image={item.poster}
@@ -28,7 +28,7 @@ function FeaturedFootage({ item, licenceSummary, downloadLabel }: { item: Footag
         </p>
       )}
       <FavouriteButton id={item._id} title={item.title} size="large" className="absolute top-4 right-4" />
-      <div className="absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-between gap-4 p-6">
+      <div className="absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-between gap-4 bg-linear-to-t from-bg/90 via-bg/60 to-transparent p-6 pt-16 lg:bg-none lg:pt-6">
         <div className="flex flex-col gap-1">
           <h3 className="text-lg leading-[27px] font-semibold">{item.title}</h3>
           <p className="flex gap-3 font-mono text-[11px] leading-[16.5px] tracking-[1.1px]">
@@ -61,7 +61,7 @@ function FootageTile({ item, licenceSummary, downloadLabel }: { item: Footage } 
         />
       </FootagePreview>
       <FavouriteButton id={item._id} title={item.title} size="small" className="absolute top-3 right-3" />
-      <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-4">
+      <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 bg-linear-to-t from-bg/85 to-transparent p-4 pt-12 lg:bg-none lg:pt-4">
         <div>
           <h3 className="text-xs leading-[16.5px] font-medium text-fg/80">{item.title}</h3>
           <p className="pt-2 font-mono text-[10px] leading-[15px] tracking-[1px] text-fg/52">
@@ -97,7 +97,7 @@ export function FreeFootage({ page, footage, licenceSummary }: FreeFootageProps)
       {featured && (
         <FeaturedFootage item={featured} licenceSummary={licenceSummary} downloadLabel={downloadLabel} />
       )}
-      <div className="grid gap-4 pt-4 pb-12 lg:grid-cols-3">
+      <div className="grid gap-4 pt-4 pb-12 sm:grid-cols-2 lg:grid-cols-3">
         {tiles.map((item) => (
           <FootageTile
             key={item._id}
