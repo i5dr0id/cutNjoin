@@ -5,6 +5,7 @@ import { BackgroundTexture } from "./BackgroundTexture";
 import { MotionProvider } from "./MotionProvider";
 import { SiteFooter } from "./SiteFooter";
 import { SiteHeader } from "./SiteHeader";
+import { SmoothScroll } from "./SmoothScroll";
 
 export async function SiteShell({ children }: { children: ReactNode }) {
   const store = await getStoreStatus();
@@ -17,6 +18,7 @@ export async function SiteShell({ children }: { children: ReactNode }) {
         >
           Skip to content
         </a>
+        <SmoothScroll />
         <BackgroundTexture />
         <SiteHeader />
         <main id="main" tabIndex={-1} className="flex-1 outline-none">

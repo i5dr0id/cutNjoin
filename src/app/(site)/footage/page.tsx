@@ -66,7 +66,10 @@ export default async function FootagePage({ searchParams }: FootagePageProps) {
 
       <nav aria-label="Footage type" className="border-b border-line-soft">
         <Container>
-          <ul className="no-scrollbar flex gap-x-8 overflow-x-auto py-6 sm:justify-center sm:gap-x-12 lg:gap-x-24">
+          <ul
+            data-lenis-prevent
+            className="no-scrollbar flex gap-x-8 overflow-x-auto py-6 sm:justify-center sm:gap-x-12 lg:gap-x-24"
+          >
             {footageTypeOptions.map((option) => {
               const active = option.value === type;
               return (
