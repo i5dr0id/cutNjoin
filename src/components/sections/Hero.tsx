@@ -1,18 +1,20 @@
 import {
   ButtonLink,
   DecorativeText,
-  PlayButton,
-  PlayRing,
   SanityImage,
   SectionEyebrow,
   TimecodeBar,
 } from "@/components/primitives";
+import { heroVideoSource } from "@/lib/heroVideo";
 import { sections } from "@/lib/site";
+import { urlFor } from "@/sanity/image";
+import { HeroAmbientVideo } from "./HeroAmbientVideo";
 import { HeroHeadline, headlineRevealEndMs } from "./HeroHeadline";
 import type { HomePage } from "./types";
 
 const INTRO_TEXT_GAP_MS = 0;
 const INTRO_BUTTONS_GAP_MS = 120;
+const VIDEO_START_GAP_MS = 1200;
 
 function FrameCounter() {
   return (
@@ -29,10 +31,16 @@ function FrameCounter() {
 
 export function Hero({ page }: { page: HomePage }) {
   const revealEnd = headlineRevealEndMs(page.heroHeadline);
+  const source = heroVideoSource(page);
   return (
     <section id={sections.hero} aria-labelledby="hero-heading" className="relative pb-[165px]">
       <div className="absolute inset-x-0 top-0 -z-10 h-[1121px] overflow-hidden bg-card">
-        <SanityImage image={page.heroImage} fill preload sizes="100vw" className="object-cover" />
+        <HeroAmbientVideo
+          source={source}
+          startAfterMs={revealEnd + VIDEO_START_GAP_MS}
+          posterUrl={page.heroImage.asset ? urlFor(page.heroImage).width(1920).url() : undefined}
+          poster={<SanityImage image={page.heroImage} fill preload sizes="100vw" className="object-cover" />}
+        />
         <div className="absolute inset-0 bg-linear-to-r from-bg/45 via-bg/35 via-35% to-transparent to-60%" />
       </div>
 
@@ -74,11 +82,6 @@ export function Hero({ page }: { page: HomePage }) {
               </dl>
             </div>
           )}
-        </div>
-
-        <div className="absolute top-[518px] left-[46.9%] hidden lg:block">
-          <PlayRing />
-          <PlayButton href={page.heroVideoUrl} label="Play showreel" />
         </div>
 
         <TimecodeBar className="mt-[90px]" />

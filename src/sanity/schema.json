@@ -2925,6 +2925,14 @@
         },
         "optional": false
       },
+      "heroVideo": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "r2Preview"
+        },
+        "optional": true
+      },
       "heroVideoUrl": {
         "type": "objectAttribute",
         "value": {
