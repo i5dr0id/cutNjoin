@@ -8,3 +8,4 @@ export { SprocketRail } from "./SprocketRail";
 export { PlayButton, PlayRing } from "./PlayButton";
 export { DecorativeText } from "./DecorativeText";
 export { SanityImage, type SanityImageValue } from "./SanityImage";
+export { RevealGroup } from "./RevealGroup";

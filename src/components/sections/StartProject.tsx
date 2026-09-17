@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { Clock, Mail, MapPin, Phone, type LucideIcon } from "lucide-react";
 import {
   Container,
@@ -5,6 +6,7 @@ import {
   SectionDivider,
   SectionEyebrow,
   SectionHeading,
+  RevealGroup,
 } from "@/components/primitives";
 import { sections } from "@/lib/site";
 import type { SiteQueryResult } from "@/sanity/types";
@@ -45,13 +47,19 @@ export function StartProject({ page, settings }: { page: HomePage; settings: Set
       <SectionDivider className="absolute inset-x-0 top-10" />
       <Container className="grid items-start gap-16 lg:grid-cols-2">
         <div className="flex flex-col gap-8">
-          <div>
+          <RevealGroup>
             <SectionEyebrow label={page.contact.eyebrow} />
             <SectionHeading id={headingId}>{page.contact.heading}</SectionHeading>
             {page.contactIntro && (
-              <p className="pt-6 text-[15px] leading-[24.4px] text-fg/58">{page.contactIntro}</p>
+              <p
+                data-reveal=""
+                style={{ "--reveal-delay": "260ms" } as CSSProperties}
+                className="pt-6 text-[15px] leading-[24.4px] text-fg/58"
+              >
+                {page.contactIntro}
+              </p>
             )}
-          </div>
+          </RevealGroup>
           <div className="relative h-[280px] overflow-hidden bg-card lg:h-[480px]">
             <SanityImage
               image={page.contactImage}

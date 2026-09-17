@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { Container, SanityImage } from "@/components/primitives";
+import { Container, RevealGroup, SanityImage } from "@/components/primitives";
 import { sections } from "@/lib/site";
 import type { Client, HomePage } from "./types";
 
@@ -39,9 +39,15 @@ export function Clients({ page, clients }: { page: HomePage; clients: Client[] }
   return (
     <section id={sections.clients} aria-labelledby="clients-heading" className="border-y border-line-soft">
       <Container className="py-12">
-        <h2 id="clients-heading" className="text-center eyebrow leading-[15px] tracking-[3.5px] text-fg/49">
-          {page.clientsHeading}
-        </h2>
+        <RevealGroup>
+          <h2
+            id="clients-heading"
+            data-reveal=""
+            className="text-center eyebrow leading-[15px] tracking-[3.5px] text-fg/49"
+          >
+            {page.clientsHeading}
+          </h2>
+        </RevealGroup>
         <ul className="flex flex-wrap items-center justify-center gap-y-8 pt-8 lg:min-h-[min(152px,7.8vw)] lg:flex-nowrap lg:justify-between lg:gap-4 lg:pt-0">
           {clients.map((client) => (
             <li
