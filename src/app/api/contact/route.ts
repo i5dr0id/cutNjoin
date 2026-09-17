@@ -1,6 +1,7 @@
 import { Resend } from "resend";
 import { z } from "zod";
 import { briefEmail } from "@/lib/contact/email";
+import { verifyTurnstile } from "@/lib/contact/turnstile";
 import { clientIdFrom, isRateLimited } from "@/lib/rateLimit";
 import { serverEnv } from "@/lib/env";
 import { contactSchema } from "@/lib/validation/contact";
@@ -40,9 +41,12 @@ export async function POST(request: Request) {
     return json({ ok: false, error: "invalid", fields: z.flattenError(parsed.error).fieldErrors }, 400);
   }
 
-  const { company: honeypot, startedAt, ...brief } = parsed.data;
+  const { company: honeypot, startedAt, turnstileToken, ...brief } = parsed.data;
   const filledTooFast = startedAt !== undefined && Date.now() - startedAt < MIN_FILL_TIME_MS;
   if (honeypot || filledTooFast) return json({ ok: true });
+
+  const humanCheck = await verifyTurnstile(turnstileToken, clientIdFrom(request));
+  if (humanCheck === "failed") return json({ ok: false, error: "bot_check" }, 400);
 
   const apiKey = serverEnv.resendApiKey();
   const to = serverEnv.contactTo();

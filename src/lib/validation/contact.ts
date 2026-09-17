@@ -27,7 +27,8 @@ export const contactSchema = z.object({
     .max(5000, "Keep the description under 5,000 characters"),
   company: z.string().max(200).optional(),
   startedAt: z.number().int().positive().optional(),
+  turnstileToken: z.string().max(2048).optional(),
 });
 
 export type ContactInput = z.infer<typeof contactSchema>;
-export type ContactField = Exclude<keyof ContactInput, "company" | "startedAt">;
+export type ContactField = Exclude<keyof ContactInput, "company" | "startedAt" | "turnstileToken">;
