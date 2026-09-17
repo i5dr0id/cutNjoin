@@ -66,11 +66,11 @@ export default async function FootagePage({ searchParams }: FootagePageProps) {
 
       <nav aria-label="Footage type" className="border-b border-line-soft">
         <Container>
-          <ul className="flex flex-wrap justify-center gap-x-12 gap-y-2 py-6 lg:gap-x-24">
+          <ul className="no-scrollbar flex gap-x-8 overflow-x-auto py-6 sm:justify-center sm:gap-x-12 lg:gap-x-24">
             {footageTypeOptions.map((option) => {
               const active = option.value === type;
               return (
-                <li key={option.value}>
+                <li key={option.value} className="shrink-0">
                   <Link
                     href={hrefFor({ q: query, type: option.value })}
                     aria-current={active ? "page" : undefined}

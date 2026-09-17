@@ -24,7 +24,7 @@ function HeadlineLine({ line, highlight }: { line: string; highlight: string | n
 
 function FrameCounter() {
   return (
-    <div className="absolute top-[94px] right-12 flex flex-col items-end gap-1 font-mono opacity-32">
+    <div className="absolute top-[94px] right-12 hidden flex-col items-end gap-1 font-mono opacity-32 sm:flex">
       <DecorativeText
         text="Frame"
         className="text-[9px] leading-[13.5px] tracking-[2.7px] text-fg/50 uppercase"

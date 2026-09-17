@@ -47,7 +47,7 @@ export function Updates({ page, posts }: { page: HomePage; posts: Post[] }) {
       divider
       action={page.updates.linkLabel && <ArrowLink href={routes.updates}>{page.updates.linkLabel}</ArrowLink>}
     >
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (
           <PostCard key={post._id} post={post} readMore={page.updatesReadMore ?? "Read more"} />
         ))}
