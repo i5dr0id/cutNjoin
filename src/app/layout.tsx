@@ -1,6 +1,7 @@
 import { GoogleAnalytics } from "@next/third-parties/google";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
+import { appleStartupImages } from "@/lib/pwa";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
@@ -24,6 +25,18 @@ export const metadata: Metadata = {
     locale: "en_NG",
   },
   twitter: { card: "summary_large_image" },
+  applicationName: siteConfig.name,
+  appleWebApp: {
+    capable: true,
+    title: "CUT&JOIN",
+    statusBarStyle: "black-translucent",
+    startupImage: appleStartupImages,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0d0d0d",
+  colorScheme: "dark",
 };
 
 const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
