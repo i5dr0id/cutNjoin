@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { CartDrawer } from "@/components/store/CartDrawer";
 import { getStoreStatus } from "@/sanity/fetch";
 import { BackgroundTexture } from "./BackgroundTexture";
+import { CustomCursor } from "./CustomCursor";
 import { MotionProvider } from "./MotionProvider";
 import { SiteFooter } from "./SiteFooter";
 import { SiteHeader } from "./SiteHeader";
@@ -18,6 +19,7 @@ export async function SiteShell({ children }: { children: ReactNode }) {
           Skip to content
         </a>
         <BackgroundTexture />
+        <CustomCursor />
         <SiteHeader />
         <main id="main" tabIndex={-1} className="flex-1 outline-none">
           {children}
