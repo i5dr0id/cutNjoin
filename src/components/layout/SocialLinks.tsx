@@ -4,29 +4,27 @@ import type { SiteQueryResult } from "@/sanity/types";
 type Socials = NonNullable<SiteQueryResult["settings"]>["socials"];
 
 export function SocialLinks({ socials, className = "" }: { socials: Socials; className?: string }) {
-  const urlFor = (platform: string) => socials?.find((s) => s.platform === platform)?.url;
+  const linked = socialPlatforms.flatMap((platform) => {
+    const url = socials?.find((social) => social.platform === platform)?.url;
+    return url ? [{ platform, url }] : [];
+  });
+  if (linked.length === 0) return null;
+
   return (
     <ul className={`flex items-center gap-4 ${className}`}>
-      {socialPlatforms.map((platform) => {
-        const url = urlFor(platform);
-        return (
-          <li key={platform} className="flex">
-            {url ? (
-              <a
-                href={url}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={platform}
-                className="text-fg/53 transition-colors hover:text-accent"
-              >
-                <SocialIcon platform={platform} />
-              </a>
-            ) : (
-              <SocialIcon platform={platform} className="text-fg/53" />
-            )}
-          </li>
-        );
-      })}
+      {linked.map(({ platform, url }) => (
+        <li key={platform} className="flex">
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`CUT&JOIN Studios on ${platform}`}
+            className="grid size-6 place-items-center text-fg/53 transition-colors hover:text-accent"
+          >
+            <SocialIcon platform={platform} />
+          </a>
+        </li>
+      ))}
     </ul>
   );
 }
