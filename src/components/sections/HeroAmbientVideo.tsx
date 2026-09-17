@@ -1,84 +1,74 @@
 "use client";
 
-import { Volume2, VolumeX } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { PlayRing } from "@/components/primitives";
 import { embedUrl, type HeroVideoSource } from "@/lib/heroVideo";
 
-type AmbientProps = { source: HeroVideoSource | null; posterUrl?: string; poster: ReactNode };
+type HeroAmbientVideoProps = {
+  source: HeroVideoSource | null;
+  posterUrl?: string;
+  poster: ReactNode;
+  startAfterMs: number;
+};
 
-const soundState = { listeners: new Set<(on: boolean) => void>(), on: false };
-
-function setSound(on: boolean) {
-  soundState.on = on;
-  soundState.listeners.forEach((listener) => listener(on));
+function prefersStillHero() {
+  if (typeof window === "undefined") return false;
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+  return Boolean(reducedMotion || connection?.saveData);
 }
 
-function useSound() {
-  const [on, setOn] = useState(soundState.on);
-  useEffect(() => {
-    soundState.listeners.add(setOn);
-    return () => void soundState.listeners.delete(setOn);
-  }, []);
-  return on;
-}
-
-export function HeroAmbientVideo({ source, posterUrl, poster }: AmbientProps) {
+export function HeroAmbientVideo({ source, posterUrl, poster, startAfterMs }: HeroAmbientVideoProps) {
   const video = useRef<HTMLVideoElement>(null);
-  const sound = useSound();
+  const [started, setStarted] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    if (!source || prefersStillHero()) return;
+    const timer = setTimeout(() => setStarted(true), startAfterMs);
+    return () => clearTimeout(timer);
+  }, [source, startAfterMs]);
+
+  useEffect(() => {
+    if (!started || source?.kind !== "file") return;
     const element = video.current;
     if (!element) return;
-    element.muted = !sound;
-    if (sound) void element.play().catch(() => setSound(false));
-  }, [sound]);
+    const show = () => setVisible(true);
+    element.addEventListener("playing", show, { once: true });
+    void element.play().catch(() => undefined);
+    return () => element.removeEventListener("playing", show);
+  }, [started, source]);
 
-  if (!source) return poster;
+  const overlay = "absolute inset-0 size-full transition-opacity duration-1000";
 
-  if (source.kind === "embed") {
-    return (
-      <iframe
-        key={sound ? "sound" : "muted"}
-        src={embedUrl(source, { muted: !sound, loop: true, controls: false })}
-        title="Showreel"
-        tabIndex={-1}
-        allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-        className="pointer-events-none absolute top-1/2 left-1/2 aspect-video h-full min-w-full -translate-x-1/2 -translate-y-1/2 border-0"
-      />
-    );
-  }
-
-  return (
-    <video
-      ref={video}
-      src={source.src}
-      poster={posterUrl}
-      autoPlay
-      loop
-      muted
-      playsInline
-      preload="metadata"
-      className="absolute inset-0 size-full bg-bg object-cover"
-    />
-  );
-}
-
-export function HeroSoundToggle({ source }: { source: HeroVideoSource | null }) {
-  const sound = useSound();
-  if (!source) return null;
   return (
     <>
-      {!sound && <PlayRing />}
-      <button
-        type="button"
-        onClick={() => setSound(!sound)}
-        aria-pressed={sound}
-        aria-label={sound ? "Mute showreel" : "Play showreel with sound"}
-        className="grid size-[72px] place-items-center rounded-full border-[1.36px] border-fg/32 bg-scrim text-fg/92 backdrop-blur-[6px] transition-all duration-300 hover:scale-112 hover:border-fg/60 hover:bg-bg/72"
-      >
-        {sound ? <Volume2 aria-hidden className="size-6" /> : <VolumeX aria-hidden className="size-6" />}
-      </button>
+      {poster}
+      {source?.kind === "file" && (
+        <video
+          ref={video}
+          src={source.src}
+          poster={posterUrl}
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden
+          tabIndex={-1}
+          className={`${overlay} object-cover ${visible ? "opacity-100" : "opacity-0"}`}
+        />
+      )}
+      {source?.kind === "embed" && started && (
+        <iframe
+          src={embedUrl(source, { muted: true, loop: true, controls: false })}
+          title="Showreel"
+          tabIndex={-1}
+          allow="autoplay; encrypted-media"
+          onLoad={() => setVisible(true)}
+          className={`pointer-events-none absolute top-1/2 left-1/2 aspect-video h-full min-w-full -translate-x-1/2 -translate-y-1/2 border-0 transition-opacity duration-1000 ${
+            visible ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      )}
     </>
   );
 }

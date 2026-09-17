@@ -8,12 +8,13 @@ import {
 import { heroVideoSource } from "@/lib/heroVideo";
 import { sections } from "@/lib/site";
 import { urlFor } from "@/sanity/image";
-import { HeroAmbientVideo, HeroSoundToggle } from "./HeroAmbientVideo";
+import { HeroAmbientVideo } from "./HeroAmbientVideo";
 import { HeroHeadline, headlineRevealEndMs } from "./HeroHeadline";
 import type { HomePage } from "./types";
 
 const INTRO_TEXT_GAP_MS = 0;
 const INTRO_BUTTONS_GAP_MS = 120;
+const VIDEO_START_GAP_MS = 1200;
 
 function FrameCounter() {
   return (
@@ -36,6 +37,7 @@ export function Hero({ page }: { page: HomePage }) {
       <div className="absolute inset-x-0 top-0 -z-10 h-[1121px] overflow-hidden bg-card">
         <HeroAmbientVideo
           source={source}
+          startAfterMs={revealEnd + VIDEO_START_GAP_MS}
           posterUrl={page.heroImage.asset ? urlFor(page.heroImage).width(1920).url() : undefined}
           poster={<SanityImage image={page.heroImage} fill preload sizes="100vw" className="object-cover" />}
         />
@@ -80,10 +82,6 @@ export function Hero({ page }: { page: HomePage }) {
               </dl>
             </div>
           )}
-        </div>
-
-        <div className="absolute top-[518px] left-[46.9%] hidden lg:block">
-          <HeroSoundToggle source={source} />
         </div>
 
         <TimecodeBar className="mt-[90px]" />
