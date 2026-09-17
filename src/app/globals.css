@@ -220,6 +220,16 @@
   text-transform: uppercase;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  html[data-custom-cursor] {
+    cursor: none;
+  }
+
+  html[data-custom-cursor] *:not(input):not(textarea) {
+    cursor: none !important;
+  }
+}
+
 @media (scripting: enabled) {
   [data-reveal-group]:not([data-revealed]) [data-reveal] {
     opacity: 0;
