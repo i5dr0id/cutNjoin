@@ -44,6 +44,49 @@
   --animate-reel-sprocket: reel-scroll 14s linear infinite;
   --animate-pulse-dot: pulse-dot 1.8s ease-in-out infinite;
   --animate-play-ring: play-ring 2.4s ease-out infinite;
+  --animate-phrase-pass: phrase-pass 1.2s cubic-bezier(0.65, 0, 0.35, 1) both;
+  --animate-phrase-land: phrase-land 0.3s cubic-bezier(0.65, 0, 0.35, 1) both;
+  --animate-headline-settle: headline-settle 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-vanish: vanish 1ms step-end both;
+
+  @keyframes phrase-pass {
+    0% {
+      transform: translateY(110%);
+    }
+    25%,
+    75% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-110%);
+    }
+  }
+
+  @keyframes phrase-land {
+    from {
+      transform: translateY(110%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes headline-settle {
+    from {
+      opacity: 0;
+      transform: translateY(12%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes vanish {
+    to {
+      visibility: hidden;
+    }
+  }
 
   @keyframes reel-scroll {
     from {
@@ -185,6 +228,7 @@
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
