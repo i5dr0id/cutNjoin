@@ -1,7 +1,7 @@
 import { Resend } from "resend";
 import { z } from "zod";
 import { briefEmail } from "@/lib/contact/email";
-import { clientIdFrom, isRateLimited } from "@/lib/contact/rateLimit";
+import { clientIdFrom, isRateLimited } from "@/lib/rateLimit";
 import { serverEnv } from "@/lib/env";
 import { contactSchema } from "@/lib/validation/contact";
 

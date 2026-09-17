@@ -15,8 +15,9 @@ export function MainNav({ className = "" }: { className?: string }) {
     <nav aria-label="Primary" className={className}>
       <ul className="flex items-center gap-8">
         {mainNav.map((item) => {
+          const onActivePage = item.activeOn !== undefined && pathname.startsWith(item.activeOn);
           const active = item.section
-            ? pathname === "/" && activeSection === item.section
+            ? onActivePage || (pathname === "/" && activeSection === item.section)
             : pathname.startsWith(item.href);
           return (
             <li key={item.label}>

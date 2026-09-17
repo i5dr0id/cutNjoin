@@ -30,14 +30,15 @@ export const routes = {
   store: "/store",
   profile: "/profile",
   studio: "/studio",
+  footageLicence: "/footage/licence",
 } as const;
 
-export type NavItem = { label: string; href: string; section?: SectionId };
+export type NavItem = { label: string; href: string; section?: SectionId; activeOn?: string };
 
 export const mainNav: NavItem[] = [
   { label: "Services", href: `/#${sections.services}`, section: sections.services },
   { label: "Projects", href: `/#${sections.projects}`, section: sections.projects },
-  { label: "Aerials", href: `/#${sections.footage}`, section: sections.footage },
+  { label: "Aerials", href: `/#${sections.footage}`, section: sections.footage, activeOn: "/footage" },
   { label: "Updates", href: `/#${sections.updates}`, section: sections.updates },
   { label: "Store", href: `/#${sections.merch}`, section: sections.merch },
   { label: "Profile", href: routes.profile },

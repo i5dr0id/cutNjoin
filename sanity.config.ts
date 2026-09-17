@@ -8,6 +8,7 @@ import { structure } from "./src/sanity/structure";
 
 export default defineConfig({
   basePath: "/studio",
+  auth: { loginMethod: "token" },
   title: "CUT&JOIN Studios",
   projectId,
   dataset,

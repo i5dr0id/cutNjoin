@@ -8,6 +8,7 @@ export const siteSettings = defineType({
     { name: "contact", title: "Contact", default: true },
     { name: "social", title: "Social" },
     { name: "footer", title: "Footer" },
+    { name: "footage", title: "Footage licence" },
   ],
   fields: [
     defineField({ name: "email", type: "string", group: "contact", validation: (r) => r.email() }),
@@ -71,6 +72,34 @@ export const siteSettings = defineType({
     }),
     defineField({ name: "footerBlurb", title: "About text", type: "text", rows: 3, group: "footer" }),
     defineField({ name: "copyrightName", title: "Copyright name", type: "string", group: "footer" }),
+    defineField({
+      name: "footageHeading",
+      title: "Footage page heading",
+      type: "string",
+      group: "footage",
+      initialValue: "Free Footage",
+    }),
+    defineField({
+      name: "footageIntro",
+      title: "Footage page intro",
+      type: "string",
+      group: "footage",
+    }),
+    defineField({
+      name: "footageLicenceSummary",
+      title: "Licence summary",
+      type: "text",
+      rows: 3,
+      group: "footage",
+      description: "One or two sentences shown before every download.",
+    }),
+    defineField({
+      name: "footageLicence",
+      title: "Full licence",
+      type: "array",
+      group: "footage",
+      of: [defineArrayMember({ type: "block" })],
+    }),
   ],
   preview: { prepare: () => ({ title: "Site settings" }) },
 });
