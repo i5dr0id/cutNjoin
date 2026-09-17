@@ -11,8 +11,8 @@ import { sections } from "@/lib/site";
 import { HeroHeadline, headlineRevealEndMs } from "./HeroHeadline";
 import type { HomePage } from "./types";
 
-const INTRO_TEXT_GAP_MS = 150;
-const INTRO_BUTTONS_GAP_MS = 350;
+const INTRO_TEXT_GAP_MS = 0;
+const INTRO_BUTTONS_GAP_MS = 120;
 
 function FrameCounter() {
   return (
