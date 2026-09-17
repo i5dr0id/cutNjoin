@@ -8,6 +8,7 @@ import {
   SectionHeading,
   RevealGroup,
 } from "@/components/primitives";
+import { mapsSearchUrl } from "@/lib/maps";
 import { sections } from "@/lib/site";
 import type { SiteQueryResult } from "@/sanity/types";
 import { LazyQuoteForm } from "./LazyQuoteForm";
@@ -16,6 +17,7 @@ import type { HomePage } from "./types";
 type Settings = SiteQueryResult["settings"];
 
 function Detail({ icon: Icon, children, href }: { icon: LucideIcon; children: string; href?: string }) {
+  const external = href?.startsWith("http");
   const content = (
     <>
       <Icon aria-hidden className="size-[15px] shrink-0" />
@@ -26,7 +28,11 @@ function Detail({ icon: Icon, children, href }: { icon: LucideIcon; children: st
   return (
     <li>
       {href ? (
-        <a href={href} className={`${className} transition-colors hover:text-fg`}>
+        <a
+          href={href}
+          {...(external && { target: "_blank", rel: "noreferrer" })}
+          className={`${className} transition-colors hover:text-fg`}
+        >
           {content}
         </a>
       ) : (
@@ -79,7 +85,11 @@ export function StartProject({ page, settings }: { page: HomePage; settings: Set
                 {settings.phone}
               </Detail>
             )}
-            {settings?.addressShort && <Detail icon={MapPin}>{settings.addressShort}</Detail>}
+            {settings?.addressShort && (
+              <Detail icon={MapPin} href={mapsSearchUrl(settings.address ?? settings.addressShort)}>
+                {settings.addressShort}
+              </Detail>
+            )}
             {settings?.hoursSummary && <Detail icon={Clock}>{settings.hoursSummary}</Detail>}
           </ul>
         </div>
