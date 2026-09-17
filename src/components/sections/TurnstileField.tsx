@@ -2,6 +2,7 @@
 
 import Script from "next/script";
 import { useCallback, useEffect, useRef } from "react";
+import { TURNSTILE_ACTION } from "@/lib/contact/turnstileAction";
 
 const SCRIPT_SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 
@@ -38,6 +39,7 @@ export function TurnstileField({
     if (!window.turnstile || !container.current || widgetId.current) return;
     widgetId.current = window.turnstile.render(container.current, {
       sitekey: siteKey,
+      action: TURNSTILE_ACTION,
       size: "flexible",
       theme: "dark",
       appearance: "interaction-only",
