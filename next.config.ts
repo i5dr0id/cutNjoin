@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const isDev = process.env.NODE_ENV === "development";
+const r2PublicOrigin = process.env.NEXT_PUBLIC_R2_PUBLIC_URL
+  ? new URL(process.env.NEXT_PUBLIC_R2_PUBLIC_URL).origin
+  : null;
+const r2Sources = r2PublicOrigin ? [r2PublicOrigin] : [];
 
 const directives = (entries: Record<string, string[]>) =>
   Object.entries(entries)
@@ -11,8 +15,8 @@ const siteCsp = directives({
   "default-src": ["'self'"],
   "script-src": ["'self'", "'unsafe-inline'", ...(isDev ? ["'unsafe-eval'"] : [])],
   "style-src": ["'self'", "'unsafe-inline'"],
-  "img-src": ["'self'", "blob:", "data:", "https://cdn.sanity.io"],
-  "media-src": ["'self'", "https://cdn.sanity.io"],
+  "img-src": ["'self'", "blob:", "data:", "https://cdn.sanity.io", ...r2Sources],
+  "media-src": ["'self'", "https://cdn.sanity.io", ...r2Sources],
   "font-src": ["'self'"],
   "connect-src": ["'self'", ...(isDev ? ["ws:"] : [])],
   "object-src": ["'none'"],

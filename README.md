@@ -30,6 +30,11 @@ Add `http://localhost:3000` as a CORS origin (with credentials) in the Sanity pr
 | `NEXT_PUBLIC_SANITY_DATASET`     | Sanity dataset, `production` by default                   |
 | `NEXT_PUBLIC_SANITY_API_VERSION` | Sanity API version date                                   |
 | `NEXT_SANITY_API_WRITE_TOKEN`    | Sanity token with write access, server-only               |
+| `R2_ACCOUNT_ID`                  | Cloudflare account ID for R2                              |
+| `R2_ACCESS_KEY_ID`               | R2 API token access key (server-only)                     |
+| `R2_SECRET_ACCESS_KEY`           | R2 API token secret (server-only)                         |
+| `R2_BUCKET`                      | R2 bucket holding footage files                           |
+| `NEXT_PUBLIC_R2_PUBLIC_URL`      | Public URL of the bucket (custom domain or r2.dev)        |
 | `RESEND_API_KEY`                 | Resend API key for the quote form                         |
 | `CONTACT_TO_EMAIL`               | Inbox that receives quote requests                        |
 | `CONTACT_FROM_EMAIL`             | Sender address; its domain must be verified in Resend     |
@@ -57,13 +62,15 @@ src/
     globals.css               design tokens and base styles
     (site)/                   public site with header and footer
       page.tsx                homepage
-      projects/ footage/ updates/ store/ profile/
+      footage/                free footage library (search, filters, masonry) and licence page
+      projects/ updates/ store/ profile/
     studio/[[...tool]]/       embedded Sanity Studio
     api/contact/route.ts      quote form endpoint
     (site)/opengraph-image.tsx  generated social share card
     robots.ts sitemap.ts not-found.tsx
     icon.png apple-icon.png favicon.ico
   components/
+    footage/                  FootageSearch, FootageGrid
     icons/                    SocialIcon, PlayIcon
     primitives/               Container, Section, SectionEyebrow, SectionHeading, Button,
                               TimecodeBar, SectionDivider, SprocketRail
@@ -75,7 +82,9 @@ src/
     site.ts                   routes, navigation, section anchors
     format.ts                 naira, timecode and date formatting
     validation/contact.ts     quote form schema shared by client and server
-    contact/                  brief email builder and rate limiter
+    contact/                  brief email builder
+    footage/                  footage file rules
+    r2.ts rateLimit.ts        R2 signed URLs, shared rate limiter
     seo/                      LocalBusiness structured data
     env.ts                    server environment variables
   sanity/
@@ -115,4 +124,9 @@ src/
   Placeholder pages are `noindex` and left out of the sitemap until they are built.
 - **Security headers:** `next.config.ts` sets a strict CSP for the site and a relaxed one for `/studio`.
   Add any new third-party origin there before using it.
+- **Free footage files** live in Cloudflare R2. Editors upload originals (≤5 GB) and 720p preview
+  clips (≤100 MB) from the Studio; the Studio asks `/api/footage/upload-url` for a signed URL (editor
+  role required, verified against Sanity) and uploads straight to R2. Downloads go through
+  `/api/footage/[id]/download`, which requires licence acceptance, rate-limits and redirects to a
+  short-lived signed link. The Studio uses token login so the upload field can authenticate.
 - **No code comments.** Names and structure should make the code self-explanatory.

@@ -14,6 +14,8 @@
     "typegen": "sanity schema extract --path src/sanity/schema.json --enforce-required-fields --force && sanity typegen generate"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1133.0",
+    "@aws-sdk/s3-request-presigner": "^3.1133.0",
     "@hookform/resolvers": "^5.9.1",
     "@sanity/image-url": "^2.1.1",
     "lucide-react": "^1.46.0",

@@ -54,7 +54,11 @@ export default async function HomePage() {
       <Projects page={page} projects={home.projects} />
       <Clients page={page} clients={home.clients} />
       <Updates page={page} posts={home.posts} />
-      <FreeFootage page={page} footage={home.footage} />
+      <FreeFootage
+        page={page}
+        footage={home.footage}
+        licenceSummary={site.settings?.footageLicenceSummary ?? null}
+      />
       <Merch page={page} products={home.products} />
       <StartProject page={page} settings={site.settings} />
     </>

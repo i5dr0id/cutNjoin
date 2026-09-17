@@ -91,10 +91,16 @@ export type FootageAsset = {
   _updatedAt: string;
   _rev: string;
   title: string;
+  slug: Slug;
+  kind: "video" | "image";
+  drone?: boolean;
   location?: string;
+  tags?: Array<string>;
   duration?: string;
   fps?: number;
   resolution?: "4K" | "HD";
+  featured?: boolean;
+  order?: number;
   poster: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -103,11 +109,26 @@ export type FootageAsset = {
     alt: string;
     _type: "image";
   };
-  previewUrl?: string;
-  downloadUrl?: string;
-  licence?: string;
-  featured?: boolean;
-  order?: number;
+  original?: R2Original;
+  preview?: R2Preview;
+};
+
+export type R2Preview = {
+  _type: "r2Preview";
+  key?: string;
+  url?: string;
+  filename?: string;
+  size?: number;
+  contentType?: string;
+};
+
+export type R2Original = {
+  _type: "r2Original";
+  key?: string;
+  url?: string;
+  filename?: string;
+  size?: number;
+  contentType?: string;
 };
 
 export type Post = {
@@ -251,6 +272,27 @@ export type SiteSettings = {
   }>;
   footerBlurb?: string;
   copyrightName?: string;
+  footageHeading?: string;
+  footageIntro?: string;
+  footageLicenceSummary?: string;
+  footageLicence?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
 };
 
 export type HomePage = {
@@ -417,6 +459,8 @@ export type AllSanitySchemaTypes =
   | SanityImageHotspot
   | Slug
   | FootageAsset
+  | R2Preview
+  | R2Original
   | Post
   | Client
   | Project
@@ -435,7 +479,7 @@ export type AllSanitySchemaTypes =
 
 // Source: src/sanity/queries.ts
 // Variable: homepageQuery
-// Query: {  "page": *[_type == "homePage" && _id == "homePage"][0]{    heroEyebrow, heroHeadline, heroHighlight, heroIntro, heroPrimaryCta, heroSecondaryCta,    heroImage, heroVideoUrl, stats,    services, servicesCta,    projects,    clientsHeading,    updates, updatesReadMore,    footage, footageDownload,    merch,    contact, contactIntro, contactFormHeading, contactSubmit, contactImage  },  "services": *[_type == "service"] | order(order asc){ _id, title, tag, timecode, description },  "projects": *[_type == "project" && featured == true] | order(order asc)[0...4]{    _id, title, category, timecode, still, videoUrl  },  "clients": *[_type == "client"] | order(order asc){    _id, name, url, logoHeight,    logo{ ..., "dimensions": asset->metadata.dimensions{ width, height } }  },  "posts": *[_type == "post"] | order(publishedAt desc)[0...3]{    _id, title, "slug": slug.current, category, publishedAt, cover, excerpt  },  "footage": *[_type == "footageAsset"] | order(featured desc, order asc)[0...4]{    _id, title, location, duration, fps, resolution, poster, downloadUrl, featured  },  "products": *[_type == "product"] | order(order asc)[0...2]{    _id, name, garment, price, "slug": slug.current, front, back, available  }}
+// Query: {  "page": *[_type == "homePage" && _id == "homePage"][0]{    heroEyebrow, heroHeadline, heroHighlight, heroIntro, heroPrimaryCta, heroSecondaryCta,    heroImage, heroVideoUrl, stats,    services, servicesCta,    projects,    clientsHeading,    updates, updatesReadMore,    footage, footageDownload,    merch,    contact, contactIntro, contactFormHeading, contactSubmit, contactImage  },  "services": *[_type == "service"] | order(order asc){ _id, title, tag, timecode, description },  "projects": *[_type == "project" && featured == true] | order(order asc)[0...4]{    _id, title, category, timecode, still, videoUrl  },  "clients": *[_type == "client"] | order(order asc){    _id, name, url, logoHeight,    logo{ ..., "dimensions": asset->metadata.dimensions{ width, height } }  },  "posts": *[_type == "post"] | order(publishedAt desc)[0...3]{    _id, title, "slug": slug.current, category, publishedAt, cover, excerpt  },  "footage": *[_type == "footageAsset"] | order(featured desc, order asc)[0...4]{    _id, title, kind, location, duration, fps, resolution, poster, featured,    "hasDownload": defined(original.key),    "previewUrl": preview.url  },  "products": *[_type == "product"] | order(order asc)[0...2]{    _id, name, garment, price, "slug": slug.current, front, back, available  }}
 export type HomepageQueryResult = {
   page: {
     heroEyebrow: string | null;
@@ -540,6 +584,7 @@ export type HomepageQueryResult = {
   footage: Array<{
     _id: string;
     title: string;
+    kind: "image" | "video";
     location: string | null;
     duration: string | null;
     fps: number | null;
@@ -552,8 +597,9 @@ export type HomepageQueryResult = {
       alt: string;
       _type: "image";
     };
-    downloadUrl: string | null;
     featured: boolean | null;
+    hasDownload: false | true;
+    previewUrl: string | null;
   }>;
   products: Array<{
     _id: string;
@@ -609,8 +655,87 @@ export type SeoQueryResult = {
 } | null;
 
 // Source: src/sanity/queries.ts
+// Variable: licenceQuery
+// Query: *[_type == "siteSettings" && _id == "siteSettings"][0]{  footageLicenceSummary, footageLicence}
+export type LicenceQueryResult = {
+  footageLicenceSummary: string | null;
+  footageLicence: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }> | null;
+} | null;
+
+// Source: src/sanity/queries.ts
+// Variable: footageLibraryQuery
+// Query: {  "settings": *[_type == "siteSettings" && _id == "siteSettings"][0]{    footageHeading, footageIntro, footageLicenceSummary  },  "hero": *[_type == "footageAsset" && defined(poster.asset)] | order(featured desc, order asc)[0]{ poster },  "total": count(*[    _type == "footageAsset" && defined(poster.asset)    && ($type == "all" || ($type == "drone" && drone == true) || kind == $type)    && ($search == "" || title match $search || location match $search || count(tags[@ match $search]) > 0)  ]),  "items": *[    _type == "footageAsset" && defined(poster.asset)    && ($type == "all" || ($type == "drone" && drone == true) || kind == $type)    && ($search == "" || title match $search || location match $search || count(tags[@ match $search]) > 0)  ] | order(featured desc, order asc, _createdAt desc)[$start...$end]{    _id, title, kind, location, duration, fps, resolution,    poster{ ..., "dimensions": asset->metadata.dimensions{ width, height } },    "hasDownload": defined(original.key),    "previewUrl": preview.url  }}
+export type FootageLibraryQueryResult = {
+  settings: {
+    footageHeading: string | null;
+    footageIntro: string | null;
+    footageLicenceSummary: string | null;
+  } | null;
+  hero: {
+    poster: {
+      asset: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "image";
+    };
+  } | null;
+  total: number;
+  items: Array<{
+    _id: string;
+    title: string;
+    kind: "image" | "video";
+    location: string | null;
+    duration: string | null;
+    fps: number | null;
+    resolution: "4K" | "HD" | null;
+    poster: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "image";
+      dimensions: {
+        width: number;
+        height: number;
+      } | null;
+    };
+    hasDownload: false | true;
+    previewUrl: string | null;
+  }>;
+};
+
+// Source: src/sanity/queries.ts
+// Variable: footageTitleQuery
+// Query: *[_type == "footageAsset" && _id == $id][0]{ _id, title, kind }
+export type FootageTitleQueryResult = {
+  _id: string;
+  title: string;
+  kind: "image" | "video";
+} | null;
+
+// Source: src/sanity/queries.ts
 // Variable: siteQuery
-// Query: {  "settings": *[_type == "siteSettings" && _id == "siteSettings"][0]{    email, phone, address, addressShort, location, hoursSummary, hours, socials, footerBlurb, copyrightName  },  "services": *[_type == "service"] | order(order asc){ _id, title }}
+// Query: {  "settings": *[_type == "siteSettings" && _id == "siteSettings"][0]{    email, phone, address, addressShort, location, hoursSummary, hours, socials, footerBlurb, copyrightName,    footageLicenceSummary  },  "services": *[_type == "service"] | order(order asc){ _id, title }}
 export type SiteQueryResult = {
   settings: {
     email: string | null;
@@ -636,6 +761,7 @@ export type SiteQueryResult = {
     }> | null;
     footerBlurb: string | null;
     copyrightName: string | null;
+    footageLicenceSummary: string | null;
   } | null;
   services: Array<{
     _id: string;
