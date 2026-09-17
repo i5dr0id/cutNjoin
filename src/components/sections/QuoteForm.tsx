@@ -7,8 +7,9 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/primitives";
 import { contactSchema, projectTypes, type ContactField, type ContactInput } from "@/lib/validation/contact";
+import { TurnstileField } from "./TurnstileField";
 
-type Status = "idle" | "sent" | "rate_limited" | "failed";
+type Status = "idle" | "sent" | "rate_limited" | "failed" | "bot_check";
 
 type ContactResponse = { ok: boolean; error?: string; fields?: Partial<Record<ContactField, string[]>> };
 
@@ -19,7 +20,10 @@ type QuoteFormProps = { heading: string; submitLabel: string; fallbackEmail?: st
 
 export function QuoteForm({ heading, submitLabel, fallbackEmail }: QuoteFormProps) {
   const [status, setStatus] = useState<Status>("idle");
+  const [resetSignal, setResetSignal] = useState(0);
   const startedAt = useRef(0);
+  const turnstileToken = useRef("");
+  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
   const {
     register,
     handleSubmit,
@@ -37,13 +41,15 @@ export function QuoteForm({ heading, submitLabel, fallbackEmail }: QuoteFormProp
     const res = await fetch("/api/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...data, startedAt: startedAt.current }),
+      body: JSON.stringify({ ...data, startedAt: startedAt.current, turnstileToken: turnstileToken.current }),
     }).catch(() => null);
     const result: ContactResponse | null = res ? await res.json().catch(() => null) : null;
 
     if (res?.ok && result?.ok) {
       reset();
       startedAt.current = Date.now();
+      turnstileToken.current = "";
+      setResetSignal((value) => value + 1);
       setStatus("sent");
       return;
     }
@@ -53,6 +59,9 @@ export function QuoteForm({ heading, submitLabel, fallbackEmail }: QuoteFormProp
       }
       return;
     }
+    turnstileToken.current = "";
+    setResetSignal((value) => value + 1);
+    if (result?.error === "bot_check") return setStatus("bot_check");
     setStatus(res?.status === 429 ? "rate_limited" : "failed");
   };
 
@@ -164,6 +173,21 @@ export function QuoteForm({ heading, submitLabel, fallbackEmail }: QuoteFormProp
               {...register("company")}
             />
 
+            {siteKey && (
+              <TurnstileField
+                siteKey={siteKey}
+                resetSignal={resetSignal}
+                onToken={(token) => {
+                  turnstileToken.current = token;
+                }}
+              />
+            )}
+
+            {status === "bot_check" && (
+              <p role="alert" className="text-sm text-red-400">
+                We couldn&apos;t confirm you&apos;re human. Please try again.
+              </p>
+            )}
             {status === "rate_limited" && (
               <p role="alert" className="text-sm text-red-400">
                 You&apos;ve sent several briefs in a short time. Please wait a few minutes and try again.

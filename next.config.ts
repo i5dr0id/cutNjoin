@@ -13,16 +13,26 @@ const directives = (entries: Record<string, string[]>) =>
 
 const siteCsp = directives({
   "default-src": ["'self'"],
-  "script-src": ["'self'", "'unsafe-inline'", ...(isDev ? ["'unsafe-eval'"] : [])],
+  "script-src": [
+    "'self'",
+    "'unsafe-inline'",
+    "https://challenges.cloudflare.com",
+    ...(isDev ? ["'unsafe-eval'"] : []),
+  ],
   "style-src": ["'self'", "'unsafe-inline'"],
   "img-src": ["'self'", "blob:", "data:", "https://cdn.sanity.io", ...r2Sources],
   "media-src": ["'self'", "https://cdn.sanity.io", ...r2Sources],
   "font-src": ["'self'"],
-  "connect-src": ["'self'", ...(isDev ? ["ws:"] : [])],
+  "connect-src": ["'self'", "https://challenges.cloudflare.com", ...(isDev ? ["ws:"] : [])],
   "object-src": ["'none'"],
   "base-uri": ["'self'"],
   "form-action": ["'self'"],
-  "frame-src": ["https://www.youtube-nocookie.com", "https://www.youtube.com", "https://player.vimeo.com"],
+  "frame-src": [
+    "https://www.youtube-nocookie.com",
+    "https://www.youtube.com",
+    "https://player.vimeo.com",
+    "https://challenges.cloudflare.com",
+  ],
   "frame-ancestors": ["'none'"],
   "upgrade-insecure-requests": [],
 });
