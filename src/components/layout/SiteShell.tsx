@@ -6,6 +6,7 @@ import { CustomCursor } from "./CustomCursor";
 import { MotionProvider } from "./MotionProvider";
 import { SiteFooter } from "./SiteFooter";
 import { SiteHeader } from "./SiteHeader";
+import { SmoothScroll } from "./SmoothScroll";
 
 export async function SiteShell({ children }: { children: ReactNode }) {
   const store = await getStoreStatus();
@@ -18,6 +19,7 @@ export async function SiteShell({ children }: { children: ReactNode }) {
         >
           Skip to content
         </a>
+        <SmoothScroll />
         <BackgroundTexture />
         <CustomCursor />
         <SiteHeader />

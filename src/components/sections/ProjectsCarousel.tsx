@@ -39,6 +39,7 @@ export function ProjectsCarousel({ titles, rail, children }: ProjectsCarouselPro
           tabIndex={0}
           role="region"
           aria-label="Featured projects"
+          data-lenis-prevent
           className="no-scrollbar snap-x scroll-px-8 overflow-x-auto focus-visible:outline-offset-[-2px]"
         >
           {children}

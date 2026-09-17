@@ -123,6 +123,10 @@
 }
 
 @layer base {
+  html.lenis-active {
+    scroll-behavior: auto;
+  }
+
   html {
     color-scheme: dark;
     scroll-behavior: smooth;
