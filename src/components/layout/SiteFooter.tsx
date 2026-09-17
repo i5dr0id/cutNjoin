@@ -1,4 +1,5 @@
 import { Mail, MapPin, Phone } from "lucide-react";
+import { mapsSearchUrl } from "@/lib/maps";
 import Link from "next/link";
 import { Container } from "@/components/primitives";
 import { footerNav, sections } from "@/lib/site";
@@ -81,7 +82,7 @@ export async function SiteFooter() {
             {settings?.address && (
               <li>
                 <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings.address)}`}
+                  href={mapsSearchUrl(settings.address)}
                   target="_blank"
                   rel="noreferrer"
                   className={`${barItem} hover:text-fg/80`}
