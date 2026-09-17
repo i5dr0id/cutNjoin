@@ -44,16 +44,15 @@
   --animate-reel-sprocket: reel-scroll 14s linear infinite;
   --animate-pulse-dot: pulse-dot 1.8s ease-in-out infinite;
   --animate-play-ring: play-ring 2.4s ease-out infinite;
-  --animate-phrase-land: phrase-land 0.3s cubic-bezier(0.65, 0, 0.35, 1) both;
-  --animate-headline-settle: headline-settle 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
-  --animate-vanish: vanish 1ms step-end both;
   --animate-soft-rise: soft-rise 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-stack-enter: stack-enter 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-stack-shift: stack-shift 0.75s cubic-bezier(0.65, 0, 0.35, 1) both;
 
-  @keyframes soft-rise {
+  @keyframes stack-enter {
     from {
       opacity: 0;
-      transform: translateY(14px);
-      filter: blur(4px);
+      transform: translateY(35%);
+      filter: blur(6px);
     }
     to {
       opacity: 1;
@@ -61,37 +60,13 @@
       filter: blur(0);
     }
   }
-  --animate-caret-blink: caret-blink 1s steps(1) infinite;
 
-  @keyframes caret-blink {
-    50% {
-      opacity: 0;
-    }
-  }
-
-  @keyframes phrase-land {
+  @keyframes stack-shift {
     from {
-      transform: translateY(110%);
+      transform: translateY(100%);
     }
     to {
       transform: translateY(0);
-    }
-  }
-
-  @keyframes headline-settle {
-    from {
-      opacity: 0;
-      transform: translateY(12%);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes vanish {
-    to {
-      opacity: 0;
     }
   }
 
@@ -128,10 +103,22 @@
   }
 }
 
-@keyframes frame-on {
-  from,
+@keyframes soft-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(4px);
+  }
   to {
-    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes rule-grow {
+  from {
+    transform: scaleX(0);
   }
 }
 
@@ -231,6 +218,26 @@
   font-size: var(--text-eyebrow);
   letter-spacing: var(--text-eyebrow--letter-spacing);
   text-transform: uppercase;
+}
+
+@media (scripting: enabled) {
+  [data-reveal-group]:not([data-revealed]) [data-reveal] {
+    opacity: 0;
+  }
+
+  [data-reveal-group]:not([data-revealed]) [data-reveal-rule] {
+    transform: scaleX(0);
+  }
+
+  [data-revealed] [data-reveal] {
+    animation: soft-rise 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--reveal-delay, 60ms);
+  }
+
+  [data-revealed] [data-reveal-rule] {
+    transform-origin: left;
+    animation: rule-grow 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

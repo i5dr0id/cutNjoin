@@ -1,7 +1,8 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { Container } from "./Container";
 import { SectionEyebrow } from "./SectionEyebrow";
 import { SectionHeading } from "./SectionHeading";
+import { RevealGroup } from "./RevealGroup";
 import { SectionDivider } from "./TimecodeBar";
 
 type SectionProps = {
@@ -37,13 +38,17 @@ export function Section({
     >
       {divider && <SectionDivider className="absolute inset-x-0 top-10" />}
       <Container>
-        <header className="flex flex-wrap items-end justify-between gap-x-8 gap-y-6">
+        <RevealGroup as="header" className="flex flex-wrap items-end justify-between gap-x-8 gap-y-6">
           <div>
             <SectionEyebrow label={eyebrow} />
             <SectionHeading id={headingId}>{heading}</SectionHeading>
           </div>
-          {action}
-        </header>
+          {action && (
+            <div data-reveal="" style={{ "--reveal-delay": "280ms" } as CSSProperties}>
+              {action}
+            </div>
+          )}
+        </RevealGroup>
         {!bleed && content}
       </Container>
       {bleed && content}
