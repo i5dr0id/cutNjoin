@@ -42,7 +42,20 @@ export const homePage = defineType({
     defineField({ name: "heroPrimaryCta", title: "Primary button", type: "string", group: "hero" }),
     defineField({ name: "heroSecondaryCta", title: "Secondary button", type: "string", group: "hero" }),
     { ...imageWithAlt("heroImage", "Image"), group: "hero" },
-    defineField({ name: "heroVideoUrl", title: "Showreel URL", type: "url", group: "hero" }),
+    defineField({
+      name: "heroVideo",
+      title: "Showreel file",
+      type: "r2Preview",
+      group: "hero",
+      description: "MP4 or WebM up to 100MB. Used before the showreel link when both are set.",
+    }),
+    defineField({
+      name: "heroVideoUrl",
+      title: "Showreel link",
+      type: "url",
+      group: "hero",
+      description: "YouTube or Vimeo link, used when no file is uploaded.",
+    }),
     defineField({
       name: "stats",
       type: "array",

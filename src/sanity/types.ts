@@ -455,6 +455,7 @@ export type HomePage = {
     alt: string;
     _type: "image";
   };
+  heroVideo?: R2Preview;
   heroVideoUrl?: string;
   stats?: Array<{
     value?: string;
@@ -622,7 +623,7 @@ export type AllSanitySchemaTypes =
 
 // Source: src/sanity/queries.ts
 // Variable: homepageQuery
-// Query: {  "page": *[_type == "homePage" && _id == "homePage"][0]{    heroEyebrow, heroHeadline, heroHighlight, heroIntro, heroPrimaryCta, heroSecondaryCta,    heroImage, heroVideoUrl, stats,    services, servicesCta,    projects,    clientsHeading,    updates, updatesReadMore,    footage, footageDownload,    merch,    contact, contactIntro, contactFormHeading, contactSubmit, contactImage  },  "services": *[_type == "service"] | order(order asc){ _id, title, tag, timecode, description },  "projects": *[_type == "project" && featured == true] | order(order asc)[0...4]{    _id, title, category, timecode, still, videoUrl  },  "clients": *[_type == "client"] | order(order asc){    _id, name, url, logoHeight,    logo{ ..., "dimensions": asset->metadata.dimensions{ width, height } }  },  "posts": *[_type == "post"] | order(publishedAt desc)[0...3]{    _id, title, "slug": slug.current, category, publishedAt, cover, excerpt  },  "footage": *[_type == "footageAsset"] | order(featured desc, order asc)[0...4]{    _id, title, kind, location, duration, fps, resolution, poster, featured,    "hasDownload": defined(original.key),    "previewUrl": preview.url  },  "products": *[_type == "product"] | order(order asc)[0...2]{    _id, name, garment, price, "slug": slug.current, front, back, available  }}
+// Query: {  "page": *[_type == "homePage" && _id == "homePage"][0]{    heroEyebrow, heroHeadline, heroHighlight, heroIntro, heroPrimaryCta, heroSecondaryCta,    heroImage, heroVideoUrl, heroVideo{ url, contentType }, stats,    services, servicesCta,    projects,    clientsHeading,    updates, updatesReadMore,    footage, footageDownload,    merch,    contact, contactIntro, contactFormHeading, contactSubmit, contactImage  },  "services": *[_type == "service"] | order(order asc){ _id, title, tag, timecode, description },  "projects": *[_type == "project" && featured == true] | order(order asc)[0...4]{    _id, title, category, timecode, still, videoUrl  },  "clients": *[_type == "client"] | order(order asc){    _id, name, url, logoHeight,    logo{ ..., "dimensions": asset->metadata.dimensions{ width, height } }  },  "posts": *[_type == "post"] | order(publishedAt desc)[0...3]{    _id, title, "slug": slug.current, category, publishedAt, cover, excerpt  },  "footage": *[_type == "footageAsset"] | order(featured desc, order asc)[0...4]{    _id, title, kind, location, duration, fps, resolution, poster, featured,    "hasDownload": defined(original.key),    "previewUrl": preview.url  },  "products": *[_type == "product"] | order(order asc)[0...2]{    _id, name, garment, price, "slug": slug.current, front, back, available  }}
 export type HomepageQueryResult = {
   page: {
     heroEyebrow: string | null;
@@ -640,6 +641,10 @@ export type HomepageQueryResult = {
       _type: "image";
     };
     heroVideoUrl: string | null;
+    heroVideo: {
+      url: string | null;
+      contentType: string | null;
+    } | null;
     stats: Array<{
       value?: string;
       label?: string;

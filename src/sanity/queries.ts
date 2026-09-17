@@ -3,7 +3,7 @@ import { defineQuery } from "next-sanity";
 export const homepageQuery = defineQuery(`{
   "page": *[_type == "homePage" && _id == "homePage"][0]{
     heroEyebrow, heroHeadline, heroHighlight, heroIntro, heroPrimaryCta, heroSecondaryCta,
-    heroImage, heroVideoUrl, stats,
+    heroImage, heroVideoUrl, heroVideo{ url, contentType }, stats,
     services, servicesCta,
     projects,
     clientsHeading,

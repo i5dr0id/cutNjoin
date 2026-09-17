@@ -22,6 +22,7 @@ const siteCsp = directives({
   "object-src": ["'none'"],
   "base-uri": ["'self'"],
   "form-action": ["'self'"],
+  "frame-src": ["https://www.youtube-nocookie.com", "https://www.youtube.com", "https://player.vimeo.com"],
   "frame-ancestors": ["'none'"],
   "upgrade-insecure-requests": [],
 });
