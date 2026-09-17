@@ -8,6 +8,32 @@ sound design and video production.
 Next.js (App Router) · TypeScript · Tailwind CSS v4 · Motion · Sanity · React Hook Form · Zod ·
 Resend · Paystack · Cloudflare R2 · Vercel
 
+## Services
+
+Third-party accounts the site depends on. Every key is set through the environment variables below —
+none are hardcoded.
+
+| Service                  | Used for                                                              | Keys                                                       |
+| ------------------------ | --------------------------------------------------------------------- | ---------------------------------------------------------- |
+| **Vercel**               | Hosting, builds and preview deployments; production follows `main`    | Linked through the GitHub integration                      |
+| **GitHub**               | Source control; pull requests trigger preview deployments             | —                                                          |
+| **Sanity**               | Content for every page, plus products and orders; Studio at `/studio` | `NEXT_PUBLIC_SANITY_*`, `NEXT_SANITY_API_WRITE_TOKEN`      |
+| **Cloudflare R2**        | Free footage files and the hero showreel; uploaded from the Studio    | `R2_*`, `NEXT_PUBLIC_R2_PUBLIC_URL`                        |
+| **Cloudflare Turnstile** | Bot check on the quote form                                           | `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`   |
+| **Resend**               | Quote form emails and store order emails                              | `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` |
+| **Paystack**             | Store checkout and payment confirmation webhook                       | `PAYSTACK_SECRET_KEY`                                      |
+
+Notes:
+
+- **Sanity image CDN** serves every image; **Google Fonts** supplies Poppins, downloaded at build time
+  by `next/font` and served from our own domain, so no request reaches Google at runtime.
+- **Resend needs a verified sending domain.** Addresses on unverified domains (including any
+  `gmail.com` address) are rejected. Use `onboarding@resend.dev` until `cutandjoinstudios.com` is verified.
+- **Paystack** must use the live secret key and a live webhook URL (`/api/paystack/webhook`) before the
+  store opens for real customers.
+- **Turnstile** hostnames must list every domain the form runs on; production excludes `localhost`.
+- Adding any new third-party origin also means updating the content security policy in `next.config.ts`.
+
 ## Getting started
 
 Requires Node 20+ and pnpm.
@@ -23,22 +49,25 @@ Add `http://localhost:3000` as a CORS origin (with credentials) in the Sanity pr
 
 ## Environment variables
 
-| Variable                          | Purpose                                                   |
-| --------------------------------- | --------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`            | Canonical site URL, used for metadata, robots and sitemap |
-| `NEXT_PUBLIC_SANITY_PROJECT_ID`   | Sanity project ID                                         |
-| `NEXT_PUBLIC_SANITY_DATASET`      | Sanity dataset, `production` by default                   |
-| `NEXT_PUBLIC_SANITY_API_VERSION`  | Sanity API version date                                   |
-| `NEXT_SANITY_API_WRITE_TOKEN`     | Sanity token with write access, server-only               |
-| `R2_ACCOUNT_ID`                   | Cloudflare account ID for R2                              |
-| `R2_ACCESS_KEY_ID`                | R2 API token access key (server-only)                     |
-| `R2_SECRET_ACCESS_KEY`            | R2 API token secret (server-only)                         |
-| `R2_BUCKET`                       | R2 bucket holding footage files                           |
-| `NEXT_PUBLIC_R2_PUBLIC_URL`       | Public URL of the bucket (custom domain or r2.dev)        |
-| `RESEND_API_KEY`                  | Resend API key for the quote form                         |
-| `CONTACT_TO_EMAIL`                | Inbox that receives quote requests                        |
-| `CONTACT_FROM_EMAIL`              | Sender address; its domain must be verified in Resend     |
-| `PAYSTACK_SECRET_KEY`             | Paystack secret key (server-only), test or live           |
+| Variable                         | Purpose                                                   |
+| -------------------------------- | --------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`           | Canonical site URL, used for metadata, robots and sitemap |
+| `NEXT_PUBLIC_SANITY_PROJECT_ID`  | Sanity project ID                                         |
+| `NEXT_PUBLIC_SANITY_DATASET`     | Sanity dataset, `production` by default                   |
+| `NEXT_PUBLIC_SANITY_API_VERSION` | Sanity API version date                                   |
+| `NEXT_SANITY_API_WRITE_TOKEN`    | Sanity token with write access, server-only               |
+| `R2_ACCOUNT_ID`                  | Cloudflare account ID for R2                              |
+| `R2_ACCESS_KEY_ID`               | R2 API token access key (server-only)                     |
+| `R2_SECRET_ACCESS_KEY`           | R2 API token secret (server-only)                         |
+| `R2_BUCKET`                      | R2 bucket holding footage files                           |
+| `NEXT_PUBLIC_R2_PUBLIC_URL`      | Public URL of the bucket (custom domain or r2.dev)        |
+| `RESEND_API_KEY`                 | Resend API key for the quote form                         |
+| `CONTACT_TO_EMAIL`               | Inbox that receives quote requests                        |
+| `CONTACT_FROM_EMAIL`             | Sender address; its domain must be verified in Resend     |
+| `PAYSTACK_SECRET_KEY`            | Paystack secret key (server-only), test or live           |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Turnstile site key for the quote form widget              |
+| `TURNSTILE_SECRET_KEY`           | Turnstile secret key, server-only                         |
+| `TURNSTILE_HOSTNAMES`            | Comma-separated hostnames Turnstile tokens may come from  |
 
 ## Scripts
 
@@ -77,20 +106,23 @@ src/
     store/                    CartButton, CartDrawer, AddToCart, CheckoutForm, ProductCard
     icons/                    SocialIcon, PlayIcon
     primitives/               Container, Section, SectionEyebrow, SectionHeading, Button,
-                              TimecodeBar, SectionDivider, SprocketRail
+                              TimecodeBar, SectionDivider, SprocketRail, RevealGroup
     layout/                   SiteShell, SiteHeader, HeaderFrame, MainNav, SocialLinks, SiteFooter,
-                              Logo, BackgroundTexture, MobileNav, MotionProvider
-    sections/                 Hero, Services, Projects, Clients, Updates, FreeFootage, Merch,
-                              StartProject, QuoteForm, LazyQuoteForm, ProjectsCarousel, FavouriteButton
+                              Logo, BackgroundTexture, MobileNav, MotionProvider, CustomCursor,
+                              SmoothScroll
+    sections/                 Hero, HeroHeadline, HeroAmbientVideo, Services, Projects, Clients,
+                              Updates, FreeFootage, Merch, StartProject, QuoteForm, LazyQuoteForm,
+                              TurnstileField, ProjectsCarousel, FavouriteButton
   lib/
     site.ts                   routes, navigation, section anchors
     format.ts                 naira, timecode and date formatting
     validation/contact.ts     quote form schema shared by client and server
-    contact/                  brief email builder
+    contact/                  brief email builder, Turnstile verification
     footage/                  footage file rules
     store/                    cart, checkout schema, shipping quotes, pricing, orders, Paystack, order emails
     r2.ts rateLimit.ts        R2 signed URLs, shared rate limiter
     seo/                      LocalBusiness structured data
+    heroVideo.ts maps.ts      hero showreel source, map link helper
     env.ts                    server environment variables
   sanity/
     env.ts client.ts image.ts queries.ts fetch.ts structure.ts
