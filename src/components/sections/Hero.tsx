@@ -1,14 +1,14 @@
 import {
   ButtonLink,
   DecorativeText,
-  PlayButton,
-  PlayRing,
   SanityImage,
   SectionEyebrow,
   TimecodeBar,
 } from "@/components/primitives";
+import { heroVideoSource } from "@/lib/heroVideo";
 import { sections } from "@/lib/site";
 import { HeroHeadline, headlineRevealEndMs } from "./HeroHeadline";
+import { HeroVideoDialog } from "./HeroVideoDialog";
 import type { HomePage } from "./types";
 
 const INTRO_TEXT_GAP_MS = 0;
@@ -77,8 +77,7 @@ export function Hero({ page }: { page: HomePage }) {
         </div>
 
         <div className="absolute top-[518px] left-[46.9%] hidden lg:block">
-          <PlayRing />
-          <PlayButton href={page.heroVideoUrl} label="Play showreel" />
+          <HeroVideoDialog source={heroVideoSource(page)} label="Play showreel" />
         </div>
 
         <TimecodeBar className="mt-[90px]" />
