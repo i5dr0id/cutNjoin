@@ -63,6 +63,32 @@ export const footageLibraryQuery = defineQuery(`{
   }
 }`);
 
+export const storeStatusQuery = defineQuery(`*[_id == "storeSettings"][0]{ open }`);
+
+export const storeQuery = defineQuery(`{
+  "settings": *[_id == "storeSettings"][0]{ open, heading, intro },
+  "products": *[_type == "product"] | order(order asc){
+    _id, name, "slug": slug.current, collection, subtitle, garment, price, available, front, back,
+    "inStock": count(variants[stock > 0]) > 0
+  }
+}`);
+
+export const productQuery = defineQuery(`{
+  "settings": *[_id == "storeSettings"][0]{ open },
+  "product": *[_type == "product" && slug.current == $slug][0]{
+    _id, name, "slug": slug.current, collection, subtitle, garment, tagline, price, available, description,
+    front, back, variants[]{ _key, size, stock }
+  }
+}`);
+
+export const productSlugsQuery = defineQuery(`*[_type == "product" && defined(slug.current)].slug.current`);
+
+export const checkoutQuery = defineQuery(`*[_id == "storeSettings"][0]{
+  open, nigeriaRates[]{ state, fee, eta }, internationalZones[]{ name, countries, fee, eta }, restOfWorldFee, restOfWorldEta
+}`);
+
+export const returnsQuery = defineQuery(`*[_id == "storeSettings"][0]{ returnsPolicy }`);
+
 export const footageTitleQuery = defineQuery(
   `*[_type == "footageAsset" && _id == $id][0]{ _id, title, kind }`,
 );

@@ -1,9 +1,12 @@
 import type { ReactNode } from "react";
+import { CartDrawer } from "@/components/store/CartDrawer";
+import { getStoreStatus } from "@/sanity/fetch";
 import { BackgroundTexture } from "./BackgroundTexture";
 import { SiteFooter } from "./SiteFooter";
 import { SiteHeader } from "./SiteHeader";
 
-export function SiteShell({ children }: { children: ReactNode }) {
+export async function SiteShell({ children }: { children: ReactNode }) {
+  const store = await getStoreStatus();
   return (
     <div className="relative isolate flex min-h-dvh flex-col">
       <a
@@ -18,6 +21,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
         {children}
       </main>
       <SiteFooter />
+      {store?.open && <CartDrawer />}
     </div>
   );
 }

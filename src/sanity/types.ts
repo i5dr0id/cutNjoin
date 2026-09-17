@@ -15,6 +15,62 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: src/sanity/schema.json
+export type ProductReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "product";
+};
+
+export type Order = {
+  _id: string;
+  _type: "order";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  reference?: string;
+  status: "pending" | "paid" | "failed" | "shipped" | "delivered" | "cancelled" | "refunded";
+  trackingNumber?: string;
+  notes?: string;
+  placedAt?: string;
+  paidAt?: string;
+  customer?: {
+    name?: string;
+    email?: string;
+    phone?: string;
+  };
+  shipping?: {
+    country?: string;
+    state?: string;
+    city?: string;
+    address?: string;
+    postcode?: string;
+    zone?: string;
+    eta?: string;
+  };
+  items?: Array<{
+    product?: ProductReference;
+    variantKey?: string;
+    name?: string;
+    size?: string;
+    quantity?: number;
+    unitPrice?: number;
+    _type: "orderItem";
+    _key: string;
+  }>;
+  subtotal?: number;
+  shippingFee?: number;
+  total?: number;
+  payment?: {
+    provider?: string;
+    transactionId?: string;
+    channel?: string;
+    amountPaid?: number;
+  };
+  stockAdjusted?: boolean;
+  emailsSent?: boolean;
+};
+
 export type SanityImageAssetReference = {
   _ref: string;
   _type: "reference";
@@ -52,8 +108,8 @@ export type Product = {
     _type: "image";
   };
   variants?: Array<{
-    size?: "XS" | "S" | "M" | "L" | "XL" | "XXL";
-    stock?: number;
+    size: "XS" | "S" | "M" | "L" | "XL" | "XXL";
+    stock: number;
     _type: "variant";
     _key: string;
   }>;
@@ -241,6 +297,90 @@ export type SectionIntro = {
   eyebrow: string;
   heading: string;
   linkLabel?: string;
+};
+
+export type StoreSettings = {
+  _id: string;
+  _type: "storeSettings";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  open?: boolean;
+  heading?: string;
+  intro?: string;
+  orderEmail?: string;
+  nigeriaRates?: Array<{
+    state:
+      | "Abia"
+      | "Adamawa"
+      | "Akwa Ibom"
+      | "Anambra"
+      | "Bauchi"
+      | "Bayelsa"
+      | "Benue"
+      | "Borno"
+      | "Cross River"
+      | "Delta"
+      | "Ebonyi"
+      | "Edo"
+      | "Ekiti"
+      | "Enugu"
+      | "Federal Capital Territory"
+      | "Gombe"
+      | "Imo"
+      | "Jigawa"
+      | "Kaduna"
+      | "Kano"
+      | "Katsina"
+      | "Kebbi"
+      | "Kogi"
+      | "Kwara"
+      | "Lagos"
+      | "Nasarawa"
+      | "Niger"
+      | "Ogun"
+      | "Ondo"
+      | "Osun"
+      | "Oyo"
+      | "Plateau"
+      | "Rivers"
+      | "Sokoto"
+      | "Taraba"
+      | "Yobe"
+      | "Zamfara";
+    fee?: number;
+    eta?: string;
+    _type: "stateRate";
+    _key: string;
+  }>;
+  internationalZones?: Array<{
+    name: string;
+    countries: Array<string>;
+    fee?: number;
+    eta?: string;
+    _type: "shippingZone";
+    _key: string;
+  }>;
+  restOfWorldFee?: number;
+  restOfWorldEta?: string;
+  returnsPolicy?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
 };
 
 export type SiteSettings = {
@@ -453,6 +593,8 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | ProductReference
+  | Order
   | SanityImageAssetReference
   | Product
   | SanityImageCrop
@@ -466,6 +608,7 @@ export type AllSanitySchemaTypes =
   | Project
   | Service
   | SectionIntro
+  | StoreSettings
   | SiteSettings
   | HomePage
   | SanityImagePaletteSwatch
@@ -723,6 +866,210 @@ export type FootageLibraryQueryResult = {
     previewUrl: string | null;
   }>;
 };
+
+// Source: src/sanity/queries.ts
+// Variable: storeStatusQuery
+// Query: *[_id == "storeSettings"][0]{ open }
+export type StoreStatusQueryResult =
+  | {
+      open: null;
+    }
+  | {
+      open: boolean | null;
+    }
+  | null;
+
+// Source: src/sanity/queries.ts
+// Variable: storeQuery
+// Query: {  "settings": *[_id == "storeSettings"][0]{ open, heading, intro },  "products": *[_type == "product"] | order(order asc){    _id, name, "slug": slug.current, collection, subtitle, garment, price, available, front, back,    "inStock": count(variants[stock > 0]) > 0  }}
+export type StoreQueryResult = {
+  settings:
+    | {
+        open: null;
+        heading: null;
+        intro: null;
+      }
+    | {
+        open: boolean | null;
+        heading: string | null;
+        intro: string | null;
+      }
+    | null;
+  products: Array<{
+    _id: string;
+    name: string;
+    slug: string;
+    collection: string | null;
+    subtitle: string | null;
+    garment: string | null;
+    price: number;
+    available: boolean | null;
+    front: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "image";
+    };
+    back: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "image";
+    };
+    inStock: boolean | null;
+  }>;
+};
+
+// Source: src/sanity/queries.ts
+// Variable: productQuery
+// Query: {  "settings": *[_id == "storeSettings"][0]{ open },  "product": *[_type == "product" && slug.current == $slug][0]{    _id, name, "slug": slug.current, collection, subtitle, garment, tagline, price, available, description,    front, back, variants[]{ _key, size, stock }  }}
+export type ProductQueryResult = {
+  settings:
+    | {
+        open: null;
+      }
+    | {
+        open: boolean | null;
+      }
+    | null;
+  product: {
+    _id: string;
+    name: string;
+    slug: string;
+    collection: string | null;
+    subtitle: string | null;
+    garment: string | null;
+    tagline: string | null;
+    price: number;
+    available: boolean | null;
+    description: string | null;
+    front: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "image";
+    };
+    back: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "image";
+    };
+    variants: Array<{
+      _key: string;
+      size: "L" | "M" | "S" | "XL" | "XS" | "XXL";
+      stock: number;
+    }> | null;
+  } | null;
+};
+
+// Source: src/sanity/queries.ts
+// Variable: productSlugsQuery
+// Query: *[_type == "product" && defined(slug.current)].slug.current
+export type ProductSlugsQueryResult = Array<string>;
+
+// Source: src/sanity/queries.ts
+// Variable: checkoutQuery
+// Query: *[_id == "storeSettings"][0]{  open, nigeriaRates[]{ state, fee, eta }, internationalZones[]{ name, countries, fee, eta }, restOfWorldFee, restOfWorldEta}
+export type CheckoutQueryResult =
+  | {
+      open: null;
+      nigeriaRates: null;
+      internationalZones: null;
+      restOfWorldFee: null;
+      restOfWorldEta: null;
+    }
+  | {
+      open: boolean | null;
+      nigeriaRates: Array<{
+        state:
+          | "Abia"
+          | "Adamawa"
+          | "Akwa Ibom"
+          | "Anambra"
+          | "Bauchi"
+          | "Bayelsa"
+          | "Benue"
+          | "Borno"
+          | "Cross River"
+          | "Delta"
+          | "Ebonyi"
+          | "Edo"
+          | "Ekiti"
+          | "Enugu"
+          | "Federal Capital Territory"
+          | "Gombe"
+          | "Imo"
+          | "Jigawa"
+          | "Kaduna"
+          | "Kano"
+          | "Katsina"
+          | "Kebbi"
+          | "Kogi"
+          | "Kwara"
+          | "Lagos"
+          | "Nasarawa"
+          | "Niger"
+          | "Ogun"
+          | "Ondo"
+          | "Osun"
+          | "Oyo"
+          | "Plateau"
+          | "Rivers"
+          | "Sokoto"
+          | "Taraba"
+          | "Yobe"
+          | "Zamfara";
+        fee: number | null;
+        eta: string | null;
+      }> | null;
+      internationalZones: Array<{
+        name: string;
+        countries: Array<string>;
+        fee: number | null;
+        eta: string | null;
+      }> | null;
+      restOfWorldFee: number | null;
+      restOfWorldEta: string | null;
+    }
+  | null;
+
+// Source: src/sanity/queries.ts
+// Variable: returnsQuery
+// Query: *[_id == "storeSettings"][0]{ returnsPolicy }
+export type ReturnsQueryResult =
+  | {
+      returnsPolicy: null;
+    }
+  | {
+      returnsPolicy: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          href?: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }> | null;
+    }
+  | null;
 
 // Source: src/sanity/queries.ts
 // Variable: footageTitleQuery
