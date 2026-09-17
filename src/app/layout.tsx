@@ -2,6 +2,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
 import { appleStartupImages } from "@/lib/pwa";
+import { CloudflareAnalytics } from "@/components/layout/CloudflareAnalytics";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
@@ -40,6 +41,7 @@ export const viewport: Viewport = {
 };
 
 const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+const cloudflareToken = process.env.NEXT_PUBLIC_CF_BEACON_TOKEN;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -47,6 +49,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-dvh">
         {children}
         {gaId && <GoogleAnalytics gaId={gaId} />}
+        {cloudflareToken && <CloudflareAnalytics token={cloudflareToken} />}
       </body>
     </html>
   );
