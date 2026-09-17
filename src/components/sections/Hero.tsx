@@ -8,19 +8,11 @@ import {
   TimecodeBar,
 } from "@/components/primitives";
 import { sections } from "@/lib/site";
+import { HeroHeadline, headlineRevealEndMs } from "./HeroHeadline";
 import type { HomePage } from "./types";
 
-function HeadlineLine({ line, highlight }: { line: string; highlight: string | null }) {
-  if (!highlight || !line.includes(highlight)) return <span className="block">{line}</span>;
-  const [before, after] = line.split(highlight);
-  return (
-    <span className="block">
-      {before}
-      <span className="text-accent">{highlight}</span>
-      {after}
-    </span>
-  );
-}
+const INTRO_TEXT_GAP_MS = 150;
+const INTRO_BUTTONS_GAP_MS = 350;
 
 function FrameCounter() {
   return (
@@ -36,6 +28,7 @@ function FrameCounter() {
 }
 
 export function Hero({ page }: { page: HomePage }) {
+  const revealEnd = headlineRevealEndMs(page.heroHeadline);
   return (
     <section id={sections.hero} aria-labelledby="hero-heading" className="relative pb-[165px]">
       <div className="absolute inset-x-0 top-0 -z-10 h-[1121px] overflow-hidden bg-card">
@@ -49,18 +42,19 @@ export function Hero({ page }: { page: HomePage }) {
 
         <div className="relative mt-[88px]">
           <SectionEyebrow label={page.heroEyebrow ?? ""} pulse />
-          <h1
-            id="hero-heading"
-            className="pt-4 text-[52px] leading-none font-bold tracking-[-0.025em] uppercase md:text-display"
-          >
-            {page.heroHeadline.map((line) => (
-              <HeadlineLine key={line} line={line} highlight={page.heroHighlight} />
-            ))}
-          </h1>
+          <HeroHeadline lines={page.heroHeadline} highlight={page.heroHighlight} />
           {page.heroIntro && (
-            <p className="max-w-[576px] pt-8 text-lg leading-[28.67px] text-fg/66">{page.heroIntro}</p>
+            <p
+              className="max-w-[576px] animate-soft-rise pt-8 text-lg leading-[28.67px] text-fg/66"
+              style={{ animationDelay: `${revealEnd + INTRO_TEXT_GAP_MS}ms` }}
+            >
+              {page.heroIntro}
+            </p>
           )}
-          <div className="flex flex-wrap gap-4 pt-8">
+          <div
+            className="flex animate-soft-rise flex-wrap gap-4 pt-8"
+            style={{ animationDelay: `${revealEnd + INTRO_BUTTONS_GAP_MS}ms` }}
+          >
             <ButtonLink href={`#${sections.contact}`}>{page.heroPrimaryCta}</ButtonLink>
             <ButtonLink href={`#${sections.projects}`} variant="ghost">
               {page.heroSecondaryCta}
