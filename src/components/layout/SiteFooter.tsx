@@ -2,6 +2,7 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import { mapsSearchUrl } from "@/lib/maps";
 import Link from "next/link";
 import { Container } from "@/components/primitives";
+import { NewsletterForm } from "@/components/sections/NewsletterForm";
 import { footerNav, sections } from "@/lib/site";
 import { getSite } from "@/sanity/fetch";
 import { Logo } from "./Logo";
@@ -74,6 +75,18 @@ export async function SiteFooter() {
             >
               Contact us
             </Link>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4 border-t border-line pt-8 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex flex-col gap-1">
+            <h2 className={columnHeading}>Newsletter</h2>
+            <p className="text-sm leading-5 text-fg/57">
+              Studio news, new free footage and drops. No more than once a month.
+            </p>
+          </div>
+          <div className="w-full max-w-[360px]">
+            <NewsletterForm />
           </div>
         </div>
 

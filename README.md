@@ -20,7 +20,7 @@ none are hardcoded.
 | **Sanity**                   | Content for every page, plus products and orders; Studio at `/studio`               | `NEXT_PUBLIC_SANITY_*`, `NEXT_SANITY_API_WRITE_TOKEN`      |
 | **Cloudflare R2**            | Free footage files and the hero showreel; uploaded from the Studio                  | `R2_*`, `NEXT_PUBLIC_R2_PUBLIC_URL`                        |
 | **Cloudflare Turnstile**     | Bot check on the quote form                                                         | `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`   |
-| **Resend**                   | Quote form emails and store order emails                                            | `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` |
+| **Resend**                   | Quote form emails, store order emails and the newsletter audience                   | `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` |
 | **Cloudflare Web Analytics** | Page views, referrers, countries and Core Web Vitals; no cookies, no consent banner | `NEXT_PUBLIC_CF_BEACON_TOKEN`                              |
 | **Google Analytics 4**       | Visitor and traffic reporting; needs a cookie consent banner in the EU/UK           | `NEXT_PUBLIC_GA_MEASUREMENT_ID`                            |
 | **Paystack**                 | Store checkout and payment confirmation webhook                                     | `PAYSTACK_SECRET_KEY`                                      |
@@ -31,6 +31,8 @@ Notes:
   by `next/font` and served from our own domain, so no request reaches Google at runtime.
 - **Resend needs a verified sending domain.** Addresses on unverified domains (including any
   `gmail.com` address) are rejected. Use `onboarding@resend.dev` until `cutandjoinstudios.com` is verified.
+- **Newsletter signups need a full-access Resend API key** (the site's current key is send-only, so it
+  cannot manage contacts) and `RESEND_AUDIENCE_ID` pointing at an audience created in Resend.
 - **Paystack** must use the live secret key and a live webhook URL (`/api/paystack/webhook`) before the
   store opens for real customers.
 - **Turnstile** hostnames must list every domain the form runs on; production excludes `localhost`.
@@ -66,6 +68,7 @@ Add `http://localhost:3000` as a CORS origin (with credentials) in the Sanity pr
 | `RESEND_API_KEY`                 | Resend API key for the quote form                                     |
 | `CONTACT_TO_EMAIL`               | Inbox that receives quote requests                                    |
 | `CONTACT_FROM_EMAIL`             | Sender address; its domain must be verified in Resend                 |
+| `RESEND_AUDIENCE_ID`             | Resend audience that newsletter signups are added to                  |
 | `PAYSTACK_SECRET_KEY`            | Paystack secret key (server-only), test or live                       |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID`  | Google Analytics 4 measurement ID; analytics stays off when unset     |
 | `NEXT_PUBLIC_CF_BEACON_TOKEN`    | Cloudflare Web Analytics beacon token; analytics stays off when unset |

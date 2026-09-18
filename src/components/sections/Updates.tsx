@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLink, SanityImage, Section } from "@/components/primitives";
 import { formatDate } from "@/lib/format";
 import { routes, sections } from "@/lib/site";
+import { NewsletterForm } from "./NewsletterForm";
 import type { HomePage, Post } from "./types";
 
 function PostCard({ post, readMore }: { post: Post; readMore: string }) {
@@ -51,6 +52,13 @@ export function Updates({ page, posts }: { page: HomePage; posts: Post[] }) {
         {posts.map((post) => (
           <PostCard key={post._id} post={post} readMore={page.updatesReadMore ?? "Read more"} />
         ))}
+      </div>
+
+      <div className="mt-12 flex flex-col gap-4 border-t border-line pt-8 lg:flex-row lg:items-center lg:justify-between">
+        <p className="max-w-[520px] text-[15px] leading-[24.4px] text-fg/66">
+          Get studio news, new free footage and merch drops in your inbox.
+        </p>
+        <NewsletterForm variant="section" />
       </div>
     </Section>
   );
