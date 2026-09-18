@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import { Clock, Mail, MapPin, Phone, type LucideIcon } from "lucide-react";
+import { WhatsAppIcon, whatsappLink } from "@/components/icons/WhatsAppIcon";
 import {
   Container,
   SanityImage,
@@ -16,7 +17,15 @@ import type { HomePage } from "./types";
 
 type Settings = SiteQueryResult["settings"];
 
-function Detail({ icon: Icon, children, href }: { icon: LucideIcon; children: string; href?: string }) {
+function Detail({
+  icon: Icon,
+  children,
+  href,
+}: {
+  icon: LucideIcon | typeof WhatsAppIcon;
+  children: string;
+  href?: string;
+}) {
   const external = href?.startsWith("http");
   const content = (
     <>
@@ -78,6 +87,14 @@ export function StartProject({ page, settings }: { page: HomePage; settings: Set
             {settings?.email && (
               <Detail icon={Mail} href={`mailto:${settings.email}`}>
                 {settings.email}
+              </Detail>
+            )}
+            {settings?.whatsappNumber && (
+              <Detail
+                icon={WhatsAppIcon}
+                href={whatsappLink(settings.whatsappNumber, settings.whatsappMessage)}
+              >
+                Chat on WhatsApp
               </Detail>
             )}
             {settings?.phone && (

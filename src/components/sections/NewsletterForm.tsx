@@ -48,7 +48,10 @@ export function NewsletterForm({ variant = "footer" }: { variant?: "footer" | "s
   const wide = variant === "section";
 
   return (
-    <form onSubmit={onSubmit} className={`flex flex-col gap-3 ${wide ? "max-w-[520px]" : ""}`}>
+    <form
+      onSubmit={onSubmit}
+      className={`flex w-full flex-col gap-3 ${wide ? "lg:w-[480px] lg:shrink-0" : ""}`}
+    >
       <div className="flex">
         <label htmlFor={`newsletter-email-${variant}`} className="sr-only">
           Email address

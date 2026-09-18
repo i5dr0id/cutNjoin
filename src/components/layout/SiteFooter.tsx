@@ -1,4 +1,5 @@
 import { Mail, MapPin, Phone } from "lucide-react";
+import { WhatsAppIcon, whatsappLink } from "@/components/icons/WhatsAppIcon";
 import { mapsSearchUrl } from "@/lib/maps";
 import Link from "next/link";
 import { Container } from "@/components/primitives";
@@ -110,6 +111,19 @@ export async function SiteFooter() {
                 <a href={`mailto:${settings.email}`} className={`${barItem} hover:text-fg/80`}>
                   <Mail aria-hidden className="size-[11px]" />
                   {settings.email}
+                </a>
+              </li>
+            )}
+            {settings?.whatsappNumber && (
+              <li>
+                <a
+                  href={whatsappLink(settings.whatsappNumber, settings.whatsappMessage)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`${barItem} hover:text-fg/80`}
+                >
+                  <WhatsAppIcon className="size-[11px]" />
+                  WhatsApp
                 </a>
               </li>
             )}
