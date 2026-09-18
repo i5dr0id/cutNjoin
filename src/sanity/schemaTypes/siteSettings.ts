@@ -18,7 +18,7 @@ export const siteSettings = defineType({
       title: "WhatsApp number",
       type: "string",
       group: "contact",
-      description: "With country code, e.g. +234 813 456 7890. Leave empty to hide the chat button.",
+      description: "With country code, e.g. +234 805 404 9841. Leave empty to hide the chat button.",
     }),
     defineField({
       name: "whatsappMessage",
