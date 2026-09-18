@@ -1,6 +1,7 @@
 import { clientIdFrom, createRateLimiter } from "@/lib/rateLimit";
 import { R2NotConfiguredError, createDownloadUrl } from "@/lib/r2";
 import { routes } from "@/lib/site";
+import { recordFootageDownload } from "@/lib/stats";
 import { client } from "@/sanity/client";
 
 const isRateLimited = createRateLimiter({ windowMs: 10 * 60 * 1000, max: 30 });
@@ -35,6 +36,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 
   try {
     const downloadUrl = await createDownloadUrl(key, footage.original?.filename ?? `${footage.title}`);
+    await recordFootageDownload(id);
     return new Response(null, { status: 302, headers: { Location: downloadUrl, ...noStore } });
   } catch (error) {
     if (error instanceof R2NotConfiguredError) {

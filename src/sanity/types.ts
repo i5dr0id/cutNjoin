@@ -114,6 +114,7 @@ export type Product = {
     _key: string;
   }>;
   description?: string;
+  unitsSold?: number;
   available?: boolean;
   order?: number;
 };
@@ -167,6 +168,13 @@ export type FootageAsset = {
   };
   original?: R2Original;
   preview?: R2Preview;
+  downloads?: number;
+  downloadsByMonth?: Array<
+    {
+      _key: string;
+    } & MonthlyCount
+  >;
+  lastDownloadedAt?: string;
 };
 
 export type R2Preview = {
@@ -290,6 +298,11 @@ export type Service = {
   timecode?: string;
   description: string;
   order?: number;
+};
+
+export type MonthlyCount = {
+  _type: "monthlyCount";
+  count?: number;
 };
 
 export type SectionIntro = {
@@ -608,6 +621,7 @@ export type AllSanitySchemaTypes =
   | Client
   | Project
   | Service
+  | MonthlyCount
   | SectionIntro
   | StoreSettings
   | SiteSettings

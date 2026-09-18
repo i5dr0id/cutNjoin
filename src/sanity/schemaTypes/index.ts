@@ -4,6 +4,7 @@ import { footageAsset } from "./footageAsset";
 import { homePage } from "./homePage";
 import { post } from "./post";
 import { order } from "./order";
+import { monthlyCount } from "./monthlyCount";
 import { product } from "./product";
 import { project } from "./project";
 import { r2Original, r2Preview } from "./r2File";
@@ -19,6 +20,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   siteSettings,
   storeSettings,
   sectionIntro,
+  monthlyCount,
   r2Original,
   r2Preview,
   service,
