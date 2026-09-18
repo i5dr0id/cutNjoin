@@ -2483,6 +2483,20 @@
         },
         "optional": true
       },
+      "whatsappNumber": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "whatsappMessage": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "address": {
         "type": "objectAttribute",
         "value": {

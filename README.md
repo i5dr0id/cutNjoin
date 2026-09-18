@@ -15,6 +15,7 @@ none are hardcoded.
 
 | Service                      | Used for                                                                            | Keys                                                       |
 | ---------------------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| **Hostinger**                | Domain registrar and DNS for `cutandjoinstudios.com`                                | —                                                          |
 | **Vercel**                   | Hosting, builds and preview deployments; production follows `main`                  | Linked through the GitHub integration                      |
 | **GitHub**                   | Source control; pull requests trigger preview deployments                           | —                                                          |
 | **Sanity**                   | Content for every page, plus products and orders; Studio at `/studio`               | `NEXT_PUBLIC_SANITY_*`, `NEXT_SANITY_API_WRITE_TOKEN`      |
@@ -34,6 +35,8 @@ Notes:
 - **Paystack** must use the live secret key and a live webhook URL (`/api/paystack/webhook`) before the
   store opens for real customers.
 - **Turnstile** hostnames must list every domain the form runs on; production excludes `localhost`.
+- **DNS lives at Hostinger.** Pointing the live domain at Vercel, and verifying the sending domain in
+  Resend, both mean adding records there. The Hostinger hosting plan is unused — the site runs on Vercel.
 - Adding any new third-party origin also means updating the content security policy in `next.config.ts`.
 
 ## Getting started

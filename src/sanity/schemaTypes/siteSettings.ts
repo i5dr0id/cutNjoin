@@ -13,6 +13,20 @@ export const siteSettings = defineType({
   fields: [
     defineField({ name: "email", type: "string", group: "contact", validation: (r) => r.email() }),
     defineField({ name: "phone", type: "string", group: "contact" }),
+    defineField({
+      name: "whatsappNumber",
+      title: "WhatsApp number",
+      type: "string",
+      group: "contact",
+      description: "With country code, e.g. +234 805 404 9841. Leave empty to hide the chat button.",
+    }),
+    defineField({
+      name: "whatsappMessage",
+      title: "WhatsApp opening message",
+      type: "string",
+      group: "contact",
+      description: "Pre-filled text in the visitor's WhatsApp, e.g. Hi CUT&JOIN, I'd like to ask about…",
+    }),
     defineField({ name: "address", title: "Full address", type: "string", group: "contact" }),
     defineField({ name: "addressShort", title: "Short address", type: "string", group: "contact" }),
     defineField({

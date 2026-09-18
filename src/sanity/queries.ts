@@ -95,7 +95,8 @@ export const footageTitleQuery = defineQuery(
 
 export const siteQuery = defineQuery(`{
   "settings": *[_type == "siteSettings" && _id == "siteSettings"][0]{
-    email, phone, address, addressShort, location, hoursSummary, hours, socials, footerBlurb, copyrightName,
+    email, phone, whatsappNumber, whatsappMessage, address, addressShort, location, hoursSummary, hours,
+    socials, footerBlurb, copyrightName,
     footageLicenceSummary
   },
   "services": *[_type == "service"] | order(order asc){ _id, title }
