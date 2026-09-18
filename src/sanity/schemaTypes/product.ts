@@ -59,6 +59,14 @@ export const product = defineType({
     }),
     defineField({ name: "description", type: "text", rows: 4 }),
     defineField({
+      name: "unitsSold",
+      title: "Units sold",
+      type: "number",
+      readOnly: true,
+      initialValue: 0,
+      description: "Counted when an order is paid",
+    }),
+    defineField({
       name: "available",
       title: "On sale",
       type: "boolean",
@@ -67,5 +75,15 @@ export const product = defineType({
     }),
     orderField,
   ],
-  preview: { select: { title: "name", subtitle: "subtitle", media: "front" } },
+  orderings: [
+    { name: "unitsSoldDesc", title: "Best selling", by: [{ field: "unitsSold", direction: "desc" }] },
+  ],
+  preview: {
+    select: { title: "name", subtitle: "subtitle", media: "front", unitsSold: "unitsSold" },
+    prepare: ({ title, subtitle, media, unitsSold }) => ({
+      title,
+      subtitle: [subtitle, unitsSold ? `${unitsSold} sold` : null].filter(Boolean).join(" · "),
+      media,
+    }),
+  },
 });

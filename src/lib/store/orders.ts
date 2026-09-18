@@ -157,7 +157,10 @@ export async function settleOrder(
     );
     for (const item of order.items) {
       settle.patch(item.product._ref, (patch) =>
-        patch.dec({ [`variants[_key=="${item.variantKey}"].stock`]: item.quantity }),
+        patch
+          .setIfMissing({ unitsSold: 0 })
+          .dec({ [`variants[_key=="${item.variantKey}"].stock`]: item.quantity })
+          .inc({ unitsSold: item.quantity }),
       );
     }
 

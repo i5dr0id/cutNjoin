@@ -671,6 +671,13 @@
         },
         "optional": true
       },
+      "unitsSold": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
+      },
       "available": {
         "type": "objectAttribute",
         "value": {
@@ -1008,6 +1015,42 @@
         "value": {
           "type": "inline",
           "name": "r2Preview"
+        },
+        "optional": true
+      },
+      "downloads": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
+      },
+      "downloadsByMonth": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "array",
+          "of": {
+            "type": "object",
+            "attributes": {
+              "_key": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "rest": {
+              "type": "inline",
+              "name": "monthlyCount"
+            }
+          }
+        },
+        "optional": true
+      },
+      "lastDownloadedAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
         },
         "optional": true
       }
@@ -1808,6 +1851,29 @@
           "type": "number"
         },
         "optional": true
+      }
+    }
+  },
+  {
+    "name": "monthlyCount",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "monthlyCount"
+          }
+        },
+        "count": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        }
       }
     }
   },

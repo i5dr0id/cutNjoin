@@ -8,6 +8,7 @@ export const footageAsset = defineType({
   groups: [
     { name: "details", title: "Details", default: true },
     { name: "files", title: "Files" },
+    { name: "usage", title: "Usage" },
   ],
   fields: [
     defineField({ name: "title", type: "string", group: "details", validation: (r) => r.required() }),
@@ -91,12 +92,54 @@ export const footageAsset = defineType({
       description: "A short, compressed 720p MP4 that plays on the website. Up to 100 MB.",
       hidden: ({ document }) => document?.kind === "image",
     }),
+    defineField({
+      name: "downloads",
+      title: "Total downloads",
+      type: "number",
+      group: "usage",
+      readOnly: true,
+      initialValue: 0,
+    }),
+    defineField({
+      name: "downloadsByMonth",
+      title: "Downloads by month",
+      type: "array",
+      group: "usage",
+      readOnly: true,
+      of: [defineArrayMember({ type: "monthlyCount" })],
+    }),
+    defineField({
+      name: "lastDownloadedAt",
+      title: "Last downloaded",
+      type: "datetime",
+      group: "usage",
+      readOnly: true,
+    }),
+  ],
+  orderings: [
+    {
+      name: "downloadsDesc",
+      title: "Most downloaded",
+      by: [{ field: "downloads", direction: "desc" }],
+    },
   ],
   preview: {
-    select: { title: "title", subtitle: "location", media: "poster", kind: "kind", hasFile: "original.key" },
-    prepare: ({ title, subtitle, media, kind, hasFile }) => ({
+    select: {
+      title: "title",
+      subtitle: "location",
+      media: "poster",
+      kind: "kind",
+      hasFile: "original.key",
+      downloads: "downloads",
+    },
+    prepare: ({ title, subtitle, media, kind, hasFile, downloads }) => ({
       title,
-      subtitle: [kind === "image" ? "Image" : "Video", subtitle, hasFile ? null : "no file yet"]
+      subtitle: [
+        kind === "image" ? "Image" : "Video",
+        subtitle,
+        hasFile ? null : "no file yet",
+        downloads ? `${downloads} downloads` : null,
+      ]
         .filter(Boolean)
         .join(" · "),
       media,
