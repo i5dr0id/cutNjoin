@@ -13,15 +13,17 @@ Resend · Paystack · Cloudflare R2 · Vercel
 Third-party accounts the site depends on. Every key is set through the environment variables below —
 none are hardcoded.
 
-| Service                  | Used for                                                              | Keys                                                       |
-| ------------------------ | --------------------------------------------------------------------- | ---------------------------------------------------------- |
-| **Vercel**               | Hosting, builds and preview deployments; production follows `main`    | Linked through the GitHub integration                      |
-| **GitHub**               | Source control; pull requests trigger preview deployments             | —                                                          |
-| **Sanity**               | Content for every page, plus products and orders; Studio at `/studio` | `NEXT_PUBLIC_SANITY_*`, `NEXT_SANITY_API_WRITE_TOKEN`      |
-| **Cloudflare R2**        | Free footage files and the hero showreel; uploaded from the Studio    | `R2_*`, `NEXT_PUBLIC_R2_PUBLIC_URL`                        |
-| **Cloudflare Turnstile** | Bot check on the quote form                                           | `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`   |
-| **Resend**               | Quote form emails and store order emails                              | `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` |
-| **Paystack**             | Store checkout and payment confirmation webhook                       | `PAYSTACK_SECRET_KEY`                                      |
+| Service                      | Used for                                                                            | Keys                                                       |
+| ---------------------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| **Vercel**                   | Hosting, builds and preview deployments; production follows `main`                  | Linked through the GitHub integration                      |
+| **GitHub**                   | Source control; pull requests trigger preview deployments                           | —                                                          |
+| **Sanity**                   | Content for every page, plus products and orders; Studio at `/studio`               | `NEXT_PUBLIC_SANITY_*`, `NEXT_SANITY_API_WRITE_TOKEN`      |
+| **Cloudflare R2**            | Free footage files and the hero showreel; uploaded from the Studio                  | `R2_*`, `NEXT_PUBLIC_R2_PUBLIC_URL`                        |
+| **Cloudflare Turnstile**     | Bot check on the quote form                                                         | `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`   |
+| **Resend**                   | Quote form emails and store order emails                                            | `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` |
+| **Cloudflare Web Analytics** | Page views, referrers, countries and Core Web Vitals; no cookies, no consent banner | `NEXT_PUBLIC_CF_BEACON_TOKEN`                              |
+| **Google Analytics 4**       | Visitor and traffic reporting; needs a cookie consent banner in the EU/UK           | `NEXT_PUBLIC_GA_MEASUREMENT_ID`                            |
+| **Paystack**                 | Store checkout and payment confirmation webhook                                     | `PAYSTACK_SECRET_KEY`                                      |
 
 Notes:
 
@@ -49,25 +51,27 @@ Add `http://localhost:3000` as a CORS origin (with credentials) in the Sanity pr
 
 ## Environment variables
 
-| Variable                         | Purpose                                                   |
-| -------------------------------- | --------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`           | Canonical site URL, used for metadata, robots and sitemap |
-| `NEXT_PUBLIC_SANITY_PROJECT_ID`  | Sanity project ID                                         |
-| `NEXT_PUBLIC_SANITY_DATASET`     | Sanity dataset, `production` by default                   |
-| `NEXT_PUBLIC_SANITY_API_VERSION` | Sanity API version date                                   |
-| `NEXT_SANITY_API_WRITE_TOKEN`    | Sanity token with write access, server-only               |
-| `R2_ACCOUNT_ID`                  | Cloudflare account ID for R2                              |
-| `R2_ACCESS_KEY_ID`               | R2 API token access key (server-only)                     |
-| `R2_SECRET_ACCESS_KEY`           | R2 API token secret (server-only)                         |
-| `R2_BUCKET`                      | R2 bucket holding footage files                           |
-| `NEXT_PUBLIC_R2_PUBLIC_URL`      | Public URL of the bucket (custom domain or r2.dev)        |
-| `RESEND_API_KEY`                 | Resend API key for the quote form                         |
-| `CONTACT_TO_EMAIL`               | Inbox that receives quote requests                        |
-| `CONTACT_FROM_EMAIL`             | Sender address; its domain must be verified in Resend     |
-| `PAYSTACK_SECRET_KEY`            | Paystack secret key (server-only), test or live           |
-| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Turnstile site key for the quote form widget              |
-| `TURNSTILE_SECRET_KEY`           | Turnstile secret key, server-only                         |
-| `TURNSTILE_HOSTNAMES`            | Comma-separated hostnames Turnstile tokens may come from  |
+| Variable                         | Purpose                                                               |
+| -------------------------------- | --------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`           | Canonical site URL, used for metadata, robots and sitemap             |
+| `NEXT_PUBLIC_SANITY_PROJECT_ID`  | Sanity project ID                                                     |
+| `NEXT_PUBLIC_SANITY_DATASET`     | Sanity dataset, `production` by default                               |
+| `NEXT_PUBLIC_SANITY_API_VERSION` | Sanity API version date                                               |
+| `NEXT_SANITY_API_WRITE_TOKEN`    | Sanity token with write access, server-only                           |
+| `R2_ACCOUNT_ID`                  | Cloudflare account ID for R2                                          |
+| `R2_ACCESS_KEY_ID`               | R2 API token access key (server-only)                                 |
+| `R2_SECRET_ACCESS_KEY`           | R2 API token secret (server-only)                                     |
+| `R2_BUCKET`                      | R2 bucket holding footage files                                       |
+| `NEXT_PUBLIC_R2_PUBLIC_URL`      | Public URL of the bucket (custom domain or r2.dev)                    |
+| `RESEND_API_KEY`                 | Resend API key for the quote form                                     |
+| `CONTACT_TO_EMAIL`               | Inbox that receives quote requests                                    |
+| `CONTACT_FROM_EMAIL`             | Sender address; its domain must be verified in Resend                 |
+| `PAYSTACK_SECRET_KEY`            | Paystack secret key (server-only), test or live                       |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID`  | Google Analytics 4 measurement ID; analytics stays off when unset     |
+| `NEXT_PUBLIC_CF_BEACON_TOKEN`    | Cloudflare Web Analytics beacon token; analytics stays off when unset |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Turnstile site key for the quote form widget                          |
+| `TURNSTILE_SECRET_KEY`           | Turnstile secret key, server-only                                     |
+| `TURNSTILE_HOSTNAMES`            | Comma-separated hostnames Turnstile tokens may come from              |
 
 ## Scripts
 
