@@ -94,6 +94,10 @@ export function FootageDownload({
 
           {licenceSummary && <p className="text-sm leading-[22.75px] text-fg/66">{licenceSummary}</p>}
 
+          <p className="border-l border-fg/12 pl-4 text-xs leading-5 text-fg/55">
+            4K H.264, 8-bit — edit-ready. The 10-bit master is available on request.
+          </p>
+
           <label
             htmlFor={checkboxId}
             className="flex cursor-pointer items-start gap-3 text-sm leading-5 text-fg/80"

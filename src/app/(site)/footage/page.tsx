@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FootageGrid } from "@/components/footage/FootageGrid";
 import { FootageSearch, footageTypeOptions } from "@/components/footage/FootageSearch";
 import { Container, SanityImage, SectionEyebrow, buttonClasses } from "@/components/primitives";
-import { routes } from "@/lib/site";
+import { routes, sections } from "@/lib/site";
 import { getFootageLibrary, type FootageFilter } from "@/sanity/fetch";
 
 const PAGE_SIZE = 24;
@@ -121,16 +121,29 @@ export default async function FootagePage({ searchParams }: FootagePageProps) {
           </div>
         )}
 
-        <p className="pt-12 text-sm leading-5 text-fg/55">
-          All footage is free for non-commercial use under the{" "}
-          <Link
-            href={routes.footageLicence}
-            className="text-fg/80 underline underline-offset-2 hover:text-fg"
-          >
-            free footage licence
-          </Link>
-          .
-        </p>
+        <div className="flex flex-col gap-2 pt-12 text-sm leading-5 text-fg/55">
+          <p>
+            All footage is free for non-commercial use under the{" "}
+            <Link
+              href={routes.footageLicence}
+              className="text-fg/80 underline underline-offset-2 hover:text-fg"
+            >
+              free footage licence
+            </Link>
+            .
+          </p>
+          <p>
+            Downloads are 4K H.264, 8-bit — ready to edit and grade lightly. Need the 10-bit master for
+            grading or VFX?{" "}
+            <Link
+              href={`/#${sections.contact}`}
+              className="text-fg/80 underline underline-offset-2 hover:text-fg"
+            >
+              Ask us for it
+            </Link>
+            .
+          </p>
+        </div>
       </Container>
     </>
   );
