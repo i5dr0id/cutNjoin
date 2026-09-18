@@ -79,7 +79,7 @@ export function CustomCursor() {
   const interactive = mode === "interactive";
 
   return (
-    <div aria-hidden className="pointer-events-none fixed inset-0 z-[60]">
+    <div aria-hidden data-cursor-layer className="pointer-events-none fixed inset-0 z-[60]">
       <div
         ref={ring}
         className={`absolute top-0 left-0 rounded-full border border-fg/45 transition-[width,height,opacity,border-color] duration-300 ease-out ${

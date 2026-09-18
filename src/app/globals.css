@@ -232,6 +232,19 @@
   html[data-custom-cursor] *:not(input):not(textarea) {
     cursor: none !important;
   }
+
+  html[data-custom-cursor]:has(dialog[open]) *:not(input):not(textarea) {
+    cursor: auto !important;
+  }
+
+  html[data-custom-cursor]:has(dialog[open])
+    :is(a, button, [role="button"], select, summary, label:has(> input)) {
+    cursor: pointer !important;
+  }
+
+  html:has(dialog[open]) [data-cursor-layer] {
+    opacity: 0;
+  }
 }
 
 @media (scripting: enabled) {
