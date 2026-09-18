@@ -9,7 +9,7 @@ export function FootagePreview({ src, children }: FootagePreviewProps) {
   const video = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    const tile = container.current?.parentElement;
+    const tile = container.current;
     const element = video.current;
     if (!src || !tile || !element) return;
 

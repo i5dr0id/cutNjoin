@@ -1,3 +1,4 @@
+import { after } from "next/server";
 import { clientIdFrom, createRateLimiter } from "@/lib/rateLimit";
 import { R2NotConfiguredError, createDownloadUrl } from "@/lib/r2";
 import { routes } from "@/lib/site";
@@ -36,7 +37,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 
   try {
     const downloadUrl = await createDownloadUrl(key, footage.original?.filename ?? `${footage.title}`);
-    await recordFootageDownload(id);
+    after(() => recordFootageDownload(id));
     return new Response(null, { status: 302, headers: { Location: downloadUrl, ...noStore } });
   } catch (error) {
     if (error instanceof R2NotConfiguredError) {
