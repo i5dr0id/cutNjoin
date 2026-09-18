@@ -12,15 +12,22 @@ export class R2NotConfiguredError extends Error {
   }
 }
 
+let cached: { client: S3Client; accountId: string } | null = null;
+
 function r2() {
   const config = serverEnv.r2();
   if (!config) throw new R2NotConfiguredError();
-  const client = new S3Client({
-    region: "auto",
-    endpoint: `https://${config.accountId}.r2.cloudflarestorage.com`,
-    credentials: { accessKeyId: config.accessKeyId, secretAccessKey: config.secretAccessKey },
-  });
-  return { client, config };
+  if (cached?.accountId !== config.accountId) {
+    cached = {
+      accountId: config.accountId,
+      client: new S3Client({
+        region: "auto",
+        endpoint: `https://${config.accountId}.r2.cloudflarestorage.com`,
+        credentials: { accessKeyId: config.accessKeyId, secretAccessKey: config.secretAccessKey },
+      }),
+    };
+  }
+  return { client: cached.client, config };
 }
 
 export function isR2Configured() {

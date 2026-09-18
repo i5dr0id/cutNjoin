@@ -28,17 +28,44 @@ function readRaw() {
   }
 }
 
+function isCartLine(value: unknown): value is CartLine {
+  if (typeof value !== "object" || value === null) return false;
+  const line = value as Record<string, unknown>;
+  return (
+    typeof line.productId === "string" &&
+    typeof line.variantKey === "string" &&
+    typeof line.name === "string" &&
+    typeof line.size === "string" &&
+    typeof line.slug === "string" &&
+    Number.isFinite(line.quantity) &&
+    Number.isFinite(line.unitPrice) &&
+    (line.imageUrl === null || typeof line.imageUrl === "string")
+  );
+}
+
 function snapshot(): CartLine[] {
   const raw = readRaw();
   if (raw === cachedRaw) return cachedLines;
   cachedRaw = raw;
+  let lines: CartLine[] = EMPTY;
   try {
     const parsed: unknown = raw ? JSON.parse(raw) : [];
-    cachedLines = Array.isArray(parsed) ? (parsed as CartLine[]) : EMPTY;
+    if (Array.isArray(parsed)) lines = parsed.filter(isCartLine);
   } catch {
-    cachedLines = EMPTY;
+    lines = EMPTY;
   }
+  cachedLines = lines;
+  if (raw !== null && lines.length !== safeLength(raw)) write(lines);
   return cachedLines;
+}
+
+function safeLength(raw: string) {
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed.length : -1;
+  } catch {
+    return -1;
+  }
 }
 
 function write(lines: CartLine[]) {

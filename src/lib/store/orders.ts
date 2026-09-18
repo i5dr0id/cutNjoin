@@ -9,6 +9,8 @@ import { countryName } from "./regions";
 import type { ShippingQuote } from "./shipping";
 
 const REFERENCE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const SAFE_VARIANT_KEY = /^[\w-]+$/;
+
 const FAILED_STATUSES = new Set(["failed", "reversed"]);
 
 export type OrderStatus = "pending" | "paid" | "failed" | "shipped" | "delivered" | "cancelled" | "refunded";
@@ -134,6 +136,7 @@ export async function settleOrder(
     if (!amountMatches) {
       await client
         .patch(id)
+        .ifRevisionId(order._rev)
         .set({
           status: "failed",
           notes: `Payment ${transaction.reference} was ${transaction.currency} ${transaction.amount / 100}, expected NGN ${order.total}.`,
@@ -156,6 +159,9 @@ export async function settleOrder(
       }),
     );
     for (const item of order.items) {
+      if (!SAFE_VARIANT_KEY.test(item.variantKey)) {
+        throw new Error(`Unsafe variant key on order ${reference}: ${item.variantKey}`);
+      }
       settle.patch(item.product._ref, (patch) =>
         patch
           .setIfMissing({ unitsSold: 0 })

@@ -14,6 +14,15 @@ function readFavourites(): string {
   }
 }
 
+function favouriteIds(serialized: string): string[] {
+  try {
+    const parsed: unknown = JSON.parse(serialized);
+    return Array.isArray(parsed) ? parsed.filter((id): id is string => typeof id === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
 function subscribe(listener: () => void) {
   listeners.add(listener);
   window.addEventListener("storage", listener);
@@ -24,7 +33,7 @@ function subscribe(listener: () => void) {
 }
 
 function toggleFavourite(id: string) {
-  const current = new Set<string>(JSON.parse(readFavourites()));
+  const current = new Set<string>(favouriteIds(readFavourites()));
   if (current.has(id)) current.delete(id);
   else current.add(id);
   try {
@@ -44,7 +53,7 @@ const sizes = {
 
 export function FavouriteButton({ id, title, size, className = "" }: FavouriteButtonProps) {
   const serialized = useSyncExternalStore(subscribe, readFavourites, () => "[]");
-  const liked = (JSON.parse(serialized) as string[]).includes(id);
+  const liked = favouriteIds(serialized).includes(id);
   return (
     <button
       type="button"

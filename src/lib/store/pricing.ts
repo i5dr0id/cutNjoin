@@ -49,16 +49,20 @@ export async function priceCheckout(
 
   if (!settings?.open) return { ok: false, error: "store_closed" };
 
-  const requested = new Map<string, number>();
+  const requested = new Map<string, { productId: string; variantKey: string; quantity: number }>();
   for (const item of items) {
     const key = `${item.productId}:${item.variantKey}`;
-    requested.set(key, (requested.get(key) ?? 0) + item.quantity);
+    const existing = requested.get(key);
+    requested.set(key, {
+      productId: item.productId,
+      variantKey: item.variantKey,
+      quantity: (existing?.quantity ?? 0) + item.quantity,
+    });
   }
 
   const problems: PricingProblem[] = [];
   const lines: PricedLine[] = [];
-  for (const [key, quantity] of requested) {
-    const [productId, variantKey] = key.split(":");
+  for (const { productId, variantKey, quantity } of requested.values()) {
     const product = products.find((entry) => entry._id === productId);
     const variant = product?.variants?.find((entry) => entry._key === variantKey);
     if (!product || !product.available || !variant) {

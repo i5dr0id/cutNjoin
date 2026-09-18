@@ -83,7 +83,11 @@ export const getFootageLibrary = cache((type: FootageFilter, query: string, star
 const storeCache = { next: { revalidate: REVALIDATE_SECONDS, tags: ["store"] } };
 
 export const getProjects = cache(() =>
-  client.fetch<ProjectsQueryResult>(projectsQuery, {}, { next: { revalidate: 60, tags: ["projects"] } }),
+  client.fetch<ProjectsQueryResult>(
+    projectsQuery,
+    {},
+    { next: { revalidate: REVALIDATE_SECONDS, tags: ["projects"] } },
+  ),
 );
 
 export const getStoreStatus = cache(() =>

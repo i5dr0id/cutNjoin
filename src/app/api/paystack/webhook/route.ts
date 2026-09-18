@@ -11,9 +11,15 @@ export async function POST(request: Request) {
     return new Response("Invalid signature", { status: 401 });
   }
 
-  const event = JSON.parse(rawBody) as PaystackEvent;
-  const reference = event.data?.reference;
-  if (!SETTLING_EVENTS.has(event.event) || !reference || !isOrderReference(reference)) {
+  let event: PaystackEvent | null = null;
+  try {
+    event = JSON.parse(rawBody) as PaystackEvent;
+  } catch {
+    return new Response("Ignored", { status: 200 });
+  }
+
+  const reference = event?.data?.reference;
+  if (!event || !SETTLING_EVENTS.has(event.event) || !reference || !isOrderReference(reference)) {
     return new Response("Ignored", { status: 200 });
   }
 

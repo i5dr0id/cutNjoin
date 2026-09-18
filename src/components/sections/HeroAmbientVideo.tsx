@@ -43,7 +43,7 @@ export function HeroAmbientVideo({ source, posterUrl, poster, startAfterMs }: He
   return (
     <>
       {poster}
-      {source?.kind === "file" && (
+      {source?.kind === "file" && started && (
         <video
           ref={video}
           src={source.src}

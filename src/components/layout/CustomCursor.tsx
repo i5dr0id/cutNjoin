@@ -41,15 +41,23 @@ export function CustomCursor() {
     if (!enabled) return;
     let frame = 0;
 
+    let hovered: Element | null = null;
+    let pending = false;
+
     const move = (event: PointerEvent) => {
       target.current = { x: event.clientX, y: event.clientY };
-      const element = event.target instanceof Element ? event.target : null;
-      const overText = element?.closest(TEXT_FIELD);
-      setMode(overText ? "hidden" : element?.closest(INTERACTIVE) ? "interactive" : "default");
+      hovered = event.target instanceof Element ? event.target : null;
+      pending = true;
     };
     const leave = () => setMode("hidden");
 
     const render = () => {
+      if (pending) {
+        pending = false;
+        setMode(
+          hovered?.closest(TEXT_FIELD) ? "hidden" : hovered?.closest(INTERACTIVE) ? "interactive" : "default",
+        );
+      }
       const { x, y } = current.current;
       current.current = { x: x + (target.current.x - x) * FOLLOW, y: y + (target.current.y - y) * FOLLOW };
       if (ring.current) {
@@ -79,7 +87,7 @@ export function CustomCursor() {
   const interactive = mode === "interactive";
 
   return (
-    <div aria-hidden className="pointer-events-none fixed inset-0 z-[60]">
+    <div aria-hidden data-cursor-layer className="pointer-events-none fixed inset-0 z-[60]">
       <div
         ref={ring}
         className={`absolute top-0 left-0 rounded-full border border-fg/45 transition-[width,height,opacity,border-color] duration-300 ease-out ${
