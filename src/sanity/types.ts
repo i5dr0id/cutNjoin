@@ -792,6 +792,25 @@ export type HomepageQueryResult = {
 };
 
 // Source: src/sanity/queries.ts
+// Variable: projectsQuery
+// Query: *[_type == "project"] | order(order asc){  _id, title, category, timecode, still, videoUrl}
+export type ProjectsQueryResult = Array<{
+  _id: string;
+  title: string;
+  category: string;
+  timecode: string | null;
+  still: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: "image";
+  };
+  videoUrl: string | null;
+}>;
+
+// Source: src/sanity/queries.ts
 // Variable: seoQuery
 // Query: *[_type == "homePage" && _id == "homePage"][0]{  seoTitle, seoDescription, shareImage, heroImage, heroIntro, heroHeadline, heroHighlight}
 export type SeoQueryResult = {
