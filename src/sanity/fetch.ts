@@ -11,6 +11,7 @@ import {
   storeStatusQuery,
   footageTitleQuery,
   homepageQuery,
+  projectsQuery,
   licenceQuery,
   seoQuery,
   siteQuery,
@@ -25,6 +26,7 @@ import type {
   StoreStatusQueryResult,
   FootageTitleQueryResult,
   HomepageQueryResult,
+  ProjectsQueryResult,
   LicenceQueryResult,
   SeoQueryResult,
   SiteQueryResult,
@@ -79,6 +81,10 @@ export const getFootageLibrary = cache((type: FootageFilter, query: string, star
 );
 
 const storeCache = { next: { revalidate: REVALIDATE_SECONDS, tags: ["store"] } };
+
+export const getProjects = cache(() =>
+  client.fetch<ProjectsQueryResult>(projectsQuery, {}, { next: { revalidate: 60, tags: ["projects"] } }),
+);
 
 export const getStoreStatus = cache(() =>
   client.fetch<StoreStatusQueryResult>(storeStatusQuery, {}, storeCache),

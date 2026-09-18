@@ -1,14 +1,9 @@
-import {
-  ArrowLink,
-  DecorativeText,
-  PlayButton,
-  SanityImage,
-  Section,
-  SprocketRail,
-} from "@/components/primitives";
+import { ArrowLink, DecorativeText, PlayButton, Section, SprocketRail } from "@/components/primitives";
 import { formatTimecode } from "@/lib/format";
 import { routes, sections } from "@/lib/site";
+import { ProjectPoster } from "./ProjectPoster";
 import { ProjectsCarousel } from "./ProjectsCarousel";
+import { VideoLightbox } from "./VideoLightbox";
 import type { HomePage, Project } from "./types";
 
 const FRAMES_PER_TILE = 24;
@@ -25,17 +20,24 @@ function ProjectTile({ project }: { project: Project }) {
   return (
     <article className="group flex w-[480px] shrink-0 snap-start flex-col border-r-2 border-fg/12 bg-bg last:border-r-0">
       <div className="relative h-[299px] overflow-hidden">
-        <SanityImage
-          image={project.still}
-          fill
+        <ProjectPoster
+          still={project.still}
+          title={project.title}
+          category={project.category}
           sizes="480px"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        <PlayButton
-          href={project.videoUrl}
-          label={`Play ${project.title}`}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-        />
+        {project.videoUrl ? (
+          <VideoLightbox
+            url={project.videoUrl}
+            label={`Play ${project.title}`}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          />
+        ) : (
+          <PlayButton
+            label={`Play ${project.title}`}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          />
+        )}
         <DecorativeText
           text={`${project.timecode ? `${formatTimecode(project.timecode)} — ` : ""}${project.category}`}
           className="absolute inset-x-0 bottom-0 block bg-linear-to-t from-[rgb(6_6_6/0.9)] to-transparent px-4 py-2 font-mono text-[9px] leading-[13.5px] tracking-[0.9px] text-fg/27 uppercase"

@@ -33,6 +33,10 @@ export const homepageQuery = defineQuery(`{
   }
 }`);
 
+export const projectsQuery = defineQuery(`*[_type == "project"] | order(order asc){
+  _id, title, category, timecode, still, videoUrl
+}`);
+
 export const seoQuery = defineQuery(`*[_type == "homePage" && _id == "homePage"][0]{
   seoTitle, seoDescription, shareImage, heroImage, heroIntro, heroHeadline, heroHighlight
 }`);
