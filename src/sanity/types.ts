@@ -404,6 +404,8 @@ export type SiteSettings = {
   _rev: string;
   email?: string;
   phone?: string;
+  whatsappNumber?: string;
+  whatsappMessage?: string;
   address?: string;
   addressShort?: string;
   location?: {
@@ -1101,11 +1103,13 @@ export type FootageTitleQueryResult = {
 
 // Source: src/sanity/queries.ts
 // Variable: siteQuery
-// Query: {  "settings": *[_type == "siteSettings" && _id == "siteSettings"][0]{    email, phone, address, addressShort, location, hoursSummary, hours, socials, footerBlurb, copyrightName,    footageLicenceSummary  },  "services": *[_type == "service"] | order(order asc){ _id, title }}
+// Query: {  "settings": *[_type == "siteSettings" && _id == "siteSettings"][0]{    email, phone, whatsappNumber, whatsappMessage, address, addressShort, location, hoursSummary, hours,    socials, footerBlurb, copyrightName,    footageLicenceSummary  },  "services": *[_type == "service"] | order(order asc){ _id, title }}
 export type SiteQueryResult = {
   settings: {
     email: string | null;
     phone: string | null;
+    whatsappNumber: string | null;
+    whatsappMessage: string | null;
     address: string | null;
     addressShort: string | null;
     location: {

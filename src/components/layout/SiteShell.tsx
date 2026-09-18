@@ -1,15 +1,16 @@
 import type { ReactNode } from "react";
 import { CartDrawer } from "@/components/store/CartDrawer";
-import { getStoreStatus } from "@/sanity/fetch";
+import { getSite, getStoreStatus } from "@/sanity/fetch";
 import { BackgroundTexture } from "./BackgroundTexture";
 import { CustomCursor } from "./CustomCursor";
 import { MotionProvider } from "./MotionProvider";
 import { SiteFooter } from "./SiteFooter";
 import { SiteHeader } from "./SiteHeader";
 import { SmoothScroll } from "./SmoothScroll";
+import { WhatsAppButton } from "./WhatsAppButton";
 
 export async function SiteShell({ children }: { children: ReactNode }) {
-  const store = await getStoreStatus();
+  const [store, { settings }] = await Promise.all([getStoreStatus(), getSite()]);
   return (
     <MotionProvider>
       <div className="relative isolate flex min-h-dvh flex-col">
@@ -28,6 +29,13 @@ export async function SiteShell({ children }: { children: ReactNode }) {
         </main>
         <SiteFooter />
         {store?.open && <CartDrawer />}
+        {settings?.whatsappNumber && (
+          <WhatsAppButton
+            number={settings.whatsappNumber}
+            message={settings.whatsappMessage}
+            label="Chat with us"
+          />
+        )}
       </div>
     </MotionProvider>
   );
